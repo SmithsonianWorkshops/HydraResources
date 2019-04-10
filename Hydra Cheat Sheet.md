@@ -1,7 +1,8 @@
 # Hydra Cheat Sheet
 
 1. **Login to hydra**
-    Choose one of the login nodes:
+    Choose one of the login nodes:  
+    
     `ssh myusername@hydra-login01.si.edu`
     or
     `ssh myusername@hydra-login02.si.edu`
@@ -80,8 +81,7 @@ You need to change your password every 90 days.
     * Long (l): up to 30 days
     * Unlimited (u): well... unlimited
     
-    The queues are also divided into high CPU (up to 6GB per CPU) or high memory (above 6 GB).  
-    Here's an example:  
+    The queues are also divided into high CPU (up to 6GB per CPU) or high memory (above 6 GB). Here's an example:  
    
     ```
     # ------------Parameters------------------ #
@@ -131,11 +131,8 @@ You need to change your password every 90 days.
 1. **How do I copy my files from Hydra to a local computer?**  
     Run this command from a local (aka not connected to Hydra) terminal window:  
     
-    ```
-    scp \  
-    myusername@hydra-login01.si.edu:/hydra-path/file \   
-    destination-on-my-computer
-    ```
+    `scp myusername@hydra-login01.si.edu:/hydra-path/file destination-on-my-computer`  
+    
     (for directories, use the flag -r after scp)
 
 1. **My files were scrubbed. What do I do?**  
