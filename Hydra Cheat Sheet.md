@@ -35,8 +35,7 @@ You need to change your password every 90 days.
 
 1. **Where are my files?**  
     Your files should be in the directory: `/pool/genomics/myusername`  
-    You might also have files in   
-    `/scratch/genomics/myusername` or `/data/genomics/myusername`
+    You might also have files in `/scratch/genomics/myusername` or `/data/genomics/myusername`
 
 1. **Which programs are available on hydra?**  
     `module avail`  
