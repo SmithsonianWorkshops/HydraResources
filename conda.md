@@ -192,6 +192,73 @@ The following packages will be downloaded:
  - Show available versions with: `conda search mafft`
 
 ## Wait, there's one more concept to keep things clean... `environments`
+So far all installs we've done have done into one set of packages called `(base)`. What if programs have conflicting dependencies or you need different versions of the same program?
+
+A conda Environment is a compartmentalized set of packages:
+
+| **Best practice is to create an environment for each pipeline** |
+| --- |
+
+Also, the more packages you have, the longer it will take for conda on the "Solving Environment" step.
+
+### Creating an environment
+```
+(base)$ conda create -n python2
+Collecting package metadata (current_repodata.json): done
+Solving environment: done
+## Package Plan ##
+  environment location: /home/user/miniconda3/envs/python2
+Proceed ([y]/n)? y
+
+Preparing transaction: done
+Verifying transaction: done
+Executing transaction: done
+#
+# To activate this environment, use
+#
+#     $ conda activate python2
+#
+# To deactivate an active environment, use
+#
+#     $ conda deactivate
+```
+
+### Using the new environment
+Although the output says to use `conda activate...`, we recommend using `source activate...` because it is compatible with job files submitted through `qsub`
+
+```
+(base)$ source activate python2
+(python2)$ conda install python=2.7
+Collecting package metadata (current_repodata.json): done
+Solving environment: done
+
+## Package Plan ##
+
+  environment location: /home/user/miniconda3/envs/python2
+
+  added / updated specs:
+    - python=2.7
+...
+```
+
+When you're done using the environment, you can go back to `(base)` with: `source deactivate`
+
+### Removing an environment
+
+To remove an environment and all of its packages:
+```
+(base)$ conda remove -n python2 --all
+
+Remove all packages in environment /home/kweskinm/miniconda3/envs/python2:
+
+## Package Plan ##
+
+  environment location: /home/kweskinm/miniconda3/envs/python2
+
+The following packages will be REMOVED:
+...
+Proceed ([y]/n)? y
+```
 
 ## Using miniconda in your jobs
 
