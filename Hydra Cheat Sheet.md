@@ -13,7 +13,7 @@
     | --- |
 
 2. **If I forgot my password or locked my account?**  
-    Send an email to  SI-HPC-Admin@si.edu to request a new password
+    Use the password reset webpage: https://hydra-adm01.si.edu/ssp/?action=sendtoken
 
 3. **How do I change my password?**  
 You need to change your password every 90 days.  
@@ -22,12 +22,9 @@ You need to change your password every 90 days.
     b. Type in the password command: `passwd`  
     c. You'll be prompted to enter your **current** password (once)  
     d. Then  you enter your **new** password (twice)
+    
+    You can also use the password change website: https://hydra-adm01.si.edu/ssp/index.php
 
-    After that, you need to repeat the same procedure in the head node (hydra-4).   
-    a. ssh to the head node
-    `ssh hydra-4`  
-    b. Repeat the same procedure and type exit to return to either hydra-login01 or hydra-login02
-    `exit`
 
 1. **Where am I when I log in?**  
     In your home directory: `/home/myusername`  
@@ -51,11 +48,11 @@ You need to change your password every 90 days.
     `module help module/name`
 
 1. **What if the program I need is not listed, can I install it on Hydra?**  
-    Yes. Try compiling any new software you need in your own space and feel free to reach out with questions.
+    Yes. Try compiling any new software you need in your own space and feel free to reach out with questions. You can also install miniconda and use that to install software.
 
 1. **How do I start an analysis?**  
 
-    You can create a job file either using `nano` or the [Qsub Generator](https://hydra-4.si.edu/tools/QSubGen/), which is a web tool to create job files.
+    You can create a job file either using `nano` or the [Qsub Generator](https://hydra-adm01.si.edu/tools/QSubGen/), which is a web tool to create job files.
     
     You can submit a job using the command  
     `qsub jobfile.job`   
@@ -87,7 +84,7 @@ You need to change your password every 90 days.
     #$ -S /bin/sh
     #$ -pe mthread 4 #(multithread w/ 4 CPUs)
     #$ -q mThC.q #(medium Time, high CPU)
-    #$ -l mres=6G,h_data=6G,h_vmem=6G
+    #$ -l mres=24G,h_data=6G,h_vmem=6G
     ```
     | Important: more memory is not necessarily better if the software can't use it efficiently. Jobs are prioritized based on queue, so low-RAM jobs will move through the queue faster. Inefficient jobs are flagged by the Hydra admin. |
     | --- |
@@ -118,9 +115,6 @@ You need to change your password every 90 days.
     You need to load the module tools/local  
     `module load tools/local`
 
-    To check your quotas without current usage:  
-    `show-quotas.pl -u myusername`
-
     To check your quotas with current usage:  
     `parse-quota-report.pl -u myusername`
 
@@ -132,7 +126,7 @@ You need to change your password every 90 days.
     
     `scp myusername@hydra-login01.si.edu:/hydra-path/file destination-on-my-computer`  
     
-    (for directories, use the flag -r after scp)
+    (for directories, use the flag `-r` after `scp`)
 
 1. **My files were scrubbed. What do I do?**  
     Please refer to [this page](https://confluence.si.edu/display/HPC/Disk+Space+and+Disk+Usage) for more information on how to request files to be restored (requests must be received by the Friday following scrubbing).
