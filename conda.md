@@ -355,13 +355,38 @@ source activate hybpiper
 ...
 ```
 
+## Troubleshooting
+
+Finding online help:
+- Official conda website (it’s good): https://docs.conda.io
+- Web search with “conda” in it, e.g.: conda remove environment (this usually brings me to docs.conda.io)
+- This page!
+- [SI HPC Wiki](https://confluence.si.edu/display/HPC/High+Performance+Computing)
+- si-hpc@si.edu email
+- Thursdays Brown Bags (12-1pm, W107 conference room)
+
+
+Reinstalling
+- `mv ~/miniconda3 ~/miniconda3-old`
+- Edit ~/.bashrc
+  - delete lines from `# >>> conda initialize >>>` to `# <<< conda initialize <<<`
+- `rm -rf .condarc .conda`
+- logout/back in
+
+## Advanced
+- Installing packages using pip if not available on conda
+- Exporting environment as environment.yml, and creating a simplified version for working on local computer
+- Setting environment variables
+- Running Jupyter notebooks (Mike)
+
+
 ## Appendix
 
 ### Definitions
 - conda: open source package management tool
 - Anaconda®: commercial company that develops conda
 - Anaconda: distribution of conda with many data science tools pre-bundled
-- Miniconda: minimal distribution of conda, other packages can be added, **What we reccomend**
+- Miniconda: minimal distribution of conda, other packages can be added
 - Channel: grouping of packages managed by one group (e.g. bioconda, conda-forge)
 
 ### Channels
