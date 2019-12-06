@@ -46,7 +46,7 @@ by running conda init? [yes|no]
 
 3. Exit Hydra and re-login
 4. Look for `(base)` at the beginning of your command prompt. Test with: `which conda`
-```
+```bash
 (base) $ which conda
 ~/miniconda3/bin/conda
 ```
@@ -58,7 +58,7 @@ by running conda init? [yes|no]
 
 ## Packages
 - A conda package is the precompiled program and a link to all of the required packages that will also be downloaded and needed.
-- A whole pipeline can be defined in a package: all the scripts and dependent software (e.g. phyluce)
+- A whole pipeline can be defined in a package: all the scripts and dependent software (e.g. qiime2 or phyluce)
 - Packages are created by people in the community and shared publicly. Sometimes they’re created by the software developer, but they’re often by users of the software.
 - You can create your own packages which a great method for reproducible science and collaboration. We’re not covering that, but we can direct you to resources.
 
@@ -74,7 +74,7 @@ We'll be using the `conda` command for managing packages and controlling conda
 ### Listing installed packages
 Some packages come pre-installed with miniconda (there would be a lot more if you were using the Anaconda installer)
 
-```
+```bash
 (base)$ conda list
 # packages in environment at /home/user/miniconda3:
 #
@@ -93,10 +93,10 @@ cryptography              2.8              py37h1ba5d50_0
 
 ### Installing a package
 `conda install ...` installs a packages and its dependencies
-- It doesn’t matter what your current directory is, it will install in your miniconda install
+- It doesn’t matter what your current directory is, it will install in your miniconda directory!
 
 
-```
+```bash
 (base)$ conda install biopython
 
 The following packages will be downloaded:
@@ -124,18 +124,18 @@ You can search the public package repositories at  https://anaconda.org/
 Or do a web search: "conda r" or "bioconda mafft"
 
 - Search for admixtools on anaconda.org
- - Only available on bioconda
- - `conda install -c bioconda admixtools`
+  - Only available on bioconda
+  - `conda install -c bioconda admixtools`
 - Search for mafft on anaconda.org
- - Available on multiple channels
- - `bioconda`, `conda-forge`, `anaconda`, `r` are reliable channels. You can try other popular ones.
+  - Available on multiple channels
+  - `bioconda`, `conda-forge`, `anaconda`, `r` are reliable channels. You can try other popular ones.
 
 ### Add `bioconda` and `conda-forge` to your channels
 
 ```
-conda config --add channels defaults
-conda config --add channels bioconda
-conda config --add channels conda-forge
+(base)$ conda config --add channels defaults
+(base)$ conda config --add channels bioconda
+(base)$ conda config --add channels conda-forge
 ```
 
 Note: the more channels you have, the increased time to "solve" installation.
@@ -160,11 +160,70 @@ The following packages will be downloaded:
 
 ### conda install tricks
 - Installing multiple items
- - `conda install mafft gblocks`
- - “It is best to install all packages at once, so that all of the dependencies are installed at the same time.” https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-pkgs.html
+  - `conda install mafft gblocks`
+  - “It is best to install all packages at once, so that all of the dependencies are installed at the same time.” https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-pkgs.html
 - Specifying program versions
- - `conda install mafft=7.221`
- - Show available versions with: `conda search mafft`
+  - `conda install mafft=7.2`
+  - `=7` matches the most recent version starting with `7`
+  - `==7.221` matches exactly the version specified
+  - `">7.2"` matches most recent version greather than 7.2 (in quotes because of the `>` which will interfere with the shell's redirection features)
+  - `"<7.3"` matches most recent version less than 7.3 (in quotes because of the `<` which will interfere with the shell's redirection features)
+  - See the [conda documentation](https://docs.conda.io/projects/conda-build/en/latest/resources/package-spec.html#package-match-specifications) for more information
+  - Show available versions with: `conda search mafft`
+
+## Using your miniconda install in submitted jobs
+
+There are a couple steps to utilize your miniconda install in your submitted jobs. By default the installed programs won't be found.
+
+### Create module file
+
+Did you know you can create your own module files? We'll set one up for your miniconda install. Module files are text files with instructions on how the current environment should be modified.
+
+We suggest creating a directory in your home folder called `modulefiles` and creating a module called miniconda in that directory.
+
+```
+(base)$ mkdir -p ~/modulefiles
+(base)$ cat <<EOF >~/modulefiles/miniconda2
+#%Module1.0
+prepend-path PATH /home/user/miniconda3/bin
+EOF
+```
+:exclamation: Make sure to change `user` with your Hydra username.
+
+### Job file using your module file
+
+You can use the `module load` command followed by the path and name of your module file to load your module.
+
+For example:
+```bash
+# /bin/sh
+# ----------------Parameters---------------------- #
+#$ -S /bin/sh
+#$ -q sThC.q
+#$ -l mres=2G,h_data=2G,h_vmem=2G
+#$ -cwd
+#$ -j y
+#$ -N minicondatest
+#$ -o minicondatest.out
+#
+# ----------------Modules------------------------- #
+module load ~/modulefiles/miniconda
+#
+# ----------------Your Commands------------------- #
+#
+echo + `date` job $JOB_NAME started in $QUEUE with jobID=$JOB_ID on $HOSTNAME
+echo + NSLOTS = $NSLOTS
+#
+echo "Conda location:"
+which conda
+
+echo
+echo "Installed packages:"
+conda list
+
+#
+echo = `date` job $JOB_NAME done
+```
 
 ## Wait, there's one more concept to keep things clean... `environments`
 So far all installs we've done have done into one set of packages called `(base)`. What if programs have conflicting dependencies or you need different versions of the same program?
@@ -223,13 +282,6 @@ The [install instructions](https://github.com/mossmatters/HybPiper/wiki/Installa
 - BWA
 - samtools
 
-Specifying version number:
-- `=3` matches the most recent version starting with `3`
-- `==3.7.3` matches exactly the version specified
-- `">3.6"` matches most recent version greather than 3.6 (in quotes because of the `>` which will interfere with the shell's redirection features)
-- `"<3.7"` matches most recent version less than 3.7 (in quotes because of the `<` which will interfere with the shell's redirection features)
-
-See the [conda documentation](https://docs.conda.io/projects/conda-build/en/latest/resources/package-spec.html#package-match-specifications) for more information
 
 ```
 (hybpiper)$ conda install python=3 "biopython>1.59" exonerate blast spades parallel bwa samtools
