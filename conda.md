@@ -273,13 +273,13 @@ When you're done using the environment, you can go back to `(base)` with: `sourc
 
 To remove an environment and all of its packages:
 ```
-(base)$ conda remove -n python2 --all
+(base)$ conda remove -n hybpiper --all
 
-Remove all packages in environment /home/kweskinm/miniconda3/envs/python2:
+Remove all packages in environment /home/user/miniconda3/envs/hybpiper:
 
 ## Package Plan ##
 
-  environment location: /home/kweskinm/miniconda3/envs/python2
+  environment location: /home/user/miniconda3/envs/python2
 
 The following packages will be REMOVED:
 ...
