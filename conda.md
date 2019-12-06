@@ -29,7 +29,7 @@ Last updated December, 2019
 $ wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 ```
 
-1. Run installer and choose all the default options:
+1. Run installer. Make sure to enter "yes" to "running conda init":
 ```
 $ sh Miniconda3-latest-Linux-x86_64.sh
 ...
@@ -88,32 +88,7 @@ chardet                   3.0.4                 py37_1003
 conda                     4.7.12                   py37_0
 conda-package-handling    1.6.0            py37h7b6447c_0
 cryptography              2.8              py37h1ba5d50_0
-idna                      2.8                      py37_0
-libedit                   3.1.20181209         hc058e9b_0
-libffi                    3.2.1                hd88cf55_4
-libgcc-ng                 9.1.0                hdf63c60_0
-libstdcxx-ng              9.1.0                hdf63c60_0
-ncurses                   6.1                  he6710b0_1
-openssl                   1.1.1d               h7b6447c_3
-pip                       19.3.1                   py37_0
-pycosat                   0.6.3            py37h14c3975_0
-pycparser                 2.19                     py37_0
-pyopenssl                 19.0.0                   py37_0
-pysocks                   1.7.1                    py37_0
-python                    3.7.4                h265db76_1
-readline                  7.0                  h7b6447c_5
-requests                  2.22.0                   py37_0
-ruamel_yaml               0.15.46          py37h14c3975_0
-setuptools                41.4.0                   py37_0
-six                       1.12.0                   py37_0
-sqlite                    3.30.0               h7b6447c_0
-tk                        8.6.8                hbc83047_0
-tqdm                      4.36.1                     py_0
-urllib3                   1.24.2                   py37_0
-wheel                     0.33.6                   py37_0
-xz                        5.2.4                h14c3975_4
-yaml                      0.1.7                had09818_2
-zlib                      1.2.11               h7b6447c_3
+...
 ```
 
 ### Installing a package
@@ -201,13 +176,18 @@ A conda Environment is a compartmentalized set of packages:
 
 Also, the more packages you have, the longer it will take for conda on the "Solving Environment" step.
 
+Let's try a more complex install.
+
+The [Hybpiper](https://github.com/mossmatters/HybPiper) pipeline doesn't have its own bioconda package (you could create one and contribute it to bioconda...), but we can use conda to install the dependencies in a new environment that we'll create and then add packages to.
+
 ### Creating an environment
+
 ```
-(base)$ conda create -n python2
+(base)$ conda create -n hybpiper
 Collecting package metadata (current_repodata.json): done
 Solving environment: done
 ## Package Plan ##
-  environment location: /home/user/miniconda3/envs/python2
+  environment location: /home/user/miniconda3/envs/hybpiper
 Proceed ([y]/n)? y
 
 Preparing transaction: done
@@ -216,7 +196,7 @@ Executing transaction: done
 #
 # To activate this environment, use
 #
-#     $ conda activate python2
+#     $ conda activate hybpiper
 #
 # To deactivate an active environment, use
 #
@@ -224,21 +204,67 @@ Executing transaction: done
 ```
 
 ### Using the new environment
+
 Although the output says to use `conda activate...`, we recommend using `source activate...` because it is compatible with job files submitted through `qsub`
 
 ```
-(base)$ source activate python2
-(python2)$ conda install python=2.7
+(base)$ source activate hybpiper
+```
+
+**Adding packages (and specifying verison numbers)**
+The [install instructions](https://github.com/mossmatters/HybPiper/wiki/Installation) list these requirements:
+
+- Python 2.7 or later (can be python3)
+- BIOPYTHON 1.59 or later
+- EXONERATE
+- BLAST command line tools
+- SPAdes
+- GNU Parallel
+- BWA
+- samtools
+
+Specifying version number:
+- `=3` matches the most recent version starting with `3`
+- `==3.7.3` matches exactly the version specified
+- `">3.6"` matches most recent version greather than 3.6 (in quotes because of the `>` which will interfere with the shell's redirection features)
+- `"<3.7"` matches most recent version less than 3.7 (in quotes because of the `<` which will interfere with the shell's redirection features)
+
+See the [conda documentation](https://docs.conda.io/projects/conda-build/en/latest/resources/package-spec.html#package-match-specifications) for more information
+
+```
+(hybpiper)$ conda install python=3 "biopython>1.59" exonerate blast spades parallel bwa samtools
+
 Collecting package metadata (current_repodata.json): done
 Solving environment: done
 
 ## Package Plan ##
 
-  environment location: /home/user/miniconda3/envs/python2
+  environment location: /home/user/miniconda3/envs/hybpiper
 
   added / updated specs:
-    - python=2.7
+  - biopython[version='>1.59']
+  - blast
+  - bwa
+  - exonerate
+  - parallel
+  - python=3
+  - samtools
+  - spades
+
+The following packages will be downloaded:
 ...
+The following NEW packages will be INSTALLED:
+...
+Proceed ([y]/n)? y
+...
+Downloading and Extracting Packages
+...
+```
+
+Now that the dependencies are installed, you can download the scripts for HybPiper:
+```
+cd ~
+git clone https://github.com/mossmatters/HybPiper.git
 ```
 
 When you're done using the environment, you can go back to `(base)` with: `source deactivate`
