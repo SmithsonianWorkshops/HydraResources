@@ -29,7 +29,7 @@ Last updated December, 2019
 $ wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 ```
 
-1. Run installer. Make sure to enter "yes" to "running conda init":
+2. Run installer. Make sure to enter "yes" to "running conda init":
 ```
 $ sh Miniconda3-latest-Linux-x86_64.sh
 ...
@@ -44,8 +44,8 @@ by running conda init? [yes|no]
 [no] >>>yes
 ```
 
-1. Exit Hydra and re-login
-1. Look for `(base)` at the beginning of your command prompt. Test with: `which conda`
+3. Exit Hydra and re-login
+4. Look for `(base)` at the beginning of your command prompt. Test with: `which conda`
 ```
 (base) $ which conda
 ~/miniconda3/bin/conda
@@ -75,7 +75,7 @@ We'll be using the `conda` command for managing packages and controlling conda
 Some packages come pre-installed with miniconda (there would be a lot more if you were using the Anaconda installer)
 
 ```
-$ conda list
+(base)$ conda list
 # packages in environment at /home/user/miniconda3:
 #
 # Name                    Version                   Build  Channel
@@ -97,7 +97,7 @@ cryptography              2.8              py37h1ba5d50_0
 
 
 ```
-$ conda install biopython
+(base)$ conda install biopython
 
 The following packages will be downloaded:
 ...
@@ -111,7 +111,7 @@ Executing transaction: done
 
 Test it:
 ```
-$ python
+(base)$ python
 >>> import Bio
 [no error is a good thing!]
 >>> exit ()
@@ -141,7 +141,7 @@ conda config --add channels conda-forge
 Note: the more channels you have, the increased time to "solve" installation.
 
 ```
-$ conda install mafft
+(base)$ conda install mafft
 
 ...
 The following packages will be downloaded:
@@ -272,7 +272,10 @@ When you're done using the environment, you can go back to `(base)` with: `sourc
 ### Removing an environment
 
 To remove an environment and all of its packages:
+
+*Make sure to deactivate the the environment before removing it*
 ```
+(hybpiper)$ source deactivate
 (base)$ conda remove -n hybpiper --all
 
 Remove all packages in environment /home/user/miniconda3/envs/hybpiper:
