@@ -46,7 +46,7 @@ by running conda init? [yes|no]
 
 3. Exit Hydra and re-login
 4. Look for `(base)` at the beginning of your command prompt. Test with: `which conda`
-```bash
+```
 (base) $ which conda
 ~/miniconda3/bin/conda
 ```
@@ -74,7 +74,7 @@ We'll be using the `conda` command for managing packages and controlling conda
 ### Listing installed packages
 Some packages come pre-installed with miniconda (there would be a lot more if you were using the Anaconda installer)
 
-```bash
+```
 (base)$ conda list
 # packages in environment at /home/user/miniconda3:
 #
@@ -96,7 +96,7 @@ cryptography              2.8              py37h1ba5d50_0
 - It doesn’t matter what your current directory is, it will install in your miniconda directory!
 
 
-```bash
+```
 (base)$ conda install biopython
 
 The following packages will be downloaded:
@@ -164,7 +164,7 @@ The following packages will be downloaded:
   - “It is best to install all packages at once, so that all of the dependencies are installed at the same time.” https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-pkgs.html
 - Specifying program versions
   - `conda install mafft=7.2`
-  - `=7` matches the most recent version starting with `7`
+  - `=7.2` matches the most recent version starting with `7.2`
   - `==7.221` matches exactly the version specified
   - `">7.2"` matches most recent version greather than 7.2 (in quotes because of the `>` which will interfere with the shell's redirection features)
   - `"<7.3"` matches most recent version less than 7.3 (in quotes because of the `<` which will interfere with the shell's redirection features)
@@ -195,7 +195,7 @@ EOF
 You can use the `module load` command followed by the path and name of your module file to load your module.
 
 For example:
-```bash
+```
 # /bin/sh
 # ----------------Parameters---------------------- #
 #$ -S /bin/sh
@@ -334,14 +334,24 @@ Remove all packages in environment /home/user/miniconda3/envs/hybpiper:
 
 ## Package Plan ##
 
-  environment location: /home/user/miniconda3/envs/python2
+  environment location: /home/user/miniconda3/envs/hybpiper
 
 The following packages will be REMOVED:
 ...
 Proceed ([y]/n)? y
 ```
 
-## Using miniconda in your jobs
+### Using an environment in your job file
+When submitting a job that uses a specific conda environment, you need to use `source activate ...` *after* you load your miniconda module.
+
+Example script:
+```
+# ----------------Modules------------------------- #
+module load ~/modulefiles/hybpiper
+source activate
+#
+# ----------------Your Commands------------------- #
+```
 
 ## Appendix
 
