@@ -346,11 +346,13 @@ When submitting a job that uses a specific conda environment, you need to use `s
 
 Example script:
 ```
+...
 # ----------------Modules------------------------- #
-module load ~/modulefiles/hybpiper
-source activate
+module load ~/modulefiles/miniconda
+source activate hybpiper
 #
 # ----------------Your Commands------------------- #
+...
 ```
 
 ## Appendix
