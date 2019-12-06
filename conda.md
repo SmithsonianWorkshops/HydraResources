@@ -20,7 +20,7 @@ Last updated December, 2019
 
 ### Version of Anaconda/Miniconda
 - Anaconda: distribution of conda with many data science tools pre-bundled
-- Miniconda: minimal distribution of conda, other packages can be added: **What we’ll use**
+- Miniconda: minimal distribution of conda, other packages can be added: **:star2:What we’ll use**
 
 ### Installing
 - Where to install? home directory (no scrubbing!)
@@ -161,7 +161,7 @@ The following packages will be downloaded:
 ### conda install tricks
 - Installing multiple items
   - `conda install mafft gblocks`
-  - “It is best to install all packages at once, so that all of the dependencies are installed at the same time.” https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-pkgs.html
+  - :star:“It is best to install all packages at once, so that all of the dependencies are installed at the same time.” https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-pkgs.html
 - Specifying program versions
   - `conda install mafft=7.2`
   - `=7.2` matches the most recent version starting with `7.2`
@@ -225,12 +225,12 @@ conda list
 echo = `date` job $JOB_NAME done
 ```
 
-## Wait, there's one more concept to keep things clean... `environments`
+## Wait, there's one more concept to keep things clean... `environments`:dizzy:
 So far all installs we've done have done into one set of packages called `(base)`. What if programs have conflicting dependencies or you need different versions of the same program?
 
 A conda Environment is a compartmentalized set of packages:
 
-| **Best practice is to create an environment for each pipeline** |
+| :squirrel: **Best practice is to create an environment for each pipeline** |
 | --- |
 
 Also, the more packages you have, the longer it will take for conda on the "Solving Environment" step.
@@ -319,13 +319,13 @@ cd ~
 git clone https://github.com/mossmatters/HybPiper.git
 ```
 
-When you're done using the environment, you can go back to `(base)` with: `source deactivate`
+:octocat: When you're done using an environment, you can go back to `(base)` with: `source deactivate`
 
 ### Removing an environment
 
 To remove an environment and all of its packages:
 
-*Make sure to deactivate the the environment before removing it*
+*:rocket: Make sure to deactivate the the environment before removing it*
 ```
 (hybpiper)$ source deactivate
 (base)$ conda remove -n hybpiper --all
@@ -367,10 +367,10 @@ Finding online help:
 
 
 Reinstalling
-- `mv ~/miniconda3 ~/miniconda3-old`
+- `mv ~/miniconda3 ~/miniconda3-old` (if you want to keep the old install) or `rm -rf ~/miniconda3` (to delete the old install)
+- `rm -rf .condarc .conda`
 - Edit ~/.bashrc
   - delete lines from `# >>> conda initialize >>>` to `# <<< conda initialize <<<`
-- `rm -rf .condarc .conda`
 - logout/back in
 
 ## Advanced
