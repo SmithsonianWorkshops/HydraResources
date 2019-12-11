@@ -138,6 +138,21 @@ Or do a web search: "conda r" or "bioconda mafft"
 (base)$ conda config --add channels conda-forge
 ```
 
+`conda config --get channels` shows your current channels
+
+:computer: Challenge: Which channel is the highest and which is the lowest?
+
+<details>
+  <summary>Click here to reveal the solution</summary>
+
+```
+$ conda config --get channels
+--add channels 'defaults'   # lowest priority
+--add channels 'bioconda'
+--add channels 'conda-forge'   # highest priority
+```
+</details>
+
 Note: the more channels you have, the increased time to "solve" installation.
 
 ```
@@ -282,6 +297,9 @@ The [install instructions](https://github.com/mossmatters/HybPiper/wiki/Installa
 - BWA
 - samtools
 
+:computer: Challenge:
+Use `conda` to install the dependencies for HybPiper in the hybpiper environment.
+  
 <details>
   <summary>Click here to reveal the solution</summary>
   
