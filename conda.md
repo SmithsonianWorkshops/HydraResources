@@ -376,6 +376,9 @@ Reinstalling
 ## Advanced
 - Installing packages using pip if not available on conda
 - Exporting environment as environment.yml, and creating a simplified version for working on local computer
+  - export: `conda env export > environment.yml`
+  - import: `conda env create -f environment.yml`
+  - This is how [qiime2 install](https://docs.qiime2.org/2019.10/install/native/) works
 - Setting environment variables
 - Running Jupyter notebooks (Mike)
 
