@@ -140,7 +140,7 @@ Or do a web search: "conda r" or "bioconda mafft"
 
 `conda config --get channels` shows your current channels
 
-:computer: Challenge: Which channel is the highest and which is the lowest?
+:computer: **Challenge:** Which channel is the highest and which is the lowest?
 
 <details>
   <summary>Click here to reveal the solution</summary>
@@ -198,19 +198,30 @@ Did you know you can create your own module files? We'll set one up for your min
 We suggest creating a directory in your home folder called `modulefiles` and creating a module called miniconda in that directory.
 
 ```
-(base)$ mkdir -p ~/modulefiles
-(base)$ cat <<EOF >~/modulefiles/miniconda2
+(base)$ mkdir ~/modulefiles
+(base)$ cd ~/modulefiles
+(base)$ nano miniconda
+```
+
+and then enter into the new text file:
+
+```
 #%Module1.0
 prepend-path PATH /home/user/miniconda3/bin
-EOF
 ```
+
 :exclamation: Make sure to change `user` with your Hydra username.
 
 ### Job file using your module file
 
-You can use the `module load` command followed by the path and name of your module file to load your module.
+Use the `module load` command followed by the path and name of your module file to load your module: `module load ~/modulefiles/miniconda`
 
-For example:
+:computer: **Challenge:** write and execute a Hydra job script that loads your new module file and tests it using the commands `which conda` and `conda list` You may want to use [QSubGen](https://hydra-adm01.si.edu/tools/QSubGen/) to create get started.
+
+<details>
+  <summary>Click here to reveal the solution</summary>
+
+Job file:
 ```
 # /bin/sh
 # ----------------Parameters---------------------- #
@@ -240,6 +251,22 @@ conda list
 #
 echo = `date` job $JOB_NAME done
 ```
+
+Excerpt of `minicondatest.out`:
+```
++ Fri Dec 6 11:51:55 EST 2019 job minicondatest started in sThC.q with jobID=3061401 on compute-81-14
++ NSLOTS = 1
+Conda location:
+/home/user/miniconda3/bin/conda
+
+Installed packages:
+# packages in environment at /home/kweskinm/miniconda3:
+#
+# Name                    Version                   Build  Channel
+...
+```
+</details>
+
 
 ## Wait, there's one more concept to keep things clean... `environments`:dizzy:
 So far all installs we've done have done into one set of packages called `(base)`. What if programs have conflicting dependencies or you need different versions of the same program?
@@ -298,7 +325,7 @@ The [install instructions](https://github.com/mossmatters/HybPiper/wiki/Installa
 - BWA
 - samtools
 
-:computer: Challenge:
+:computer: **Challenge:**
 Use `conda` to install the dependencies for HybPiper in your `hybpiper` environment. You may need to look up package names at [anaconda.org](https://anaconda.org) or your favorite search engine. (Hint: pay special attention to GNU Parallel)
   
 <details>
