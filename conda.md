@@ -289,7 +289,7 @@ Although the output says to use `conda activate...`, we recommend using `source 
 **Adding packages (and specifying verison numbers)**
 The [install instructions](https://github.com/mossmatters/HybPiper/wiki/Installation) list these requirements:
 
-- Python 2.7 or later (can be python3)
+- Python 2.7 or later [We suggest python3 -Hydra team]
 - BIOPYTHON 1.59 or later
 - EXONERATE
 - BLAST command line tools
@@ -299,7 +299,7 @@ The [install instructions](https://github.com/mossmatters/HybPiper/wiki/Installa
 - samtools
 
 :computer: Challenge:
-Use `conda` to install the dependencies for HybPiper in the hybpiper environment.
+Use `conda` to install the dependencies for HybPiper in your `hybpiper` environment. You may need to look up package names at [anaconda.org](https://anaconda.org) or your favorite search engine. (Hint: pay special attention to GNU Parallel)
   
 <details>
   <summary>Click here to reveal the solution</summary>
