@@ -408,6 +408,7 @@ source activate hybpiper
 
 Finding online help:
 - Official conda website (it’s good): https://docs.conda.io
+  - Specifically this page called [Conda Package Manager](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-pkgs.html)
 - Web search with “conda” in it, e.g.: conda remove environment (this usually brings me to docs.conda.io)
 - This page!
 - [SI HPC Wiki](https://confluence.si.edu/display/HPC/High+Performance+Computing)
