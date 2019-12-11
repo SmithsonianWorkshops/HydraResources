@@ -282,7 +282,9 @@ The [install instructions](https://github.com/mossmatters/HybPiper/wiki/Installa
 - BWA
 - samtools
 
-
+<details>
+  <summary>Click here to reveal the solution</summary>
+  
 ```
 (hybpiper)$ conda install python=3 "biopython>1.59" exonerate blast spades parallel bwa samtools
 
@@ -312,6 +314,7 @@ Proceed ([y]/n)? y
 Downloading and Extracting Packages
 ...
 ```
+</details>
 
 Now that the dependencies are installed, you can download the scripts for HybPiper:
 ```
