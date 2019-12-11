@@ -20,7 +20,7 @@ Last updated December, 2019
 
 ### Version of Anaconda/Miniconda
 - Anaconda: distribution of conda with many data science tools pre-bundled
-- Miniconda: minimal distribution of conda, other packages can be added: **:star2:What we’ll use**
+- Miniconda: minimal distribution of conda, other packages can be added: **:star:What we’ll use**
 
 ### Installing
 - Where to install? home directory (no scrubbing!)
@@ -151,6 +151,7 @@ $ conda config --get channels
 --add channels 'bioconda'
 --add channels 'conda-forge'   # highest priority
 ```
+`conda-forge` is the highest, `defaults` is the lowest.
 </details>
 
 Note: the more channels you have, the increased time to "solve" installation.
@@ -340,13 +341,13 @@ cd ~
 git clone https://github.com/mossmatters/HybPiper.git
 ```
 
-:octocat: When you're done using an environment, you can go back to `(base)` with: `source deactivate`
+:star: When you're done using an environment, you can go back to `(base)` with: `source deactivate`
 
 ### Removing an environment
 
 To remove an environment and all of its packages:
 
-*:rocket: Make sure to deactivate the the environment before removing it*
+*:exclamation: You have to deactivate the environment before removing it*
 ```
 (hybpiper)$ source deactivate
 (base)$ conda remove -n hybpiper --all
