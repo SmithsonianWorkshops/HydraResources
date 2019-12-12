@@ -123,6 +123,8 @@ You can search the public package repositories at  https://anaconda.org/
 
 Or do a web search: "conda r" or "bioconda mafft"
 
+Or use `conda search "*blast*"` (finds packages with blast anywhere in their name)
+
 - Search for admixtools on anaconda.org
   - Only available on bioconda
   - `conda install -c bioconda admixtools`
@@ -449,3 +451,13 @@ Reinstalling
 - `Conda-Forge`: community contributions
 - `Bioconda`: contributions from biological community, find packages on https://bioconda.github.io
 - Other channels...
+
+## Additional commands
+
+### Remove packages
+To remove a package from the current environment use `conda remove [package]`
+
+### Update packages
+To update a specific package use `conda update [package]`. To update all packages in the current environment use: `conda update --all`
+
+You can prevent `conda update --all` from updating some packages using these [instructions](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-pkgs.html#preventing-packages-from-updating-pinning)
