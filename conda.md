@@ -51,6 +51,19 @@ by running conda init? [yes|no]
 ~/miniconda3/bin/conda
 ```
 
+:exclamation: If you don't see `(base)`, there may be an issue with a config file in your home directory. You can fix this with:
+`nano ~/.bash_profile`
+
+and then append this text to the bottom of the file:
+```
+# Get the aliases and functions
+if [ -f ~/.bashrc ]; then
+	. ~/.bashrc
+fi
+```
+
+Log out and back in again to see if `(base)` is now at the beginning of your command prompt.
+
 ### What did the installer do?
 - `~/miniconda3/`: where all the conda programs are installed
 - `~/.bashrc` (this file is run when you start a new bash shell): a command has been appended to enable conda (modifying your `$PATH`) and changing your prompt.
@@ -123,7 +136,7 @@ You can search the public package repositories at  https://anaconda.org/
 
 Or do a web search: "conda r" or "bioconda mafft"
 
-Or use `conda search "*blast*"` (finds packages with blast anywhere in their name)
+Or use `conda search "*blast*"` (finds packages with blast anywhere in their name in your current channels)
 
 - Search for admixtools on anaconda.org
   - Only available on bioconda
@@ -181,13 +194,13 @@ The following packages will be downloaded:
   - `conda install mafft gblocks`
   - :star:“It is best to install all packages at once, so that all of the dependencies are installed at the same time.” https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-pkgs.html
 - Specifying program versions
-  - `conda install mafft=7.2`
-  - `=7.2` matches the most recent version starting with `7.2`
-  - `==7.221` matches exactly the version specified
-  - `">7.2"` matches most recent version greather than 7.2 (in quotes because of the `>` which will interfere with the shell's redirection features)
-  - `"<7.3"` matches most recent version less than 7.3 (in quotes because of the `<` which will interfere with the shell's redirection features)
+  - Show available versions with: `conda search python`
+  - `conda install python=3`
+  - `=3` matches the most recent version starting with `3`
+  - `==3.7.5` matches exactly the version specified
+  - `">3.7"` matches most recent version greather than 3.7 (in quotes because of the `>` which will interfere with the shell's redirection features)
+  - `"<3.8"` matches most recent version less than 3.8 (in quotes because of the `<` which will interfere with the shell's redirection features)
   - See the [conda documentation](https://docs.conda.io/projects/conda-build/en/latest/resources/package-spec.html#package-match-specifications) for more information
-  - Show available versions with: `conda search mafft`
 
 ## Using your miniconda install in submitted jobs
 
@@ -329,10 +342,10 @@ The [install instructions](https://github.com/mossmatters/HybPiper/wiki/Installa
 
 :computer: **Challenge:**
 Use `conda` to install the dependencies for HybPiper in your `hybpiper` environment. You may need to look up package names at [anaconda.org](https://anaconda.org) or your favorite search engine. (Hint: pay special attention to GNU Parallel)
-  
+
 <details>
   <summary>Click here to reveal the solution</summary>
-  
+
 ```
 (hybpiper)$ conda install python=3 "biopython>1.59" exonerate blast spades parallel bwa samtools
 
