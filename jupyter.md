@@ -12,12 +12,20 @@ From the log-in node, access the interactive queue.
 qrsh -pe mthread [N]
 ```
 
+...where N is the number of threads you would like to request.
+
+*If you have access to the GPU nodes, you can use* `qrsh -l gpu`.
+
+You will notice that your prompt will change from `[user@hydra-login01]` to `[user@computer-XX-XX]` where *XX-XX* is the name of the Hydra compute node you are now on.
+
 Then load the conda module, and activate a specific module with jupyter, if necessary.
 
 ```console
 module load ~/modulefiles/miniconda
-source activate jupyter
+conda activate jupyter
 ```
+
+*If you have access to the GPU nodes, you will also need to run* `module load cuda10.0` *to load the CUDA libraries. You can test that it worked with the command* `nvidia-smi`.
 
 Now run the following command to launch a jupyter notebook. It will run it from the directory you are in, so make sure you are "above" the directory where you want your notebooks to live. The interactive queue puts you into your `/home` directory by default.
 
@@ -44,8 +52,10 @@ This will launch a notebook, and produce a bunch of output looking something lik
 Now on your local computer, open up a terminal, and run the following command:
 
 ```console
-ssh -N -L 8888:compute-8-31:8888 triznam@hydra-login01.si.edu
+ssh -N -L 8888:compute-XX-XX:8888 triznam@hydra-login01.si.edu
 ```
+
+...where *XX-XX* is the compute node that the `qrsh` command placed you. The first 8888 is the port of your local computer. If you are already running a local Jupyter notebook, then simply change this to a free port. The second 8888 is the port of the compute node, so change this if you used a different port in the `jupyter notebook` command above.
 
 If it worked, it will prompt you for your Hydra password. Enter it.
 
