@@ -61,12 +61,12 @@ You can see a full listing of the options for `ls` in its help screen. All Linux
 $ ls --help
 ```
 
-Your "/home" directory has a relatively small size limit, so you should only use it for basic configuration files, scripts and job files. Your "/pool" directory is where you should run your jobs from.
+Your "/home" directory has a relatively small size limit, so you should only use it for basic configuration files, scripts and job files. Your "/scratch" directory is where you should run your jobs from.
 
-Let's move to the "/pool" directory with the `cd` command, which stands for "change directory". Feel free to use the `pwd` and `ls` commands again to see what has changed.
+Let's move to the "/scratch" directory with the `cd` command, which stands for "change directory". Feel free to use the `pwd` and `ls` commands again to see what has changed.
 
 ```
-$ cd /pool/genomics/{user}
+$ cd /scratch/genomics/{user}
 ```
 
 Now that we're in the correct location, it is best practice to create a separate directory for each "project" you are working on. You can make a new directory with the `mkdir` command.
@@ -131,7 +131,7 @@ There are additional module commands to find out more about a particular module.
 
 ```
 $ module whatis bioinformatics/iqtree
-bioinformatics/iqtree: System paths to run IQTREE 1.6.10
+bioinformatics/iqtree: System paths to run IQTREE 1.6.12
 ```
 
 You can also see module-specific help for any module with the `module help` command. These are written as part of the Hydra installation process, and should not be mistaken for the official documentation for the software.
@@ -139,21 +139,22 @@ You can also see module-specific help for any module with the `module help` comm
 ```
 $ module help bioinformatics/iqtree
 
------------ Module Specific Help for 'bioinformatics/iqtree/1.6.10' ---------------------------
+-----------Module Specific Help for /share/apps/modulefiles/bioinformatics/iqtree/1.6.12:
 
 
 Purpose
 -------
-This module file defines the system paths for IQTREE 1.6.1
-The compiled binary that you can now call are:
+This module file defines the system paths for IQTREE 1.6.12
+The compiled binary that you can now call is:
 iqtree
-To run threaded use -nt flag, see documentation for more information.
+iqtree-mpi
+iqtree-mpi-hybrid
 
 Documentation
 -------------
 http://www.cibiv.at/software/iqtree/
 
-<- Last updated: Mon Feb 25 10:36:42 EST 2019, VLG ->
+<- Last updated: Fri Nov  1 07:54:22 EDT 2019 ->
 ```
 
 Ok, now let's actually load IQ-TREE.
@@ -166,7 +167,7 @@ Nothing happens, but let's run a quick command to show that we have IQ-TREE load
 
 ```
 $ iqtree -h
-IQ-TREE multicore version 1.6.10 for Linux 64-bit built Feb 19 2019
+IQ-TREE multicore version 1.6.12 for Linux 64-bit built Aug 15 2019
 Developed by Bui Quang Minh, Nguyen Lam Tung, Olga Chernomor,
 Heiko Schmidt, Dominik Schrempf, Michael Woodhams.
 
@@ -276,7 +277,7 @@ Press the "Quickconnect" button to start the connection.
 
 The files listed on the left side of the window are on your local computer, those on the right are on Hydra.
 
-Enter your `/pool/genomics/{user}` filepath in the "Remote site" entry on the right side. You can than use the file tree on the right to navigate to your result files.
+Enter your `/scratch/genomics/{user}` filepath in the "Remote site" entry on the right side. You can than use the file tree on the right to navigate to your result files.
 
 Drag the ".treefile" file to the left side in an appropriate directory on your local computer.
 
@@ -302,7 +303,7 @@ $ pwd
 So let's go back to our "hydra_workshop" directory.
 
 ```
-$ cd /pool/genomics/{}/hydra_workshop
+$ cd /scratch/genomics/{user}/hydra_workshop
 ```
 
 And now we can directly run the same commands that we listed out in our job file.
@@ -314,5 +315,7 @@ module load bioinformatics/iqtree
 And then the same iqtree command -- but changing the data paths, since we're in the main project directory now.
 
 ```
-iqtree -s data/raw/primates.dna.phy -nt $NSLOTS -pre data/results/primates.dna
+iqtree -s data/raw/primates.dna.phy -nt 2 -pre data/results/primates.dna
 ```
+
+Note: in the interactive queue, `$NSLOTS` is not set automnatically by the system, so we need to use `-nt 2` (2 for the two CPUs we requested in the `qrsh -mthread 2` command) instead of `-nt $NSLOTS`
