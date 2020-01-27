@@ -259,6 +259,8 @@ Note the job id that is listed in here, and you can now use it to look into the 
 $ qacct -j {job ID}
 ```
 
+*Pay specific attention to the maxvmem line of the qacct output. This shows the maximum amount of virtual memory that your job used. If this is significantly less than the amount you requested, make sure to adjust in future jobs.*
+
 ## Transferring files
 
 If you haven't already, go ahead and install a file transfer client. We recommend FileZilla, which you can download from [https://filezilla-project.org/download.php?show_all=1](https://filezilla-project.org/download.php?show_all=1). DO NOT USE THE SKETCHY INSTALLER AT [https://filezilla-project.org/download.php?type=client](https://filezilla-project.org/download.php?type=client), which comes with "bundled offers".
