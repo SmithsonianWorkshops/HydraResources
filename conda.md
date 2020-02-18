@@ -275,7 +275,7 @@ Conda location:
 /home/user/miniconda3/bin/conda
 
 Installed packages:
-# packages in environment at /home/kweskinm/miniconda3:
+# packages in environment at /home/user/miniconda3:
 #
 # Name                    Version                   Build  Channel
 ...
