@@ -42,15 +42,15 @@ The first part of regular expressions we'll look at are **character classes**. T
 
 We use square brackets `[]` to around a list of characters to define the class
 
-The brackets are the first *metacharacters* we're seeing. Metacharacters have special meanings in regex as compared to literals which are the actual chracter that was entered.
+The brackets are the first *metacharacters* we're seeing. Metacharacters have special meanings in regex as compared to literals which are the actual character that was entered.
 
 Some examples:
 ```
-[acgt]       Matches a single a, c, g or t character (note all possible chracters are listed with no spaces, commas etc. between them)
+[acgt]       Matches a single a, c, g or t character (note all possible characters are listed with no spaces, commas etc. between them)
 [A-Z]        Matches any single capital letter (the hyphen - has special meaning here)
 [A-Za-z]     Matches any single capital or lowercase letter (you can combine more than one range)
 [A-Za-z0-9]  Matches any single capital or lowercase letter or digit
-[A-Z-]       Matches any single captial letter or the hyphen character
+[A-Z-]       Matches any single capital letter or the hyphen character
               (If the final character is a -, it won't be used as a range.
               This also shows combining several ranges with a single character)
 ```
@@ -64,14 +64,6 @@ You can also use the caret symbol (`^`) to find everything *not* in a range
               The ^ must be the first character inside the [
 [^A-Z]      Any single character that is not a capital letter
 ```
-
-Square brackets
-	Ranges
-	Nots
-	Pre-defined classes
-
-Try out some examples:
-
 
 Test string:
 ````
@@ -104,6 +96,8 @@ Note that this finds the <code>-</code> as well as A and G.
 Or, invoke case insensitive in the "RegEx options"
 </details>
 
+#### Pre-defined character classes `\w`, `\d`, `\s` etc.
+
 There are handy pre-defined character classes that can be helpful in searches:
 
 ```
@@ -121,6 +115,25 @@ You can make character classes with these pre-defined classes:
 [\w$-]  Word characters (letters, numbers, underscores) with the addition of dollar signs and hyphens
 [\d.-]  Digits, decimal points and hyphens
 ```
+
+#### Wildcard: match any character `.`
+
+A wildcard is like a character class that will match any character. The wildcard character is `.` and it does not need to be in brackets.
+
+<details>
+  <summary>TBD</summary>
+<pre></pre>
+</details>
+
+#### Match a metacharacter as a literal (escaping) `\`
+
+We've started seeing characters that are treated as special chracters in the regular expression. How would you match one of these characters if they occur in the text your matching?
+
+You use a backslash `\` in your pattern to identify a character as being a literal match even if it's a metacharacter.
+
+So, if you have the string `[See note below]` and you want to match the `[` you would use `\[` in your regular expression. regex101.com is very helpful in identifying where a character is being interpreted as a metacharacter.
+
+Some of the common metacharacters that should be escaped: `[](){}\-.*?+|^$`
 
 ### Quantification (enumeration)
 
@@ -146,7 +159,7 @@ GAG---
 <pre>GAG[GACT]+</pre>
 </details>
 
-#### Zero or more [*]
+#### Zero or more [\*]
 
 Like the `+` this will match any number of characters but it will also continue testing for a match if none are present.
 
@@ -175,7 +188,7 @@ This will match either zero or exactly one of the characters.
 </details>
 
 
-#### Specify a range to match `{}`
+#### A specific range `{}`
 
 You can specify a range of times match characters.
 
@@ -202,17 +215,16 @@ Exactly 10: <code>[ACGT]{10}</code>
 </details>
 
 <details>
-  <summary>Match the parts of the lines where there are two or more G chracters together</summary>
+  <summary>Match the parts of the lines where there are two or more G characters together</summary>
 <pre>
 G{2,}
 </pre>
-Note: we've been using numerators around chracter classes, but they can also be used for single chracters
+Note: we've been using numerators around character classes, but they can also be used for single characters
 </details>
-
 
 ### Anchors/assertions `$`, `^`, `\b`
 
-Sometimes you want to specify that a match occurs at a certain part of a line. You can use anchors or assertion chracters to specify where in a line a match occurs.
+Sometimes you want to specify that a match occurs at a certain part of a line. You can use anchors or assertion characters to specify where in a line a match occurs.
 
 The common anchors are:
 
@@ -248,3 +260,51 @@ This would work too, although it would also match invalid characters if they wer
 ^\w+$
 <pre>
 </details>
+
+### Matching one pattern or another `|`
+
+<details>
+  <summary>TBD</summary>
+<pre></pre>
+</details>
+
+## Working with sequence headers and replacing text
+
+A common change to make with biological data is altering the headers (sequence names) in a fasta file. The header lines start with a `>` and are followed by lines with the sequence.
+
+Test string:
+```
+>locus-1022_NMNH-2020-06-02
+GAGGAAGAGGAGGATAGAGGAGGT--GAAGAGGAGGAAGAGGTCAGGAAGAGGAGGAAGAG
+>locus-301_Sp.nov.ab
+GAGGAAGAGGA-GATAGAGGAGGT---AAGAGGAGGAAGAGGT-AGGAAGAGGAGGAAGAG
+```
+
+In this exercise we're going to take these headers and alter them so that the Sample ID precedes the Locus ID.
+
+In these headers the Locus and Sample IDs are separated by an underscore `_`. The locus ID always starts with `locus-`. The Sample ID follows the `_` (but does not contain underscores or spaces)
+
+<details>
+  <summary>Part 1: Write a pattern to match the Locus ID</summary>
+<pre>locus-\d+</pre>
+</details>
+
+<details>
+  <summary>Part 2: Write a pattern to match the underscore and Sample ID</summary>
+<pre>_.+$</pre>
+</details>
+
+<details>
+  <summary>Part 3: Combine the patterns in Parts 1 and 2 to match the two IDs, the underscore and the starting `>`</summary>
+<pre>^>locus-\d+_.+$</pre>
+We can optionally simplify this because now we have anchors of the beginning of the line, the underscore and the end of the line:
+<pre>^>.+_.+$</pre>
+</details>
+
+### Replacing text: capture groups `()`
+
+To continue, we need to learn about the special tools regular expressions provide for replacing text.
+
+We've seen how regular expressions can match a variety of text rather than fixed text of a traditional "find." What if we want to replace the text using what was found?
+
+If we want to incorporate the found text into the replacement, we can capture all or parts of what was found using parentheses `()`
