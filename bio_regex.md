@@ -115,7 +115,7 @@ There are handy pre-defined character classes that can be helpful in searches:
 \S        NOT whitespace
 ```
 
-You can make character classes with these pre-defined classes:
+You can make character classes with pre-defined classes:
 
 ```
 [\w$-]  Word characters (letters, numbers, underscores) with the addition of dollar signs and hyphens
@@ -230,6 +230,8 @@ Exactly 10: `[ACGT]{10}`
   <summary>Match the parts of the lines where there are two or more G characters together</summary>
 
 `G{2,}`
+
+or: `GG+`
 
 Note: we've been using numerators around character classes, but they can also be used for single characters
 </details>
