@@ -80,6 +80,8 @@ GA-
 `GA[AG]`
 </details>
 
+---
+
 <details>
   <summary>Find sequences that are NOT Glu</summary>
 
@@ -88,11 +90,15 @@ GA-
 Note that this finds the <code>-</code> as well as A and G.
 </details>
 
+---
+
 <details>
   <summary>Find sequences that have any valid base in the third position</summary>
 
 `GA[ACGT]`
 </details>
+
+---
 
 <details>
   <summary>How would you modify the pattern to find any based in the third position to match lowercase or uppercase bases?</summary>
@@ -101,6 +107,8 @@ Note that this finds the <code>-</code> as well as A and G.
 
 Or, invoke case insensitive in the "RegEx options"
 </details>
+
+---
 
 #### Pre-defined character classes `\w`, `\d`, `\s` etc.
 
@@ -131,6 +139,8 @@ A wildcard is like a character class that will match any character. The wildcard
 
 <pre></pre>
 </details>
+
+---
 
 #### Match a metacharacter as a literal (escaping) `\`
 
@@ -167,6 +177,8 @@ GAG---
 `GAG[GACT]+`
 </details>
 
+---
+
 #### Zero or more [\*]
 
 Like the `+` this will match any number of characters but it will also continue testing for a match if none are present.
@@ -188,6 +200,8 @@ GAG---GAG
 Note: This partially matches the third line because GAGG matches, we'll see in the next section
 </details>
 
+---
+
 #### Zero or one match `?`
 
 This will match either zero or exactly one of the characters.
@@ -197,6 +211,8 @@ This will match either zero or exactly one of the characters.
 
 <pre></pre>
 </details>
+
+---
 
 
 #### A specific range `{}`
@@ -228,6 +244,8 @@ Exactly 10: `[ACGT]{10}`
 9 or 10: `[ACGT]{9,10}`
 </details>
 
+---
+
 <details>
   <summary>Match the parts of the lines where there are two or more G characters together</summary>
 
@@ -237,6 +255,8 @@ or: `GG+`
 
 Note: we've been using numerators around character classes, but they can also be used for single characters
 </details>
+
+---
 
 ### Anchors/assertions `$`, `^`, `\b`
 
@@ -275,6 +295,8 @@ This would work too, although it would also match invalid characters if they wer
 `^\w+$`
 </details>
 
+---
+
 ### Matching one pattern or another `|`
 
 <details>
@@ -282,6 +304,8 @@ This would work too, although it would also match invalid characters if they wer
 
 <pre></pre>
 </details>
+
+---
 
 ## Working with sequence headers and replacing text
 
@@ -305,11 +329,15 @@ In these headers the Locus and Sample IDs are separated by an underscore `_`. Th
 `locus-\d+`
 </details>
 
+---
+
 <details>
   <summary>Part 2: Write a pattern to match the underscore and Sample ID</summary>
 
 `_.+$`
 </details>
+
+---
 
 <details>
   <summary>Part 3: Combine the patterns in Parts 1 and 2 to match the two IDs, the underscore and the starting `>`</summary>
@@ -320,6 +348,8 @@ We can optionally simplify this because now we have anchors of the beginning of 
 
 `^>.+_.+$`
 </details>
+
+---
 
 ### Replacing text: capture groups `()`
 
@@ -338,6 +368,8 @@ If we add parentheses around a portion of the pattern, say the Locus ID section:
 
 `^>(locus-\d+)_(.+)$`
 </details>
+
+---
 
 #### Using the captured text `\1`, `\2` etc.
 
