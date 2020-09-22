@@ -222,7 +222,9 @@ GAGGAG
   <summary>Create patterns to match these criteria: exactly 10 nucleotides, 8 or more nucleotides, 9 or 10 nucleotides</summary>
 
 Exactly 10: `[ACGT]{10}`
+
 8 or more: `[ACGT]{8,}`
+
 9 or 10: `[ACGT]{9,10}`
 </details>
 
