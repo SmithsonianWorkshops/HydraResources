@@ -34,13 +34,15 @@ In the next part we will be using regular expressions in two common command line
 
 ## Learning Regular expressions
 
-*This is a good time for a tour of https://regex101.com
+This is a good time for a tour of https://regex101.com
 
 ### Character classes `[]`
 
 The first part of regular expressions we'll look at are **character classes**. This will match one or more characters of a certain type.
 
 We use square brackets `[]` to around a list of characters to define the class
+
+The brackets are the first *metacharacters* we're seeing. Metacharacters have special meanings in regex as compared to literals which are the actual chracter that was entered.
 
 Some examples:
 ```
@@ -102,13 +104,147 @@ Note that this finds the <code>-</code> as well as A and G.
 Or, invoke case insensitive in the "RegEx options"
 </details>
 
-There are pre-defined character classes that can be helpful in searches:
+There are handy pre-defined character classes that can be helpful in searches:
 
 ```
-\w        "word character": expands to [A-Za-z0-9_] (note: _ is considered a word character here)
+\w        "word character": expands to [A-Za-z0-9_] (note: \w considers _ a word character here)
 \d        "digit": expands to [0-9]
 \W        NOT \w: [^A-Za-z0-9_]
 \D        NOT \d: [^0-9]
 \s        "whitespace" characters: space, tab, newlines etc.
 \S        NOT whitespace
 ```
+
+You can make character classes with these pre-defined classes:
+
+```
+[\w$-]  Word characters (letters, numbers, underscores) with the addition of dollar signs and hyphens
+[\d.-]  Digits, decimal points and hyphens
+```
+
+### Quantification (enumeration)
+
+In our look into character classes above, we were matching only a *single* unknown character at a time. What if you want to match several characters to the same class?
+
+Regular expression's quantification metacharacters allow you to specify the number of characters to match.
+
+#### One or more [+]
+
+This will match if there is at least one match of the character or character class.
+
+Test string:
+````
+GAGGAA
+GAGGAC
+GAGGAT
+GAGCAG
+GAG---
+````
+
+<details>
+  <summary>Find all lines with at least one nucleotide immediately following GAG</summary>
+<pre>GAG[GACT]+</pre>
+</details>
+
+#### Zero or more [*]
+
+Like the `+` this will match any number of characters but it will also continue testing for a match if none are present.
+
+Test string:
+````
+GAGGAAGAG
+GAGGACGAG
+GAGG-TGAG
+GAG-AGGAG
+GAG---GAG
+````
+
+<details>
+  <summary>Find all lines that have nucleotides or any number of gap characters (hyphens) immediately after the GAG</summary>
+<pre>GAG-*[AGCT]+</pre>
+Note: This partially matches the third line because GAGG matches, we'll see in the next section
+</details>
+
+#### Zero or one match `?`
+
+This will match either zero or exactly one of the characters.
+
+<details>
+  <summary>TBD</summary>
+<pre></pre>
+</details>
+
+
+#### Specify a range to match `{}`
+
+You can specify a range of times match characters.
+
+```
+{x}: exactly x repeats
+{x,}: x or more repeats
+{x,y}: between x and y (inclusive) repeats
+```
+
+Test string:
+```
+GAGGAAGAGA
+GAGGACGAG
+GAGGTGAG
+GAAGGAG
+GAGGAG
+```
+
+<details>
+  <summary>Create patterns to match these criteria: exactly 10 nucleotides, 8 or more nucleotides, 9 or 10 nucleotides</summary>
+Exactly 10: <code>[ACGT]{10}</code>
+8 or more: <code>[ACGT]{8,}</code>
+9 or 10: <code>[ACGT]{9,10}</code>
+</details>
+
+<details>
+  <summary>Match the parts of the lines where there are two or more G chracters together</summary>
+<pre>
+G{2,}
+</pre>
+Note: we've been using numerators around chracter classes, but they can also be used for single chracters
+</details>
+
+
+### Anchors/assertions `$`, `^`, `\b`
+
+Sometimes you want to specify that a match occurs at a certain part of a line. You can use anchors or assertion chracters to specify where in a line a match occurs.
+
+The common anchors are:
+
+```
+^     Start of a line
+$     End of a line
+\b    Word boundary: a word character (\w) next to a word character \W
+```
+
+Test string:
+```
+GAGGAAGAG
+GAGGACGAG
+GAGG-TGAG
+GAG-AGGAG
+GAG---GAG
+```
+
+<details>
+  <summary>Find lines that contain only nucleotides, no gaps</summary>
+<pre>
+^[ACGT]+$
+</pre>
+
+This would work to, although it might find invalid characters in the sequence:
+<pre>
+^[^-]$
+</pre>
+Note the two meanings of `^`. The first one is to anchor the beginning of the line and the second inside the brackets means not in a class.
+
+This would work too, although it would also match invalid characters if they were in the sequence:
+<pre>
+^\w+$
+<pre>
+</details>
