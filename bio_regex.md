@@ -305,6 +305,32 @@ We can optionally simplify this because now we have anchors of the beginning of 
 
 To continue, we need to learn about the special tools regular expressions provide for replacing text.
 
-We've seen how regular expressions can match a variety of text rather than fixed text of a traditional "find." What if we want to replace the text using what was found?
+We've seen how regular expressions can match a variety of text rather than the fixed text of a traditional "find." What if we need to replace the text with a portion of what was found?
 
-If we want to incorporate the found text into the replacement, we can capture all or parts of what was found using parentheses `()`
+Regular expressions allow us to "capture" found text and use it in the replacment. We use parentheses `()` the text we want to save and reuse in the replacemnt.
+
+Let's try it with our fasta header line pattern: `^>locus-\d+_.+$`
+
+If we add parentheses around a portion of the pattern, say the Locus ID section: `^>(locus-\d+)_.+$` we see in regex101.com that the locus portion is in a different color and labeled "Group 1".
+
+<details>
+  <summary>Part 4: Write a pattern to match and separately capture using <code>()</code> the Locus ID and Sample ID</summary>
+<pre>^>(locus-\d+)_(.+)$</pre>
+</details>
+
+#### Using the captured text `\1`, `\2` etc.
+
+To reveal regex101.com's replacement features, choose "Substition" under the "Function" section in the left pane.
+
+In the replacement text box, we can enter plain text and a reference to the captured text.
+
+The first captured text is referenced with `\1`, the second with `\2` etc. You can have up to 9 captured groups, but there are ways to have more if needed (see "Named capturing groups" in the regex101.com reference section).
+
+<details>
+  <summary>Part 5: Using the pattern from Part 4, write the replacement string to have the Sample ID precede the Locus ID with an underscore separating the two. Make sure to add the <pre>></pre> starting the header line</summary>
+Search for:
+<pre>^>(locus-\d+)_(.+)$</pre>
+
+Replace with:
+<pre>>\2_\1</pre>
+</details>
