@@ -76,23 +76,29 @@ GA-
 
 <details>
   <summary>Find codons for Glu (GAA, GAG)</summary>
-<pre>GA[AG]</pre>
+
+`GA[AG]`
 </details>
 
 <details>
   <summary>Find sequences that are NOT Glu</summary>
-<pre>GA[^CT]</pre>
+
+`GA[^CT]`
+
 Note that this finds the <code>-</code> as well as A and G.
 </details>
 
 <details>
   <summary>Find sequences that have any valid base in the third position</summary>
-<pre>GA[ACGT]</pre>
+
+`GA[ACGT]`
 </details>
 
 <details>
   <summary>How would you modify the pattern to find any based in the third position to match lowercase or uppercase bases?</summary>
-<pre>[Gg][Aa][ACGTacgt]</pre>
+
+`[Gg][Aa][ACGTacgt]`
+
 Or, invoke case insensitive in the "RegEx options"
 </details>
 
@@ -122,6 +128,7 @@ A wildcard is like a character class that will match any character. The wildcard
 
 <details>
   <summary>TBD</summary>
+
 <pre></pre>
 </details>
 
@@ -156,7 +163,8 @@ GAG---
 
 <details>
   <summary>Find all lines with at least one nucleotide immediately following GAG</summary>
-<pre>GAG[GACT]+</pre>
+
+`GAG[GACT]+`
 </details>
 
 #### Zero or more [\*]
@@ -174,7 +182,9 @@ GAG---GAG
 
 <details>
   <summary>Find all lines that have nucleotides or any number of gap characters (hyphens) immediately after the GAG</summary>
-<pre>GAG-*[AGCT]+</pre>
+
+`GAG-*[AGCT]+`
+
 Note: This partially matches the third line because GAGG matches, we'll see in the next section
 </details>
 
@@ -184,6 +194,7 @@ This will match either zero or exactly one of the characters.
 
 <details>
   <summary>TBD</summary>
+
 <pre></pre>
 </details>
 
@@ -209,16 +220,17 @@ GAGGAG
 
 <details>
   <summary>Create patterns to match these criteria: exactly 10 nucleotides, 8 or more nucleotides, 9 or 10 nucleotides</summary>
-Exactly 10: <code>[ACGT]{10}</code>
-8 or more: <code>[ACGT]{8,}</code>
-9 or 10: <code>[ACGT]{9,10}</code>
+
+Exactly 10: `[ACGT]{10}`
+8 or more: `[ACGT]{8,}`
+9 or 10: `[ACGT]{9,10}`
 </details>
 
 <details>
   <summary>Match the parts of the lines where there are two or more G characters together</summary>
-<pre>
-G{2,}
-</pre>
+
+`G{2,}`
+
 Note: we've been using numerators around character classes, but they can also be used for single characters
 </details>
 
@@ -245,26 +257,25 @@ GAG---GAG
 
 <details>
   <summary>Find lines that contain only nucleotides, no gaps</summary>
-<pre>
-^[ACGT]+$
-</pre>
+
+`^[ACGT]+$`
 
 This would work to, although it might find invalid characters in the sequence:
-<pre>
-^[^-]$
-</pre>
+
+`^[^-]$`
+
 Note the two meanings of `^`. The first one is to anchor the beginning of the line and the second inside the brackets means not in a class.
 
 This would work too, although it would also match invalid characters if they were in the sequence:
-<pre>
-^\w+$
-<pre>
+
+`^\w+$`
 </details>
 
 ### Matching one pattern or another `|`
 
 <details>
   <summary>TBD</summary>
+
 <pre></pre>
 </details>
 
@@ -286,19 +297,24 @@ In these headers the Locus and Sample IDs are separated by an underscore `_`. Th
 
 <details>
   <summary>Part 1: Write a pattern to match the Locus ID</summary>
-<pre>locus-\d+</pre>
+
+`locus-\d+`
 </details>
 
 <details>
   <summary>Part 2: Write a pattern to match the underscore and Sample ID</summary>
-<pre>_.+$</pre>
+
+`_.+$`
 </details>
 
 <details>
   <summary>Part 3: Combine the patterns in Parts 1 and 2 to match the two IDs, the underscore and the starting `>`</summary>
-<pre>^>locus-\d+_.+$</pre>
+
+`^>locus-\d+_.+$`
+
 We can optionally simplify this because now we have anchors of the beginning of the line, the underscore and the end of the line:
-<pre>^>.+_.+$</pre>
+
+`^>.+_.+$`
 </details>
 
 ### Replacing text: capture groups `()`
@@ -315,7 +331,8 @@ If we add parentheses around a portion of the pattern, say the Locus ID section:
 
 <details>
   <summary>Part 4: Write a pattern to match and separately capture using <code>()</code> the Locus ID and Sample ID</summary>
-<pre>^>(locus-\d+)_(.+)$</pre>
+
+`^>(locus-\d+)_(.+)$`
 </details>
 
 #### Using the captured text `\1`, `\2` etc.
@@ -328,9 +345,8 @@ The first captured text is referenced with `\1`, the second with `\2` etc. You c
 
 <details>
   <summary>Part 5: Using the pattern from Part 4, write the replacement string to have the Sample ID precede the Locus ID with an underscore separating the two. Make sure to add the <code>></code> at the start of the header line</summary>
-Search for:
-<pre>^>(locus-\d+)_(.+)$</pre>
 
-Replace with:
-<pre>>\2_\1</pre>
+Search for: `^>(locus-\d+)_(.+)$`
+
+Replace with: `>\2_\1</pre>`
 </details>
