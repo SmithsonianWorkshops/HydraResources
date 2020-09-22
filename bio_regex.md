@@ -327,7 +327,7 @@ In the replacement text box, we can enter plain text and a reference to the capt
 The first captured text is referenced with `\1`, the second with `\2` etc. You can have up to 9 captured groups, but there are ways to have more if needed (see "Named capturing groups" in the regex101.com reference section).
 
 <details>
-  <summary>Part 5: Using the pattern from Part 4, write the replacement string to have the Sample ID precede the Locus ID with an underscore separating the two. Make sure to add the <pre>></pre> starting the header line</summary>
+  <summary>Part 5: Using the pattern from Part 4, write the replacement string to have the Sample ID precede the Locus ID with an underscore separating the two. Make sure to add the <code>></code> at the start of the header line</summary>
 Search for:
 <pre>^>(locus-\d+)_(.+)$</pre>
 
