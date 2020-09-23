@@ -7,30 +7,38 @@ Initial draft: 2020-09-21
 ### Objectives of this lesson
 
 - ...how regular expressions can be used with your work
-- Learn syntax to build regular expressions
+- ...learn syntax to build regular expressions
 - ...resources to learn more
 
 ### Part one of two
 
-This is one of two part series. In this part we are focusing on the syntax of regular expressions without regard to specific applications.
+This is one of two part series. In this part we are focusing on the syntax of regular expressions without regard to specific applications and implementations of Regular Expression.
 In the next part we will be using regular expressions in two common command line tools: `sed` and `grep`
 
 ## What are Regular expressions?
 
-- Best to think of regular expressions as a language...
-- We will be using the website https://regex101.com to learn regular expressions
+- Regular expressions (or **regex**) is a way to make powerful search patterns. Unlike a standard 'find and replace' that only finds exact matches, you can use regexes to find a range of matches that fit the pattern you create.
+- It's best to think of regular expressions like a programming language, there is defined syntax and operations that we'll be learning today to build your patterns.
+- We will be using the website [regex101.com](https://regex101.com) to learn regular expressions
   - Allows you test regular expressions show what text matches
   - Gives visual indicators of how characters in your pattern are being interpreted
   - Has an integrated reference
-- Regular expressions syntax differs with different implementations. We will be learning Perl style regex (or PCRE: Perl Compatible Regular Expressions.)
-  - Perl regex syntax is a very common implementations
+- Regular expressions syntax varies with different implementations. We will be learning Perl style regex (or PCRE: Perl Compatible Regular Expressions.)
+  - Perl regex syntax is a very common implementation
   - For implementations that are different, Perl regex is similar enough that you can use what you learn from this style in other types of regular expressions.
 
 ## How can you use regular expressions in your work?
 
-- Pulling information out of text files
-- ...editing fasta file headers
-- Is common for tools to have a regex search option this can include text editors and online search engines.
+- Extracting a certain type of annotation from a gff file 
+- Editing fasta file sequence headers
+- Specifying sequence read names in a pipeline like Phyluce
+
+## Applications that use regular expressions
+
+- Command line tools including `grep`, `sed`, `awk`
+- Databases, e.g. `REGEXP` in `sqlite3`
+- GUI applications: Geneious (batch rename)
+- Programming/scripting: e.g. [Python](https://docs.python.org/3/library/re.html), [R (in tidyverse)](https://stringr.tidyverse.org/articles/regular-expressions.html), [BASH](https://tldp.org/LDP/abs/html/x17129.html)
 
 ## Learning Regular expressions
 
