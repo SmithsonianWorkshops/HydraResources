@@ -413,13 +413,14 @@ Replace with: `>\2_\1</pre>`
 
 ## Extracting information from a `GFF` annotation file
 
-A [GFF file](https://github.com/The-Sequence-Ontology/Specifications/blob/master/gff3.md) is used to annotate sequences. It is a tab-delimited text files with defined columns to describe to feature being annotated. Each row of the file is a different annotation. The last column (the 9th) is the `attributes` column contains additional information about the annotation that comes from the annotation pipeline that procuded the gff file.
+A [GFF file](https://github.com/The-Sequence-Ontology/Specifications/blob/master/gff3.md) is used to annotate sequences. It is a tab-delimited text files with defined columns to describe to feature being annotated. Each row of the file is a different annotation. The last column (the 9th) is the `attributes` column, it contains additional information about the annotation that comes from the annotation pipeline that procuded the gff file.
 
-In this portion of a [NCBI gff annotation file](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/300/575/GCF_000300575.1_Agabi_varbisH97_2/GCF_000300575.1_Agabi_varbisH97_2_genomic.gff.gz) for the [genome of the common mushroom *Agaricus bisporus*](https://www.ncbi.nlm.nih.gov/genome/?term=txid936046), the `attributes` column includes the NCBI IDs of the Genes that are annotated. These IDs are given as `Name=[Gene ID];`. Note: not all annotations types have this ID. For example, `Name=XP_006454979.1;`
+In this portion of a [NCBI gff annotation file](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/300/575/GCF_000300575.1_Agabi_varbisH97_2/GCF_000300575.1_Agabi_varbisH97_2_genomic.gff.gz) for the [genome of the common mushroom *Agaricus bisporus*](https://www.ncbi.nlm.nih.gov/genome/?term=txid936046), the `attributes` column includes the NCBI IDs of the Genes that are annotated. These IDs are given as `Name=[Gene ID];`, for example, `Name=XP_006454979.1;` Note: not all annotations types have this ID.
 
-How can we extract the IDs given after `Name=`?
+**How can we extract the IDs given after `Name=`?**
 
 Test string:
+
 From [NCBI gff annotation file](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/300/575/GCF_000300575.1_Agabi_varbisH97_2/GCF_000300575.1_Agabi_varbisH97_2_genomic.gff.gz)
 
 ```
@@ -434,15 +435,20 @@ NW_006267344.1	RefSeq	exon	11528	11651	.	+	.	ID=exon-XM_006453702.1-1;Parent=rna
 ```
 
 <details>
-  <summary>Part 1. Write a pattern to match `Name=` and all text until the next `;`</summary>
+  <summary>Part 1. Write a pattern to match <code>Name=</code> and all text until the next <code>;</code></summary>
 
 `Name=[^;]+`
+
+This following works as well, but is somewhat less optimal because it requires fore knowledge of the characters used in the Gene IDs:
+
+`Name=[\w.]+;`
+
 </details>
 
 ---
 
 <details>
-  <summary>Part 2. Take the pattern from Part 1 and add a capture group `()` around the ID portion after `Name=`</summary>
+  <summary>Part 2. Take the pattern from Part 1 and add a capture group <code>()</code> around the ID portion after <code>Name=</code></summary>
 
 `Name=([^;]+)`
 </details>
@@ -450,7 +456,7 @@ NW_006267344.1	RefSeq	exon	11528	11651	.	+	.	ID=exon-XM_006453702.1-1;Parent=rna
 ---
 
 <details>
-  <summary>Part 3. Add to your pattern to select the remainder of the line (left and right of `Name=`)</summary>
+  <summary>Part 3. Add to your pattern to select the remainder of the line (left and right of <code>Name=</code>)</summary>
 
 `^.*Name=([^;]+).*$`
 </details>
