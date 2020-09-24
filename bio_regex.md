@@ -410,3 +410,73 @@ Search for: `^>(locus-\d+)_(.+)$`
 
 Replace with: `>\2_\1</pre>`
 </details>
+
+## Extracting information from a `GFF` annotation file
+
+A [https://github.com/The-Sequence-Ontology/Specifications/blob/master/gff3.md](GFF file) is used to annotate sequences. It is a tab-delimited text files with defined columns to describe to feature being annotated. Each row of the file is a different annotation. The last column (the 9th) is the `attributes` column contains additional information about the annotation that comes from the annotation pipeline that procuded the gff file.
+
+In this portion of a [https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/300/575/GCF_000300575.1_Agabi_varbisH97_2/GCF_000300575.1_Agabi_varbisH97_2_genomic.gff.gz](NCBI gff annotation file) for the [https://www.ncbi.nlm.nih.gov/genome/?term=txid936046](genome of the common mushroom *Agaricus bisporus*), the `attributes` column includes the NCBI IDs of the Genes that are annotated. These IDs are given as `Name=[Gene ID];`. Note: not all annotations types have this ID. For example, `Name=XP_006454979.1;`
+
+How can we extract the IDs given after `Name=`?
+
+Test string:
+From [https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/300/575/GCF_000300575.1_Agabi_varbisH97_2/GCF_000300575.1_Agabi_varbisH97_2_genomic.gff.gz](NCBI gff annotation file)
+
+```
+NW_006267344.1	RefSeq	CDS	4171	4284	.	-	0	ID=cds-XP_006454979.1;Parent=rna-XM_006454916.1;Dbxref=InterPro:IPR000330,InterPro:IPR001650,InterPro:IPR015194,InterPro:IPR015195,JGIDB:Agabi_varbisH97_2_175561,GeneID:18079446,Genbank:XP_006454979.1;Name=XP_006454979.1;gbkey=CDS;locus_tag=AGABI2DRAFT_175561;product=SNF2 family DNA-dependent ATPase;protein_id=XP_006454979.1
+NW_006267344.1	RefSeq	gene	9630	11399	.	+	.	ID=gene-AGABI2DRAFT_113535;Dbxref=GeneID:18076336;Name=AGABI2DRAFT_113535;end_range=11399,.;gbkey=Gene;gene_biotype=protein_coding;locus_tag=AGABI2DRAFT_113535;partial=true;start_range=.,9630
+NW_006267344.1	RefSeq	mRNA	9630	11399	.	+	.	ID=rna-XM_006453701.1;Parent=gene-AGABI2DRAFT_113535;Dbxref=GeneID:18076336,Genbank:XM_006453701.1;Name=XM_006453701.1;end_range=11399,.;gbkey=mRNA;locus_tag=AGABI2DRAFT_113535;partial=true;product=hypothetical protein;start_range=.,9630;transcript_id=XM_006453701.1
+NW_006267344.1	RefSeq	exon	9630	11399	.	+	.	ID=exon-XM_006453701.1-1;Parent=rna-XM_006453701.1;Dbxref=GeneID:18076336,Genbank:XM_006453701.1;end_range=11399,.;gbkey=mRNA;locus_tag=AGABI2DRAFT_113535;partial=true;product=hypothetical protein;start_range=.,9630;transcript_id=XM_006453701.1
+NW_006267344.1	RefSeq	CDS	9630	11399	.	+	0	ID=cds-XP_006453764.1;Parent=rna-XM_006453701.1;Dbxref=JGIDB:Agabi_varbisH97_2_113535,GeneID:18076336,Genbank:XP_006453764.1;Name=XP_006453764.1;gbkey=CDS;locus_tag=AGABI2DRAFT_113535;product=hypothetical protein;protein_id=XP_006453764.1
+NW_006267344.1	RefSeq	gene	11528	11922	.	+	.	ID=gene-AGABI2DRAFT_62215;Dbxref=GeneID:18085933;Name=AGABI2DRAFT_62215;end_range=11922,.;gbkey=Gene;gene_biotype=protein_coding;locus_tag=AGABI2DRAFT_62215;partial=true;start_range=.,11528
+NW_006267344.1	RefSeq	mRNA	11528	11922	.	+	.	ID=rna-XM_006453702.1;Parent=gene-AGABI2DRAFT_62215;Dbxref=GeneID:18085933,Genbank:XM_006453702.1;Name=XM_006453702.1;end_range=11922,.;gbkey=mRNA;locus_tag=AGABI2DRAFT_62215;partial=true;product=hypothetical protein;start_range=.,11528;transcript_id=XM_006453702.1
+NW_006267344.1	RefSeq	exon	11528	11651	.	+	.	ID=exon-XM_006453702.1-1;Parent=rna-XM_006453702.1;Dbxref=GeneID:18085933,Genbank:XM_006453702.1;gbkey=mRNA;locus_tag=AGABI2DRAFT_62215;partial=true;product=hypothetical protein;start_range=.,11528;transcript_id=XM_006453702.1
+```
+
+<details>
+  <summary>Part 1. Write a pattern to match `Name=` and all text until the next `;`</summary>
+
+`Name=[^;]+`
+</details>
+
+---
+
+<details>
+  <summary>Part 2. Take the pattern from Part 1 and add a capture group `()` around the ID portion after `Name=`</summary>
+
+`Name=([^;]+)`
+</details>
+
+---
+
+<details>
+  <summary>Part 3. Add to your pattern to select the remainder of the line (left and right of `Name=`)</summary>
+
+`^.*Name=([^;]+).*$`
+</details>
+
+---
+
+<details>
+  <summary>Part 4. Using the pattern from Part 3, write the replacement string to replace the line with the captured ID</summary>
+
+Search for: `^.*Name=([^;]+).*$`
+
+Replace with: `\1`
+
+Note: this procedure leaves lines that are missing `Name=` intact. It's possible to create a more sophisticated regular expression that removes those lines, but in practice it is easier to a filtering step with a command line program like `grep` to remove lines that are missing `Name=`.
+</details>
+
+---
+
+*Optional:* The ID we extracted can be incorporated into a URL that opens the NCBI gene database page for the ID. The url is formatted: `https://www.ncbi.nlm.nih.gov/gene/?term=[Gene ID]`
+
+<details>
+  <summary>Part 5. Using the pattern from Part 4, re-write the replacement string so the Gene ID is used to create a NCBI gene database URL</summary>
+
+Search for: `^.*Name=([^;]+).*$`
+
+Replace with: `https://www.ncbi.nlm.nih.gov/gene/?term=\1`
+
+Try out the URLs that were created.
+</details>
