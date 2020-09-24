@@ -29,7 +29,7 @@ In the next part we will be using regular expressions in two common command line
 
 ## How can you use regular expressions in your work?
 
-- Extracting a certain type of annotation from a gff file 
+- Extracting a certain type of annotation from a gff file
 - Editing fasta file sequence headers
 - Specifying sequence read names in a pipeline like Phyluce
 
@@ -43,6 +43,22 @@ In the next part we will be using regular expressions in two common command line
 ## Learning Regular expressions
 
 This is a good time for a tour of https://regex101.com
+
+- Central pane
+  - Regular expression: where you will enter your search pattern
+  - Test string: text to search with the pattern
+- Right pane
+  - Explanation: details on the meaning of your pattern
+  - Match information: Each match (Note: you can export matches from this pane)
+  - Quick reference: Regex reference guide
+- Left pane (click on three lines to reveal)
+  - Flavor: style of regex patterns, we're using PCRE
+  - Function
+    - Match: Only match text, no replacement
+    - Substition: Match and replacement option
+  - Settings (wrench icon)
+    - Max Execution Time: increase for very large strings
+    - Editor: option for display of test string and entry of pattern
 
 ### Character classes `[]`
 
@@ -365,7 +381,7 @@ To continue, we need to learn about the special tools regular expressions provid
 
 We've seen how regular expressions can match a variety of text rather than the fixed text of a traditional "find." What if we need to replace the text with a portion of what was found?
 
-Regular expressions allow us to "capture" found text and use it in the replacment. We use parentheses `()` the text we want to save and reuse in the replacemnt.
+Regular expressions allow us to "capture" found text and use it in the replacment. We use parentheses `()` the text we want to save and reuse in the replacement.
 
 Let's try it with our fasta header line pattern: `^>locus-\d+_.+$`
 
