@@ -39,6 +39,7 @@ In the next part we will be using regular expressions in two common command line
 - Databases, e.g. `REGEXP` in `sqlite3`
 - GUI applications: Geneious (batch rename)
 - Programming/scripting: e.g. [Python](https://docs.python.org/3/library/re.html), [R (in tidyverse)](https://stringr.tidyverse.org/articles/regular-expressions.html), [BASH](https://tldp.org/LDP/abs/html/x17129.html)
+  - Important note about wildcards for file selection on the command line: If you're familiar with using wildcards on the command line to select files (e.g. `ls *.tar.gz`), the format and syntax of these wildcards are not regular expressions, rather it's [globbing](https://en.wikipedia.org/wiki/Glob_(programming)) which has a different format and metacharacter usage. BASH does have support for regex, see [here](https://tldp.org/LDP/abs/html/x17129.html).
 
 ## Learning Regular expressions
 
