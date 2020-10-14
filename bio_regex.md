@@ -26,6 +26,10 @@ If you want to take your regular expression skills further, in the next part (no
   - Perl regex syntax is a very common implementation
   - For implementations that are different, Perl regex is similar enough that you can use what you learn from this style in other types of regular expressions
 
+With Regular Expressions, you can save the day!
+
+![](https://imgs.xkcd.com/comics/regular_expressions.png)
+
 ## How can you use regular expressions in your work?
 
 - Extracting a certain type of annotation from a gff file
