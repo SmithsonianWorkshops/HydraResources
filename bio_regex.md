@@ -28,7 +28,9 @@ If you want to take your regular expression skills further, in the next part (no
 
 With Regular Expressions, you can save the day!
 
-![](https://imgs.xkcd.com/comics/regular_expressions.png)
+![xkcd comic about regex](https://imgs.xkcd.com/comics/regular_expressions.png)
+
+https://xkcd.com/208/
 
 ## How can you use regular expressions in your work?
 
