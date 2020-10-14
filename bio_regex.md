@@ -1,31 +1,30 @@
 # Regular Expressions for Biologists
 
-Initial draft: 2020-09-21
-
 ## About this training
 
 ### Objectives of this lesson
 
-- ...how regular expressions can be used with your work
-- ...learn syntax to build regular expressions
-- ...resources to learn more
+- Describe what regular expressions are
+- Examples of how regular expressions can be used with your work
+- Syntax to build regular expressions
+- Resources to learn more
 
-### Part one of two
+### Today is part one of two
 
-This is one of two part series. In this part we are focusing on the syntax of regular expressions without regard to specific applications and implementations of Regular Expression.
-In the next part we will be using regular expressions in two common command line tools: `sed` and `grep`
+This is one of two part series. In this part we are focusing on the syntax of regular expressions with a few examples of their use in specific applications.
+If you want to take your regular expression skills further, in the next part (not yet developed) we will be using regular expressions in two common command line tools: `sed` and `grep`
 
 ## What are Regular expressions?
 
 - Regular expressions (or **regex**) is a way to make powerful search patterns. Unlike a standard 'find and replace' that only finds exact matches, you can use regexes to find a range of matches that fit the pattern you create.
-- It's best to think of regular expressions like a programming language, there is defined syntax and operations that we'll be learning today to build your patterns.
+- It's best to think of regular expressions like a programming language. We'll be learning the syntax and operations that to build your patterns.
 - We will be using the website [regex101.com](https://regex101.com) to learn regular expressions
-  - Allows you test regular expressions show what text matches
+  - Allows you test regular expressions and shows what text matches
   - Gives visual indicators of how characters in your pattern are being interpreted
   - Has an integrated reference
-- Regular expressions syntax varies with different implementations. We will be learning Perl style regex (or PCRE: Perl Compatible Regular Expressions.)
+- Regular expressions syntax varies with different implementations. We will be learning Perl style regex (or PCRE: Perl Compatible Regular Expressions)
   - Perl regex syntax is a very common implementation
-  - For implementations that are different, Perl regex is similar enough that you can use what you learn from this style in other types of regular expressions.
+  - For implementations that are different, Perl regex is similar enough that you can use what you learn from this style in other types of regular expressions
 
 ## How can you use regular expressions in your work?
 
@@ -34,6 +33,8 @@ In the next part we will be using regular expressions in two common command line
 - Specifying sequence read names in a pipeline like Phyluce
 
 ## Applications that use regular expressions
+
+*Regular expressions are implemented in many applications*
 
 - Command line tools including `grep`, `sed`, `awk`
 - Databases, e.g. `REGEXP` in `sqlite3`
