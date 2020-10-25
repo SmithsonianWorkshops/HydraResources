@@ -436,9 +436,7 @@ NW_006267344.1	RefSeq	exon	11528	11651	.	+	.	ID=exon-XM_006453702.1-1;Parent=rna
 
 `Name=[^;]+`
 
-This following works as well, but is somewhat less optimal because it requires fore knowledge of the characters used in the Gene IDs:
-
-`Name=[\w.]+;`
+(This following works as well, but is somewhat less optimal because it requires fore knowledge of the characters used in the Gene IDs: `Name=[\w.]+;`)
 
 </details>
 
