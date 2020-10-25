@@ -412,7 +412,7 @@ Replace with: `>\2_\1</pre>`
 
 A [GFF file](https://github.com/The-Sequence-Ontology/Specifications/blob/master/gff3.md) is used to annotate sequences. It is a tab-delimited text files with defined columns to describe to feature being annotated. Each row of the file is a different annotation. The last column (the 9th) is the `attributes` column, it contains additional information about the annotation that comes from the annotation pipeline that procuded the gff file.
 
-In this portion of a [NCBI gff annotation file](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/300/575/GCF_000300575.1_Agabi_varbisH97_2/GCF_000300575.1_Agabi_varbisH97_2_genomic.gff.gz) for the [genome of the common mushroom *Agaricus bisporus*](https://www.ncbi.nlm.nih.gov/genome/?term=txid936046), the `attributes` column includes the NCBI IDs of the Genes that are annotated. These IDs are given as `Name=[Gene ID];`, for example, `Name=XP_006454979.1;` Note: not all annotations types have this ID.
+In this portion of a [NCBI gff annotation file](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/300/575/GCF_000300575.1_Agabi_varbisH97_2/GCF_000300575.1_Agabi_varbisH97_2_genomic.gff.gz) for the [genome of the common mushroom *Agaricus bisporus*](https://www.ncbi.nlm.nih.gov/genome/?term=txid936046), listed are the first 15 CDS annotations for the genome. The `attributes` column includes the NCBI IDs of the Genes that are annotated. These IDs are given as `Name=[Gene ID];`, for example, `Name=XP_006454979.1;` 
 
 **How can we extract the IDs given after `Name=`?**
 
@@ -421,14 +421,21 @@ Test string:
 From [NCBI gff annotation file](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/300/575/GCF_000300575.1_Agabi_varbisH97_2/GCF_000300575.1_Agabi_varbisH97_2_genomic.gff.gz)
 
 ```
-NW_006267344.1	RefSeq	CDS	4171	4284	.	-	0	ID=cds-XP_006454979.1;Parent=rna-XM_006454916.1;Dbxref=InterPro:IPR000330,InterPro:IPR001650,InterPro:IPR015194,InterPro:IPR015195,JGIDB:Agabi_varbisH97_2_175561,GeneID:18079446,Genbank:XP_006454979.1;Name=XP_006454979.1;gbkey=CDS;locus_tag=AGABI2DRAFT_175561;product=SNF2 family DNA-dependent ATPase;protein_id=XP_006454979.1
-NW_006267344.1	RefSeq	gene	9630	11399	.	+	.	ID=gene-AGABI2DRAFT_113535;Dbxref=GeneID:18076336;Name=AGABI2DRAFT_113535;end_range=11399,.;gbkey=Gene;gene_biotype=protein_coding;locus_tag=AGABI2DRAFT_113535;partial=true;start_range=.,9630
-NW_006267344.1	RefSeq	mRNA	9630	11399	.	+	.	ID=rna-XM_006453701.1;Parent=gene-AGABI2DRAFT_113535;Dbxref=GeneID:18076336,Genbank:XM_006453701.1;Name=XM_006453701.1;end_range=11399,.;gbkey=mRNA;locus_tag=AGABI2DRAFT_113535;partial=true;product=hypothetical protein;start_range=.,9630;transcript_id=XM_006453701.1
-NW_006267344.1	RefSeq	exon	9630	11399	.	+	.	ID=exon-XM_006453701.1-1;Parent=rna-XM_006453701.1;Dbxref=GeneID:18076336,Genbank:XM_006453701.1;end_range=11399,.;gbkey=mRNA;locus_tag=AGABI2DRAFT_113535;partial=true;product=hypothetical protein;start_range=.,9630;transcript_id=XM_006453701.1
-NW_006267344.1	RefSeq	CDS	9630	11399	.	+	0	ID=cds-XP_006453764.1;Parent=rna-XM_006453701.1;Dbxref=JGIDB:Agabi_varbisH97_2_113535,GeneID:18076336,Genbank:XP_006453764.1;Name=XP_006453764.1;gbkey=CDS;locus_tag=AGABI2DRAFT_113535;product=hypothetical protein;protein_id=XP_006453764.1
-NW_006267344.1	RefSeq	gene	11528	11922	.	+	.	ID=gene-AGABI2DRAFT_62215;Dbxref=GeneID:18085933;Name=AGABI2DRAFT_62215;end_range=11922,.;gbkey=Gene;gene_biotype=protein_coding;locus_tag=AGABI2DRAFT_62215;partial=true;start_range=.,11528
-NW_006267344.1	RefSeq	mRNA	11528	11922	.	+	.	ID=rna-XM_006453702.1;Parent=gene-AGABI2DRAFT_62215;Dbxref=GeneID:18085933,Genbank:XM_006453702.1;Name=XM_006453702.1;end_range=11922,.;gbkey=mRNA;locus_tag=AGABI2DRAFT_62215;partial=true;product=hypothetical protein;start_range=.,11528;transcript_id=XM_006453702.1
-NW_006267344.1	RefSeq	exon	11528	11651	.	+	.	ID=exon-XM_006453702.1-1;Parent=rna-XM_006453702.1;Dbxref=GeneID:18085933,Genbank:XM_006453702.1;gbkey=mRNA;locus_tag=AGABI2DRAFT_62215;partial=true;product=hypothetical protein;start_range=.,11528;transcript_id=XM_006453702.1
+NW_006267344.1	RefSeq	CDS	3326	3553	.	-	0	ID=cds-XP_006453763.1;Parent=rna-XM_006453700.1;Dbxref=JGIDB:Agabi_varbisH97_2_189137,GeneID:18081018,Genbank:XP_006453763.1;Name=XP_006453763.1;gbkey=CDS;locus_tag=AGABI2DRAFT_189137;product=hypothetical protein;protein_id=XP_006453763.1
+NW_006267344.1	RefSeq	CDS	8427	8432	.	-	0	ID=cds-XP_006454979.1;Parent=rna-XM_006454916.1;Dbxref=InterPro:IPR000330,InterPro:IPR001650,InterPro:IPR015194,InterPro:IPR015195,JGIDB:Agabi_varbisH97_2_175561,GeneID:18079446,Genbank:XP_006454979.1;Name=XP_006454979.1;gbkey=CDS;locus_tag=AGABI2DRAFT_175561;product=SNF2 family DNA-dependent ATPase;protein_id=XP_006454979.1
+NW_006267344.1	RefSeq	CDS	8296	8370	.	-	0	ID=cds-XP_006454979.1;Parent=rna-XM_006454916.1;Dbxref=InterPro:IPR000330,InterPro:IPR001650,InterPro:IPR015194,InterPro:IPR015195,JGIDB:Agabi_varbisH97_2_175561,GeneID:18079446,Genbank:XP_006454979.1;Name=XP_006454979.1;gbkey=CDS;locus_tag=AGABI2DRAFT_175561;product=SNF2 family DNA-dependent ATPase;protein_id=XP_006454979.1
+NW_006267344.1	RefSeq	CDS	8160	8246	.	-	0	ID=cds-XP_006454979.1;Parent=rna-XM_006454916.1;Dbxref=InterPro:IPR000330,InterPro:IPR001650,InterPro:IPR015194,InterPro:IPR015195,JGIDB:Agabi_varbisH97_2_175561,GeneID:18079446,Genbank:XP_006454979.1;Name=XP_006454979.1;gbkey=CDS;locus_tag=AGABI2DRAFT_175561;product=SNF2 family DNA-dependent ATPase;protein_id=XP_006454979.1
+NW_006267344.1	RefSeq	CDS	7987	8106	.	-	0	ID=cds-XP_006454979.1;Parent=rna-XM_006454916.1;Dbxref=InterPro:IPR000330,InterPro:IPR001650,InterPro:IPR015194,InterPro:IPR015195,JGIDB:Agabi_varbisH97_2_175561,GeneID:18079446,Genbank:XP_006454979.1;Name=XP_006454979.1;gbkey=CDS;locus_tag=AGABI2DRAFT_175561;product=SNF2 family DNA-dependent ATPase;protein_id=XP_006454979.1
+NW_006267344.1	RefSeq	CDS	7858	7932	.	-	0	ID=cds-XP_006454979.1;Parent=rna-XM_006454916.1;Dbxref=InterPro:IPR000330,InterPro:IPR001650,InterPro:IPR015194,InterPro:IPR015195,JGIDB:Agabi_varbisH97_2_175561,GeneID:18079446,Genbank:XP_006454979.1;Name=XP_006454979.1;gbkey=CDS;locus_tag=AGABI2DRAFT_175561;product=SNF2 family DNA-dependent ATPase;protein_id=XP_006454979.1
+NW_006267344.1	RefSeq	CDS	7732	7808	.	-	0	ID=cds-XP_006454979.1;Parent=rna-XM_006454916.1;Dbxref=InterPro:IPR000330,InterPro:IPR001650,InterPro:IPR015194,InterPro:IPR015195,JGIDB:Agabi_varbisH97_2_175561,GeneID:18079446,Genbank:XP_006454979.1;Name=XP_006454979.1;gbkey=CDS;locus_tag=AGABI2DRAFT_175561;product=SNF2 family DNA-dependent ATPase;protein_id=XP_006454979.1
+NW_006267344.1	RefSeq	CDS	7561	7682	.	-	1	ID=cds-XP_006454979.1;Parent=rna-XM_006454916.1;Dbxref=InterPro:IPR000330,InterPro:IPR001650,InterPro:IPR015194,InterPro:IPR015195,JGIDB:Agabi_varbisH97_2_175561,GeneID:18079446,Genbank:XP_006454979.1;Name=XP_006454979.1;gbkey=CDS;locus_tag=AGABI2DRAFT_175561;product=SNF2 family DNA-dependent ATPase;protein_id=XP_006454979.1
+NW_006267344.1	RefSeq	CDS	7413	7510	.	-	2	ID=cds-XP_006454979.1;Parent=rna-XM_006454916.1;Dbxref=InterPro:IPR000330,InterPro:IPR001650,InterPro:IPR015194,InterPro:IPR015195,JGIDB:Agabi_varbisH97_2_175561,GeneID:18079446,Genbank:XP_006454979.1;Name=XP_006454979.1;gbkey=CDS;locus_tag=AGABI2DRAFT_175561;product=SNF2 family DNA-dependent ATPase;protein_id=XP_006454979.1
+NW_006267344.1	RefSeq	CDS	6748	7363	.	-	0	ID=cds-XP_006454979.1;Parent=rna-XM_006454916.1;Dbxref=InterPro:IPR000330,InterPro:IPR001650,InterPro:IPR015194,InterPro:IPR015195,JGIDB:Agabi_varbisH97_2_175561,GeneID:18079446,Genbank:XP_006454979.1;Name=XP_006454979.1;gbkey=CDS;locus_tag=AGABI2DRAFT_175561;product=SNF2 family DNA-dependent ATPase;protein_id=XP_006454979.1
+NW_006267344.1	RefSeq	CDS	6554	6696	.	-	2	ID=cds-XP_006454979.1;Parent=rna-XM_006454916.1;Dbxref=InterPro:IPR000330,InterPro:IPR001650,InterPro:IPR015194,InterPro:IPR015195,JGIDB:Agabi_varbisH97_2_175561,GeneID:18079446,Genbank:XP_006454979.1;Name=XP_006454979.1;gbkey=CDS;locus_tag=AGABI2DRAFT_175561;product=SNF2 family DNA-dependent ATPase;protein_id=XP_006454979.1
+NW_006267344.1	RefSeq	CDS	6282	6498	.	-	0	ID=cds-XP_006454979.1;Parent=rna-XM_006454916.1;Dbxref=InterPro:IPR000330,InterPro:IPR001650,InterPro:IPR015194,InterPro:IPR015195,JGIDB:Agabi_varbisH97_2_175561,GeneID:18079446,Genbank:XP_006454979.1;Name=XP_006454979.1;gbkey=CDS;locus_tag=AGABI2DRAFT_175561;product=SNF2 family DNA-dependent ATPase;protein_id=XP_006454979.1
+NW_006267344.1	RefSeq	CDS	6065	6233	.	-	2	ID=cds-XP_006454979.1;Parent=rna-XM_006454916.1;Dbxref=InterPro:IPR000330,InterPro:IPR001650,InterPro:IPR015194,InterPro:IPR015195,JGIDB:Agabi_varbisH97_2_175561,GeneID:18079446,Genbank:XP_006454979.1;Name=XP_006454979.1;gbkey=CDS;locus_tag=AGABI2DRAFT_175561;product=SNF2 family DNA-dependent ATPase;protein_id=XP_006454979.1
+NW_006267344.1	RefSeq	CDS	5825	6009	.	-	1	ID=cds-XP_006454979.1;Parent=rna-XM_006454916.1;Dbxref=InterPro:IPR000330,InterPro:IPR001650,InterPro:IPR015194,InterPro:IPR015195,JGIDB:Agabi_varbisH97_2_175561,GeneID:18079446,Genbank:XP_006454979.1;Name=XP_006454979.1;gbkey=CDS;locus_tag=AGABI2DRAFT_175561;product=SNF2 family DNA-dependent ATPase;protein_id=XP_006454979.1
+NW_006267344.1	RefSeq	CDS	5694	5766	.	-	2	ID=cds-XP_006454979.1;Parent=rna-XM_006454916.1;Dbxref=InterPro:IPR000330,InterPro:IPR001650,InterPro:IPR015194,InterPro:IPR015195,JGIDB:Agabi_varbisH97_2_175561,GeneID:18079446,Genbank:XP_006454979.1;Name=XP_006454979.1;gbkey=CDS;locus_tag=AGABI2DRAFT_175561;product=SNF2 family DNA-dependent ATPase;protein_id=XP_006454979.1
 ```
 
 <details>
@@ -459,13 +466,11 @@ NW_006267344.1	RefSeq	exon	11528	11651	.	+	.	ID=exon-XM_006453702.1-1;Parent=rna
 ---
 
 <details>
-  <summary>Part 4. Using the pattern from Part 3, write the replacement string to replace the lines with `Name=` with the captured ID</summary>
+  <summary>Part 4. Using the pattern from Part 3, write the replacement string to replace the lines with the captured ID</summary>
 
 Search for: `^.*Name=([^;]+).*$`
 
 Replace with: `\1`
-
-Note: this procedure leaves lines that are missing `Name=` intact. It's possible to create a more sophisticated regular expression that removes those lines, but in practice it is easier to a filtering step after this with a command line program like `grep` to remove lines that are missing `Name=`.
 </details>
 
 ---
