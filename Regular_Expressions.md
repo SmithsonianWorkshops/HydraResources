@@ -4,27 +4,15 @@
 
 ### Objectives of this lesson
 
-- Describe what regular expressions are
-- Examples of how regular expressions can be used with your work
-- Syntax to build regular expressions
-- Resources to learn more
-
-### Today is part one of two
-
-This is one of two part series. In this part we are focusing on the syntax of regular expressions with a few examples of their use in specific applications.
-If you want to take your regular expression skills further, in the next part (not yet developed) we will be using regular expressions in two common command line tools: `sed` and `grep`
+- Describe what regular expressions are.
+- Examples of how regular expressions can be used with your work.
+- Syntax to build regular expressions.
+- Resources to learn more.
 
 ## What are Regular expressions?
 
 - Regular expressions (or **regex**) is a way to make powerful search patterns. Unlike a standard 'find and replace' that only finds exact matches, you can use regexes to find a range of matches that fit the pattern you create.
 - It's best to think of regular expressions like a programming language. We'll be learning the syntax and operations that to build your patterns.
-- We will be using the website [regex101.com](https://regex101.com) to learn regular expressions
-  - Allows you test regular expressions and shows what text matches
-  - Gives visual indicators of how characters in your pattern are being interpreted
-  - Has an integrated reference
-- Regular expressions syntax varies with different implementations. We will be learning Perl style regex (or PCRE: Perl Compatible Regular Expressions)
-  - Perl regex syntax is a very common implementation
-  - For implementations that are different, Perl regex is similar enough that you can use what you learn from this style in other types of regular expressions
 
 With Regular Expressions, you can save the day!
 
@@ -49,6 +37,14 @@ https://xkcd.com/208/
   - Important note about wildcards for file selection on the command line: If you're familiar with using wildcards on the command line to select files (e.g. `ls *.tar.gz`), the format and syntax of these wildcards are not regular expressions, rather it's [globbing](https://en.wikipedia.org/wiki/Glob_(programming)) which has a different format and metacharacter usage. BASH does have support for regex, see [here](https://tldp.org/LDP/abs/html/x17129.html).
 
 ## Learning Regular expressions
+
+- We will be using the website [regex101.com](https://regex101.com) to learn regular expressions
+  - Allows you test regular expressions and shows what text matches
+  - Gives visual indicators of how characters in your pattern are being interpreted
+  - Has an integrated reference
+- Regular expressions syntax varies with different implementations. We will be learning Perl style regex (or PCRE: Perl Compatible Regular Expressions)
+  - Perl regex syntax is a very common implementation
+  - For implementations that are different, Perl regex is similar enough that you can use what you learn from this style in other types of regular expressions
 
 This is a good time for a tour of https://regex101.com
 
