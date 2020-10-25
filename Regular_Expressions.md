@@ -459,13 +459,13 @@ NW_006267344.1	RefSeq	exon	11528	11651	.	+	.	ID=exon-XM_006453702.1-1;Parent=rna
 ---
 
 <details>
-  <summary>Part 4. Using the pattern from Part 3, write the replacement string to replace the line with the captured ID</summary>
+  <summary>Part 4. Using the pattern from Part 3, write the replacement string to replace the lines with `Name=` with the captured ID</summary>
 
 Search for: `^.*Name=([^;]+).*$`
 
 Replace with: `\1`
 
-Note: this procedure leaves lines that are missing `Name=` intact. It's possible to create a more sophisticated regular expression that removes those lines, but in practice it is easier to a filtering step with a command line program like `grep` to remove lines that are missing `Name=`.
+Note: this procedure leaves lines that are missing `Name=` intact. It's possible to create a more sophisticated regular expression that removes those lines, but in practice it is easier to a filtering step after this with a command line program like `grep` to remove lines that are missing `Name=`.
 </details>
 
 ---
