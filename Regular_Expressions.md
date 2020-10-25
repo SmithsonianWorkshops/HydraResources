@@ -190,6 +190,26 @@ Regular expression's quantification metacharacters allow you to specify the numb
 
 This will match if there is at least one match of the character or character class.
 
+#### Zero or more [\*]
+
+Like the `+` this will match any number of characters but it will also continue testing for a match if none are present.
+
+#### Zero or one match `?`
+
+This will match either zero or exactly one of the characters.
+
+#### A specific range `{}`
+
+You can specify a range of times match characters.
+
+```
+{x}: exactly x repeats
+{x,}: x or more repeats
+{x,y}: between x and y (inclusive) repeats
+```
+
+#### Quantification excercises
+
 Test string:
 ````
 GAGGAA
@@ -206,10 +226,6 @@ GAG---
 </details>
 
 ---
-
-#### Zero or more [\*]
-
-Like the `+` this will match any number of characters but it will also continue testing for a match if none are present.
 
 Test string:
 ````
@@ -229,29 +245,6 @@ Note: This partially matches the third line because GAGG matches, we'll see in t
 </details>
 
 ---
-
-#### Zero or one match `?`
-
-This will match either zero or exactly one of the characters.
-
-<details>
-  <summary>TBD</summary>
-
-<pre></pre>
-</details>
-
----
-
-
-#### A specific range `{}`
-
-You can specify a range of times match characters.
-
-```
-{x}: exactly x repeats
-{x,}: x or more repeats
-{x,y}: between x and y (inclusive) repeats
-```
 
 Test string:
 ```
