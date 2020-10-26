@@ -294,12 +294,14 @@ ID=cds-XP_006453781.1;Parent=rna-XM_006453718.1;Dbxref=InterPro:IPR001365,JGIDB:
 
 `locus_tag=\w+`
 Note: this would work too: `locus_tag=[\w]+`, but the `[]` isn't necessary because \w is a predefined character class.
+
 </details>
 
 <details>
   <summary>`product` is a text description of the gene product. Match `product=` and all alphanumeric characters, underscores and spaces that follow</summary>
 
 `product=[\w ]+`
+
 </details>
 
 <details>
@@ -307,6 +309,16 @@ Note: this would work too: `locus_tag=[\w]+`, but the `[]` isn't necessary becau
 
 `Parent=[\w.-]+`
 (or `Parent=[\w\.\-]+` if you want to make sure `.` `-` are treated as literals rather than their meta-meaning is some portions of regex)
+
+</details>
+
+<details>
+  <summary>You might have noticed that each section of the line is separated by a `;`. You can use the `[^…]` to select all text before the next `;`. Use that method to select `Dbxref=` and all text up to the next `;`</summary>
+
+`Dbxref=[^;]+`
+
+Using this method is a great way to select text!
+
 </details>
 
 
