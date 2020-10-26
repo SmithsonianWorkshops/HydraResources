@@ -93,7 +93,7 @@ You can also use the caret symbol (`^`) to find everything *not* in a range
 [^A-Z]      Any single character that is not a capital letter
 ```
 
-Test string:
+Test string *(copy into Regex101.com)*:
 ````
 GAA
 GAC
@@ -103,7 +103,7 @@ GA-
 ````
 
 <details>
-  <summary>Find codons for Glu (GAA, GAG)</summary>
+  <summary>Find codons for Glu (GAA, GAG in the <a href="https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/wprintgc.cgi?chapter=tgencodes#SG1">standard genetic code</a>)</summary>
 
 `GA[AG]`
 </details>
@@ -168,7 +168,7 @@ You can specify a range of times match characters.
 
 #### Quantification excercises
 
-Test string:
+Test string *paste into Regex101.com*:
 ````
 GAGGAA
 GAGGAC
@@ -185,7 +185,7 @@ GAG---
 
 ---
 
-Test string:
+Test string *paste into Regex101.com*:
 ````
 GAGGAAGAG
 GAGGACGAG
@@ -204,7 +204,7 @@ Note: This partially matches the third line because GAGG matches, we'll see in t
 
 ---
 
-Test string:
+Test string *paste into Regex101.com*:
 ```
 GAGGAAGAGA
 GAGGACGAG
@@ -283,7 +283,7 @@ Some of the common metacharacters that should be escaped: `[](){}\-.*?+|^$`
 #### Quantification with pre-defined character classes
 For these exercises we'll be using the last column of a GFF annotation file which has additional information from the annotation pipeline that does not fit in the columns in the GFF file. These are often structured text that we can pull information out of.
 
-Test string:
+Test string *paste into Regex101.com*:
 ```
 ID=cds-XP_006453763.1;Parent=rna-XM_006453700.1;Dbxref=JGIDB:Agabi_varbisH97_2_189137,GeneID:18081018,Genbank:XP_006453763.1;Name=XP_006453763.1;gbkey=CDS;locus_tag=AGABI2DRAFT_189137;product=hypothetical protein;protein_id=XP_006453763.1
 ID=cds-XP_006454979.1;Parent=rna-XM_006454916.1;Dbxref=InterPro:IPR000330,InterPro:IPR001650,InterPro:IPR015194,InterPro:IPR015195,JGIDB:Agabi_varbisH97_2_175561,GeneID:18079446,Genbank:XP_006454979.1;Name=XP_006454979.1;gbkey=CDS;locus_tag=AGABI2DRAFT_175561;product=SNF2 family DNA-dependent ATPase;protein_id=XP_006454979.1
@@ -318,7 +318,7 @@ $     End of a line
 \b    Word boundary: a word character (\w) next to a word character \W
 ```
 
-Test string:
+Test string *paste into Regex101.com*:
 ```
 GAGGAAGAG
 GAGGACGAG
@@ -359,7 +359,7 @@ This would work too, although it would also match invalid characters if they wer
 
 A common change to make with biological data is altering the headers (sequence names) in a fasta file. The header lines start with a `>` and are followed by lines with the sequence.
 
-Test string:
+Test string *paste into Regex101.com*:
 ```
 >locus-1022_NMNH-2020-06-02
 GAGGAAGAGGAGGATAGAGGAGGT--GAAGAGGAGGAAGAGGTCAGGAAGAGGAGGAAGAG
@@ -443,7 +443,7 @@ In this portion of a [NCBI gff annotation file](https://ftp.ncbi.nlm.nih.gov/gen
 
 **How can we extract the IDs given after `Name=`?**
 
-Test string:
+Test string *paste into Regex101.com*:
 
 From [NCBI gff annotation file](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/300/575/GCF_000300575.1_Agabi_varbisH97_2/GCF_000300575.1_Agabi_varbisH97_2_genomic.gff.gz)
 
