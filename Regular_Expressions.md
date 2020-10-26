@@ -138,48 +138,6 @@ Or, invoke case insensitive in the "RegEx options"
 
 ---
 
-#### Pre-defined character classes `\w`, `\d`, `\s` etc.
-
-There are handy pre-defined character classes that can be helpful in searches:
-
-```
-\w        "word character": expands to [A-Za-z0-9_] (note: \w considers _ a word character here)
-\d        "digit": expands to [0-9]
-\W        NOT \w: [^A-Za-z0-9_]
-\D        NOT \d: [^0-9]
-\s        "whitespace" characters: space, tab, newlines etc.
-\S        NOT whitespace
-```
-
-You can make character classes with pre-defined classes:
-
-```
-[\w$-]  Word characters (letters, numbers, underscores) with the addition of dollar signs and hyphens
-[\d.-]  Digits, decimal points and hyphens
-```
-
-#### Wildcard: match any character `.`
-
-A wildcard is like a character class that will match any character. The wildcard character is `.` and it does not need to be in brackets.
-
-<details>
-  <summary>TBD</summary>
-
-<pre></pre>
-</details>
-
----
-
-#### Match a metacharacter as a literal (escaping) `\`
-
-We've started seeing characters that are treated as special chracters in the regular expression. How would you match one of these characters if they occur in the text your matching?
-
-You use a backslash `\` in your pattern to identify a character as being a literal match even if it's a metacharacter.
-
-So, if you have the string `[See note below]` and you want to match the `[` you would use `\[` in your regular expression. regex101.com is very helpful in identifying where a character is being interpreted as a metacharacter.
-
-Some of the common metacharacters that should be escaped: `[](){}\-.*?+|^$`
-
 ### Quantification (enumeration)
 
 In our look into character classes above, we were matching only a *single* unknown character at a time. What if you want to match several characters to the same class?
@@ -278,6 +236,75 @@ Note: we've been using numerators around character classes, but they can also be
 </details>
 
 ---
+
+### Pre-defined character classes `\w`, `\d`, `\s` etc.
+
+There are handy pre-defined character classes that can be helpful in searches:
+
+```
+\w        "word character": expands to [A-Za-z0-9_] (note: \w considers _ a word character here)
+\d        "digit": expands to [0-9]
+\W        NOT \w: [^A-Za-z0-9_]
+\D        NOT \d: [^0-9]
+\s        "whitespace" characters: space, tab, newlines etc.
+\S        NOT whitespace
+```
+
+You can make character classes with pre-defined classes:
+
+```
+[\w$-]  Word characters (letters, numbers, underscores) with the addition of dollar signs and hyphens
+[\d.-]  Digits, decimal points and hyphens
+```
+
+#### Wildcard: match any character `.`
+
+A wildcard is like a character class that will match any character. The wildcard character is `.` and it does not need to be in brackets.
+
+<details>
+  <summary>TBD</summary>
+
+<pre></pre>
+</details>
+
+---
+
+#### Match a metacharacter as a literal (escaping) `\`
+
+We've started seeing characters that are treated as special chracters in the regular expression. How would you match one of these characters if they occur in the text your matching?
+
+You use a backslash `\` in your pattern to identify a character as being a literal match even if it's a metacharacter.
+
+So, if you have the string `[See note below]` and you want to match the `[` you would use `\[` in your regular expression. regex101.com is very helpful in identifying where a character is being interpreted as a metacharacter.
+
+Some of the common metacharacters that should be escaped: `[](){}\-.*?+|^$`
+
+
+#### Quantification with pre-defined character classes
+For these exercises we'll be using the last column of a GFF annotation file which has additional information from the annotation pipeline that does not fit in the columns in the GFF file. These are often structured text that we can pull information out of.
+
+Test string:
+```
+ID=cds-XP_006453763.1;Parent=rna-XM_006453700.1;Dbxref=JGIDB:Agabi_varbisH97_2_189137,GeneID:18081018,Genbank:XP_006453763.1;Name=XP_006453763.1;gbkey=CDS;locus_tag=AGABI2DRAFT_189137;product=hypothetical protein;protein_id=XP_006453763.1
+ID=cds-XP_006454979.1;Parent=rna-XM_006454916.1;Dbxref=InterPro:IPR000330,InterPro:IPR001650,InterPro:IPR015194,InterPro:IPR015195,JGIDB:Agabi_varbisH97_2_175561,GeneID:18079446,Genbank:XP_006454979.1;Name=XP_006454979.1;gbkey=CDS;locus_tag=AGABI2DRAFT_175561;product=SNF2 family DNA-dependent ATPase;protein_id=XP_006454979.1
+ID=cds-XP_006453764.1;Parent=rna-XM_006453701.1;Dbxref=JGIDB:Agabi_varbisH97_2_113535,GeneID:18076336,Genbank:XP_006453764.1;Name=XP_006453764.1;gbkey=CDS;locus_tag=AGABI2DRAFT_113535;product=hypothetical protein;protein_id=XP_006453764.1
+ID=cds-XP_006453765.1;Parent=rna-XM_006453702.1;Dbxref=JGIDB:Agabi_varbisH97_2_62215,GeneID:18085933,Genbank:XP_006453765.1;Name=XP_006453765.1;Note=similar to hypothetical protein SNOG_03478;gbkey=CDS;locus_tag=AGABI2DRAFT_62215;product=hypothetical protein;protein_id=XP_006453765.1
+ID=cds-XP_006453766.1;Parent=rna-XM_006453703.1;Dbxref=InterPro:IPR006124,InterPro:IPR011258,JGIDB:Agabi_varbisH97_2_189140,GeneID:18081019,Genbank:XP_006453766.1;Name=XP_006453766.1;Note=similar to phosphoglycerate mutase;gbkey=CDS;locus_tag=AGABI2DRAFT_189140;product=hypothetical protein;protein_id=XP_006453766.1
+ID=cds-XP_006453767.1;Parent=rna-XM_006453704.1;Dbxref=JGIDB:Agabi_varbisH97_2_189141,GeneID:18081020,Genbank:XP_006453767.1;Name=XP_006453767.1;Note=similar to predicted protein;gbkey=CDS;locus_tag=AGABI2DRAFT_189141;product=hypothetical protein;protein_id=XP_006453767.1
+ID=cds-XP_006453768.1;Parent=rna-XM_006453705.1;Dbxref=JGIDB:Agabi_varbisH97_2_147179,GeneID:18079156,Genbank:XP_006453768.1;Name=XP_006453768.1;Note=similar to hypothetical protein CC1G_11406 [Coprinopsis cinerea okayama7#130];gbkey=CDS;locus_tag=AGABI2DRAFT_147179;product=hypothetical protein;protein_id=XP_006453768.1
+ID=cds-XP_006453769.1;Parent=rna-XM_006453706.1;Dbxref=InterPro:IPR006094,JGIDB:Agabi_varbisH97_2_181818,GeneID:18080205,Genbank:XP_006453769.1;Name=XP_006453769.1;Note=similar to predicted protein;gbkey=CDS;locus_tag=AGABI2DRAFT_181818;product=hypothetical protein;protein_id=XP_006453769.1
+ID=cds-XP_006453776.1;Parent=rna-XM_006453713.1;Dbxref=JGIDB:Agabi_varbisH97_2_189147,GeneID:18081023,Genbank:XP_006453776.1;Name=XP_006453776.1;gbkey=CDS;locus_tag=AGABI2DRAFT_189147;product=hypothetical protein;protein_id=XP_006453776.1
+ID=cds-XP_006453778.1;Parent=rna-XM_006453715.1;Dbxref=JGIDB:Agabi_varbisH97_2_113550,GeneID:18076339,Genbank:XP_006453778.1;Name=XP_006453778.1;Note=similar to hypothetical protein;gbkey=CDS;locus_tag=AGABI2DRAFT_113550;product=hypothetical protein;protein_id=XP_006453778.1
+ID=cds-XP_006453781.1;Parent=rna-XM_006453718.1;Dbxref=InterPro:IPR001365,JGIDB:Agabi_varbisH97_2_60662,GeneID:18085877,Genbank:XP_006453781.1;Name=XP_006453781.1;Note=similar to AMP deaminase%2C putative;gbkey=CDS;locus_tag=AGABI2DRAFT_60662;product=hypothetical protein;protein_id=XP_006453781.1
+```
+
+<details>
+  <summary>In this GFF, `Product` is a text description of CDS product.</summary>
+
+<pre></pre>
+</details>
+
+
 
 ### Anchors/assertions `$`, `^`, `\b`
 
