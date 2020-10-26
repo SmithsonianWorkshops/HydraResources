@@ -260,34 +260,6 @@ You can make character classes with pre-defined classes:
 [\d.-]  Digits, decimal points and hyphens
 ```
 
-#### Wildcard: match any character `.`
-
-A wildcard is like a character class that will match any *single* character. The wildcard character is `.` and it does not need to be in brackets. It can be used with quantifiers to select all characters, `.*`
-
-Test string *(copy into Regex101.com)*:
-```
-GAGGAAGATG
-GACCACGGAG
-GAGGACGATG
-GAGG-TGATG
-GAG-C-GATG
-```
-
-<details>
-  <summary>Match <i>the portions</i> of the lines that start with C and end with A.</summary>
-
-`C.*A`
-
-Matches:
-line 2: `CCACGGA`
-line 3: `CGA`
-line 5: `C-GA`
-
-Note in line 2, there are multiple ranges that match `C.*A`. Regex quantifiers by default will make the longest match (greedy quanitifer) which can lead to unintended results. See the [regex wiki page](https://en.wikipedia.org/wiki/Regular_expression#Lazy_matching) for a bit more info. 
-</details>
-
----
-
 #### Match a metacharacter as a literal (escaping) `\`
 
 We've started seeing characters that are treated as special chracters in the regular expression. How would you match one of these characters if they occur in the text your matching?
@@ -318,12 +290,53 @@ ID=cds-XP_006453781.1;Parent=rna-XM_006453718.1;Dbxref=InterPro:IPR001365,JGIDB:
 ```
 
 <details>
-  <summary>In this GFF, `Product` is a text description of CDS product.</summary>
+  <summary>`locus_tag` is how NCBI identifies each gene in the genome. Match the text `locus_tag=` and all alphanumeric characters and underscores that follow.</summary>
 
-<pre></pre>
+`locus_tag=\w+`
+Note: this would work too: `locus_tag=[\w]+`, but the `[]` isn't necessary because \w is a predefined character class.
+</details>
+
+<details>
+  <summary>`product` is a text description of the gene product. Match `product=` and all alphanumeric characters, underscores and spaces that follow</summary>
+
+`product=[\w ]+`
+</details>
+
+<details>
+  <summary>`Parent` is an identifier for the an RNA sequence for this annotations. Match `Parent=` and all alphanumeric characters, underscores, hyphens and periods that follow</summary>
+
+`Parent=[\w.-]+`
+(or `Parent=[\w\.\-]+` if you want to make sure `.` `-` are treated as literals rather than their meta-meaning is some portions of regex)
 </details>
 
 
+#### Wildcard: match any character `.`
+
+A wildcard is like a character class that will match any *single* character. The wildcard character is `.` and it does not need to be in brackets. It can be used with quantifiers to select all characters, `.*`
+
+Test string *(copy into Regex101.com)*:
+```
+GAGGAAGATG
+GACCACGGAG
+GAGGACGATG
+GAGG-TGATG
+GAG-C-GATG
+```
+
+<details>
+  <summary>Match <i>the portions</i> of the lines that start with C and end with A, regardless of what's between them.</summary>
+
+`C.*A`
+
+Matches:
+line 2: `CCACGGA`
+line 3: `CGA`
+line 5: `C-GA`
+
+Note in line 2, there are multiple ranges that match `C.*A`. Regex quantifiers by default will make the longest match, this can lead to unexpected results. See the [regex wiki page](https://en.wikipedia.org/wiki/Regular_expression#Lazy_matching) for a bit more info. 
+</details>
+
+---
 
 ### Anchors/assertions `$`, `^`, `\b`
 
@@ -347,29 +360,21 @@ GAG---GAG
 ```
 
 <details>
-  <summary>Find lines that contain only nucleotides, no gaps</summary>
+  <summary>Find entire lines that contain only nucleotides, no gaps</summary>
 
 `^[ACGT]+$`
 
-This would work to, although it might find invalid characters in the sequence:
+Matches line 1 and 2.
+
+The following would work too, although it might find invalid characters in the sequence:
 
 `^[^-]$`
 
 Note the two meanings of `^`. The first one is to anchor the beginning of the line and the second inside the brackets means not in a class.
 
-This would work too, although it would also match invalid characters if they were in the sequence:
+The following would work too, although it would also match invalid characters if they were in the sequence:
 
 `^\w+$`
-</details>
-
----
-
-### Matching one pattern or another `|`
-
-<details>
-  <summary>TBD</summary>
-
-<pre></pre>
 </details>
 
 ---
