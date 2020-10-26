@@ -186,11 +186,11 @@ In our look into character classes above, we were matching only a *single* unkno
 
 Regular expression's quantification metacharacters allow you to specify the number of characters to match.
 
-#### One or more [+]
+#### One or more `+`
 
 This will match if there is at least one match of the character or character class.
 
-#### Zero or more [\*]
+#### Zero or more `*`
 
 Like the `+` this will match any number of characters but it will also continue testing for a match if none are present.
 
