@@ -93,6 +93,8 @@ You can also use the caret symbol (`^`) to find everything *not* in a range
 [^A-Z]      Any single character that is not a capital letter
 ```
 
+#### Character class exercises
+
 Test string *(copy into Regex101.com)*:
 ````
 GAA
@@ -168,7 +170,7 @@ You can specify a range of times match characters.
 
 #### Quantification excercises
 
-Test string *paste into Regex101.com*:
+Test string *(copy into Regex101.com)*:
 ````
 GAGGAA
 GAGGAC
@@ -181,11 +183,13 @@ GAG---
   <summary>Find all lines with one or more nucleotides immediately following GAG</summary>
 
 `GAG[GACT]+`
+
+This matches lines 1-5, but not 6.
 </details>
 
 ---
 
-Test string *paste into Regex101.com*:
+Test string *(copy into Regex101.com)*:
 ````
 GAGGAAGAG
 GAGGACGAG
@@ -195,38 +199,37 @@ GAG---GAG
 ````
 
 <details>
-  <summary>Find all lines that have nucleotides or any number of gap characters (hyphens) immediately after the GAG</summary>
+  <summary>Match <i>the portions</i> of each line starting with GAG, then zero more gaps (`-`) followed by any number nucleotides (that is, gaps can only be after GAG, not elsewhere. This matches all of lines 1, 2, 4 and 5, but only the first four characters of line 4)</summary>
 
 `GAG-*[AGCT]+`
 
-Note: This partially matches the third line because GAGG matches, we'll see in the next section
 </details>
 
 ---
 
-Test string *paste into Regex101.com*:
+Test string *(copy into Regex101.com)*:
 ```
-GAGGAAGAGA
+GAGGGAGAGA
 GAGGACGAG
 GAGGTGAG
-GAAGGAG
+GAAGGGG
 GAGGAG
 ```
 
 <details>
   <summary>Create patterns to match these criteria: exactly 10 nucleotides, 8 or more nucleotides, 9 or 10 nucleotides</summary>
 
-Exactly 10: `[ACGT]{10}`
+Exactly 10 (line 1): `[ACGT]{10}`
 
-8 or more: `[ACGT]{8,}`
+8 or more (lines 1-3): `[ACGT]{8,}`
 
-9 or 10: `[ACGT]{9,10}`
+9 or 10 (lines 1, 2): `[ACGT]{9,10}`
 </details>
 
 ---
 
 <details>
-  <summary>Match the parts of the lines where there are two or more G characters together</summary>
+  <summary>Match <i>the portions</i> of the lines where there are two or more G characters together</summary>
 
 `G{2,}`
 
@@ -253,18 +256,34 @@ There are handy pre-defined character classes that can be helpful in searches:
 You can make character classes with pre-defined classes:
 
 ```
-[\w$-]  Word characters (letters, numbers, underscores) with the addition of dollar signs and hyphens
+[\w$-]  Word characters (letters, numbers, underscores) with the addition of dollar signs and hyphens, note that because the hypen is at the end of the class, it's not considered a range.
 [\d.-]  Digits, decimal points and hyphens
 ```
 
 #### Wildcard: match any character `.`
 
-A wildcard is like a character class that will match any character. The wildcard character is `.` and it does not need to be in brackets.
+A wildcard is like a character class that will match any *single* character. The wildcard character is `.` and it does not need to be in brackets. It can be used with quantifiers to select all characters, `.*`
+
+Test string *(copy into Regex101.com)*:
+```
+GAGGAAGATG
+GACCACGGAG
+GAGGACGATG
+GAGG-TGATG
+GAG-C-GATG
+```
 
 <details>
-  <summary>TBD</summary>
+  <summary>Match <i>the portions</i> of the lines that start with C and end with A.</summary>
 
-<pre></pre>
+`C.*A`
+
+Matches:
+line 2: `CCACGGA`
+line 3: `CGA`
+line 5: `C-GA`
+
+Note in line 2, there are multiple ranges that match `C.*A`. Regex quantifiers by default will make the longest match (greedy quanitifer) which can lead to unintended results. See the [regex wiki page](https://en.wikipedia.org/wiki/Regular_expression#Lazy_matching) for a bit more info. 
 </details>
 
 ---
@@ -283,7 +302,7 @@ Some of the common metacharacters that should be escaped: `[](){}\-.*?+|^$`
 #### Quantification with pre-defined character classes
 For these exercises we'll be using the last column of a GFF annotation file which has additional information from the annotation pipeline that does not fit in the columns in the GFF file. These are often structured text that we can pull information out of.
 
-Test string *paste into Regex101.com*:
+Test string *(copy into Regex101.com)*:
 ```
 ID=cds-XP_006453763.1;Parent=rna-XM_006453700.1;Dbxref=JGIDB:Agabi_varbisH97_2_189137,GeneID:18081018,Genbank:XP_006453763.1;Name=XP_006453763.1;gbkey=CDS;locus_tag=AGABI2DRAFT_189137;product=hypothetical protein;protein_id=XP_006453763.1
 ID=cds-XP_006454979.1;Parent=rna-XM_006454916.1;Dbxref=InterPro:IPR000330,InterPro:IPR001650,InterPro:IPR015194,InterPro:IPR015195,JGIDB:Agabi_varbisH97_2_175561,GeneID:18079446,Genbank:XP_006454979.1;Name=XP_006454979.1;gbkey=CDS;locus_tag=AGABI2DRAFT_175561;product=SNF2 family DNA-dependent ATPase;protein_id=XP_006454979.1
@@ -318,7 +337,7 @@ $     End of a line
 \b    Word boundary: a word character (\w) next to a word character \W
 ```
 
-Test string *paste into Regex101.com*:
+Test string *(copy into Regex101.com)*:
 ```
 GAGGAAGAG
 GAGGACGAG
@@ -359,7 +378,7 @@ This would work too, although it would also match invalid characters if they wer
 
 A common change to make with biological data is altering the headers (sequence names) in a fasta file. The header lines start with a `>` and are followed by lines with the sequence.
 
-Test string *paste into Regex101.com*:
+Test string *(copy into Regex101.com)*:
 ```
 >locus-1022_NMNH-2020-06-02
 GAGGAAGAGGAGGATAGAGGAGGT--GAAGAGGAGGAAGAGGTCAGGAAGAGGAGGAAGAG
@@ -443,7 +462,7 @@ In this portion of a [NCBI gff annotation file](https://ftp.ncbi.nlm.nih.gov/gen
 
 **How can we extract the IDs given after `Name=`?**
 
-Test string *paste into Regex101.com*:
+Test string *(copy into Regex101.com)*:
 
 From [NCBI gff annotation file](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/300/575/GCF_000300575.1_Agabi_varbisH97_2/GCF_000300575.1_Agabi_varbisH97_2_genomic.gff.gz)
 
