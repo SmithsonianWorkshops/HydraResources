@@ -4,14 +4,14 @@
 
 ### Objectives of this lesson
 
-- Describe what regular expressions are.
-- Examples of how regular expressions can be used with your work.
-- Syntax to build regular expressions.
-- Resources to learn more.
+- Learn what are regular expressions.
+- See examples of how regular expressions can be used with your work.
+- Learn the syntax to build regular expressions.
+- See resources to learn more.
 
 ## What are Regular expressions?
 
-- Regular expressions (or **regex**) is a way to make powerful search patterns. Unlike a standard 'find and replace' that only finds exact matches, you can use regexes to find a range of matches that fit the pattern you create.
+- Regular expressions (or **regex** or **regexp**) is a way to make powerful search patterns. Unlike a standard 'find and replace' that only finds exact matches, you can use regexes to find a range of matches that fit the pattern you create.
 - It's best to think of regular expressions like a programming language. We'll be learning the syntax and operations that to build your patterns.
 
 With Regular Expressions, you can save the day!
