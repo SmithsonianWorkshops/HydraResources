@@ -220,7 +220,7 @@ GAG---
 ````
 
 <details>
-  <summary>Find all lines with at least one nucleotide immediately following GAG</summary>
+  <summary>Find all lines with one or more nucleotides immediately following GAG</summary>
 
 `GAG[GACT]+`
 </details>
