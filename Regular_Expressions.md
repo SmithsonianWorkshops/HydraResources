@@ -93,7 +93,7 @@ You can also use the caret symbol (`^`) to find everything *not* in a range
 [^A-Z]      Any single character that is not a capital letter
 ```
 
-#### Character class exercises
+#### Exercises: character classes
 
 Test string *(copy into Regex101.com)*:
 ````
@@ -168,7 +168,7 @@ You can specify a range of times match characters.
 {x,y}: between x and y (inclusive) repeats
 ```
 
-#### Quantification excercises
+#### Excercises: Quantification 
 
 Test string *(copy into Regex101.com)*:
 ````
@@ -199,7 +199,7 @@ GAG---GAG
 ````
 
 <details>
-  <summary>Match <i>the portions</i> of each line starting with GAG, then zero more gaps (`-`) followed by any number nucleotides (that is, gaps can only be after GAG, not elsewhere. This matches all of lines 1, 2, 4 and 5, but only the first four characters of line 4)</summary>
+  <summary>Match <i>the portions</i> of each line starting with GAG, then zero more gaps (<code>-</code>) followed by any number nucleotides (that is, gaps can only be after GAG, not elsewhere. This matches all of lines 1, 2, 4 and 5, but only the first four characters of line 4)</summary>
 
 `GAG-*[AGCT]+`
 
@@ -271,7 +271,7 @@ So, if you have the string `[See note below]` and you want to match the `[` you 
 Some of the common metacharacters that should be escaped: `[](){}\-.*?+|^$`
 
 
-#### Quantification with pre-defined character classes
+#### Exercises: Quantification with pre-defined character classes
 For these exercises we'll be using the last column of a GFF annotation file which has additional information from the annotation pipeline that does not fit in the columns in the GFF file. These are often structured text that we can pull information out of.
 
 Test string *(copy into Regex101.com)*:
@@ -290,30 +290,36 @@ ID=cds-XP_006453781.1;Parent=rna-XM_006453718.1;Dbxref=InterPro:IPR001365,JGIDB:
 ```
 
 <details>
-  <summary>`locus_tag` is how NCBI identifies each gene in the genome. Match the text `locus_tag=` and all alphanumeric characters and underscores that follow.</summary>
+  <summary><code>locus_tag</code> is how NCBI identifies each gene in the genome. Match the text <code>locus_tag=</code> and all alphanumeric characters and underscores that follow.</summary>
 
 `locus_tag=\w+`
 Note: this would work too: `locus_tag=[\w]+`, but the `[]` isn't necessary because \w is a predefined character class.
 
 </details>
 
+---
+
 <details>
-  <summary>`product` is a text description of the gene product. Match `product=` and all alphanumeric characters, underscores and spaces that follow</summary>
+  <summary><code>product</code> is a text description of the gene product. Match <code>product=</code> and all alphanumeric characters, underscores and spaces that follow</summary>
 
 `product=[\w ]+`
 
 </details>
 
+---
+
 <details>
-  <summary>`Parent` is an identifier for the an RNA sequence for this annotations. Match `Parent=` and all alphanumeric characters, underscores, hyphens and periods that follow</summary>
+  <summary><code>Parent</code> is an identifier for the an RNA sequence for this annotations. Match <code>Parent=</code> and all alphanumeric characters, underscores, hyphens and periods that follow</summary>
 
 `Parent=[\w.-]+`
 (or `Parent=[\w\.\-]+` if you want to make sure `.` `-` are treated as literals rather than their meta-meaning is some portions of regex)
 
 </details>
 
+---
+
 <details>
-  <summary>You might have noticed that each section of the line is separated by a `;`. You can use the `[^…]` to select all text before the next `;`. Use that method to select `Dbxref=` and all text up to the next `;`</summary>
+  <summary>You might have noticed that each section of the line is separated by a <code>;</code>. You can use the <code>[^…]</code> to select all text before the next <code>;</code>. Use that method to select <code>Dbxref=</code> and all text up to the next <code>;</code></summary>
 
 `Dbxref=[^;]+`
 
@@ -350,7 +356,7 @@ Note in line 2, there are multiple ranges that match `C.*A`. Regex quantifiers b
 
 ---
 
-### Anchors/assertions `$`, `^`, `\b`
+### Anchors/assertions `^`, `$`, `\b`
 
 Sometimes you want to specify that a match occurs at a certain part of a line. You can use anchors or assertion characters to specify where in a line a match occurs.
 
@@ -424,7 +430,7 @@ In these headers the Locus and Sample IDs are separated by an underscore `_`. Th
 ---
 
 <details>
-  <summary>Part 3: Combine the patterns in Parts 1 and 2 to match the two IDs, the underscore and the starting `>`</summary>
+  <summary>Part 3: Combine the patterns in Parts 1 and 2 to match the two IDs, the underscore and the starting <code>></code></summary>
 
 `^>locus-\d+_.+$`
 
@@ -468,7 +474,7 @@ The first captured text is referenced with `\1`, the second with `\2` etc. You c
 
 Search for: `^>(locus-\d+)_(.+)$`
 
-Replace with: `>\2_\1</pre>`
+Replace with: `>\2_\1`
 </details>
 
 ## Extracting information from a `GFF` annotation file
@@ -498,11 +504,13 @@ NW_006267344.1	RefSeq	CDS	46894	47138	.	-	0	ID=cds-XP_006453781.1;Parent=rna-XM_
 ```
 
 <details>
-  <summary>Part 1. Write a pattern to match <code>Name=</code> and all text until the next <code>;</code></summary>
+  <summary>Part 1. Write a pattern to match <code>Name=</code> and the identifier given (before the next <code>;</code>)</summary>
 
 `Name=[^;]+`
 
-(This following works as well, but is somewhat less optimal because it requires fore knowledge of the characters used in the Gene IDs: `Name=[\w.]+;`)
+or
+
+`Name=[\w.]+;`
 
 </details>
 
@@ -534,7 +542,7 @@ Replace with: `\1`
 
 ---
 
-*Optional:* The ID we extracted can be incorporated into a URL that opens the NCBI gene database page for the ID. The url is formatted: `https://www.ncbi.nlm.nih.gov/gene/?term=[Gene ID]`
+The ID we extracted can be incorporated into a URL that opens the NCBI gene database page for the ID. The url is formatted: `https://www.ncbi.nlm.nih.gov/gene/?term=[Gene ID]`
 
 <details>
   <summary>Part 5. Using the pattern from Part 4, re-write the replacement string so the Gene ID is used to create a NCBI gene database URL</summary>
