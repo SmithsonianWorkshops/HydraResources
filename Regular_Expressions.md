@@ -559,3 +559,9 @@ Try out the URLs that were created.
 - A biological focused tutorial including command line tools: https://open.oregonstate.education/computationalbiology/chapter/patterns-regular-expressions/
 - A recent (late 2020) Python focus regex tutorial: https://amitness.com/regex/
 - Another biological focused tutorial, ths one with a Python focus: https://pythonforbiologists.com/regular-expressions
+- Library Carpentires Regular Expressions lesson: https://librarycarpentry.org/lc-data-intro/
+- Good place to find pre-made regular expressions for specific purposes like finding email addresses: https://www.regular-expressions.info/
+
+Interactive games/quizes:
+- https://regexone.com/
+- https://regexcrossword.com/
