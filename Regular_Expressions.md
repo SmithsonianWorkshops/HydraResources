@@ -273,7 +273,7 @@ Some of the common metacharacters that should be escaped: `[](){}\-.*?+|^$`
 
 
 #### Exercises: Quantification with pre-defined character classes
-For these exercises we'll be using the last column of a GFF annotation file which has additional information from the annotation pipeline that does not fit in the columns in the GFF file. These are often structured text that we can pull information out of.
+For these exercises we'll be using the last column of a [GFF annotation file](https://github.com/The-Sequence-Ontology/Specifications/blob/master/gff3.md). These files list features of the sequence. The files have nine columns, the ninth column has additional information from the annotation pipeline that does not fit in the columns in the GFF file. These are often contain structured text that we can pull information out of. The one below is from a [fungal genome](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/300/575/GCF_000300575.1_Agabi_varbisH97_2/GCF_000300575.1_Agabi_varbisH97_2_genomic) annotated by NCBI's pipeline. 
 
 Test string *(copy into Regex101.com)*:
 ```
