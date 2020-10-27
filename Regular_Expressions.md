@@ -200,7 +200,7 @@ GAG---GAG
 ````
 
 <details>
-  <summary>Match <i>the portions</i> of each line starting with GAG, then zero more gaps (<code>-</code>) followed by any number nucleotides (that is, gaps can only be after GAG, not elsewhere. This matches all of lines 1, 2, 4 and 5, but only the first four characters of line 4)</summary>
+  <summary>Match <i>the portions</i> of each line starting with GAG, then zero more gaps (<code>-</code>) followed by any number nucleotides (that is, gaps can only be after GAG, not elsewhere. This matches all of lines 1, 2, 4 and 5, but only the first four characters of line 3)</summary>
 
 `GAG-*[AGCT]+`
 
