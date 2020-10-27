@@ -116,7 +116,7 @@ GA-
 <details>
   <summary>Find sequences that are NOT Glu</summary>
 
-`GA[^CT]`
+`GA[^AG]`
 
 Note that this finds the <code>-</code> as well as A and G.
 </details>
@@ -132,7 +132,7 @@ Note that this finds the <code>-</code> as well as A and G.
 ---
 
 <details>
-  <summary>How would you modify the pattern to find any based in the third position to match lowercase or uppercase bases?</summary>
+  <summary>How would you modify the pattern to find any base in the third position to match lowercase or uppercase bases?</summary>
 
 `[Gg][Aa][ACGTacgt]`
 
