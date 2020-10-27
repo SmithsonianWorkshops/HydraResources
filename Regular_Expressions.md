@@ -553,3 +553,9 @@ Replace with: `https://www.ncbi.nlm.nih.gov/gene/?term=\1`
 
 Try out the URLs that were created.
 </details>
+
+## Regex Resources
+
+- A biological focused tutorial including command line tools: https://open.oregonstate.education/computationalbiology/chapter/patterns-regular-expressions/
+- A recent (late 2020) Python focus regex tutorial: https://amitness.com/regex/
+- Another biological focused tutorial, ths one with a Python focus: https://pythonforbiologists.com/regular-expressions
