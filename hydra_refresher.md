@@ -34,7 +34,7 @@ Now that we are successfully logged in, you will see a little blurb about recent
 You will also see a prompt that looks like this:
 
 ```
-[{user}@login-30-1 ~]$ _
+[{user}@hydra-login01 ~]$ _
 ```
 
 By default, you are placed in your "home" directory when you first log in. You can see where you are at any point with the `pwd` command, which stands for "present working directory". Try entering it now.
@@ -116,7 +116,7 @@ System-wide software installations on Hydra are packaged in the form of *modules
 
 Modules are a way to set your system paths and environmental variables for use of a particular program or pipeline.
 
-| :squirrel: If you would like to install your own software on Hydra, we recommend using Conda. Check out the Conda tutorial in this repo at [conda.md](conda.md). |
+| If you would like to install your own software on Hydra, we recommend using Conda. Check out the [Conda tutorial](https://confluence.si.edu/display/HPC/Conda+tutorial) on the Hydra wiki. |
 | --- |
 
 You can view available modules with the command:
