@@ -28,11 +28,11 @@ The [telework.si.edu](https://telework.si.edu) is available from inside the Smit
 
 After logging in, expand the "IT Tools" section choose "Hydra".
 
-![Hydra icon on telework site](images/telework-hydra-icon.png)
+<img src="images/telework-hydra-icon.png" width=300px alt="Hydra icon on telework site">
 
 Click on one of the "SSH terminal" links to start the web terminal connection to one of the login nodes.
 
-![web based terminal options for hydra](images/web-terminal.png)
+<img src="images/web-terminal.png" width=400px alt="web based terminal options for hydra">
 
 At the `login:` prompt, enter your Hydra username and at the `password:` prompt, enter your Hydra password.
 
@@ -48,7 +48,7 @@ In the command prompt window start the hydra connection with: `ssh {user}@hydra-
 
 If you are on a Mac, open the Terminal program which can be found in the Utilities folder inside the Applications folder (or type "terminal" in the popup Spotlight search).
 
-![Mac terminal.app icon](images/terminal.png)
+<img src="images/terminal.png" width=100px alt="Mac terminal.app icon">
 
 Login with your Hydra username and password:
 ```
