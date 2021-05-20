@@ -14,13 +14,13 @@ The way that you connect to Hydra and issue commands is through a command line t
 ### Usernames
 Your Hydra username is typically the same as your SI username (the portion of your email address before `@si.edu`).
 
-| When you see `{user}` in this document, replace that with your Hydra username!|
+| When you see `{user}` in this tutorial, replace that with your Hydra username!|
 |---|
 
 ### Password
 Your Hydra password is independent of your Smithsonian network password.
 
-TODO: To reset it ...
+*See the Password Reset section below if you need to reset your password.*
 
 ### telework.si.edu
 
@@ -36,9 +36,9 @@ Click on one of the "SSH terminal" links to start the web terminal connection to
 
 At the `login:` prompt, enter your Hydra username and at the `password:` prompt, enter your Hydra password.
 
-### PC
+### Windows
 
-For PC users, we recommend using the ssh client that is built in to the Command prompt of recent Windows 10 versions. (The free program, [PuTTY](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html), is an alternative option).
+For Windows users, we recommend using the ssh client that is built in to the Command prompt of recent Windows 10 versions. (The free program, [PuTTY](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html), is an alternative option).
 
 Open the command prompt from the Start menu (type "command" or "cmd" in the search bar).
 
@@ -54,6 +54,26 @@ Login with your Hydra username and password:
 ```
 $ ssh {user}@hydra-login01.si.edu
 ```
+
+### Resetting your password
+
+Hydra has a self-service password reset system if your password expires or is forgotten.
+
+There is a link to this page on the page that lists Hydra's web-based tools.
+- Telework: go to the Hydra option in "IT Tools" on the Telework site and choose "Password Self Help"
+- On-site/VPN: go to https://hydra-adm01.si.edu/
+
+There are two pages in the Self Help system. The initial one is to change your password (password changes are required every 180 days).
+
+To create a new password choose "Request an email with a password reset link"
+
+<img src="images/reset-link.png" alt="Password reset link" width=350px>
+
+Enter your Hydra **user name** (not email) in the "Login" box and then press Send
+
+<img src="images/reset-user-name.png" alt="Password reset link" width=200px>
+
+A reset link will be emailed to your institutional email account.
 
 ## Creating a project directory
 
@@ -143,7 +163,7 @@ System-wide software installations on Hydra are packaged in the form of *modules
 
 Modules are a way to set your system paths and environmental variables for use of a particular program or pipeline.
 
-| If you would like to install your own software on Hydra, you can compile code from source or use a system like Conda. Check out the [Conda tutorial](https://confluence.si.edu/display/HPC/Conda+tutorial) on the Hydra wiki for more info on Hydra. |
+| If you would like to install your own software on Hydra, you can compile code from source or use a management system like Conda. Check out the [Conda tutorial](https://confluence.si.edu/display/HPC/Conda+tutorial) on the Hydra wiki for more info. |
 | --- |
 
 You can view available modules with the command:
@@ -210,23 +230,23 @@ We're going to create an IQ-TREE job file to submit to be run on one of the comp
 First of all, let's copy a sample input file into our `data/raw` directory. We will use the `cp` command, which takes in 2 *arguments*: the file you want to copy, and then the new location.
 
 ```
-$ cp /data/genomics/workshops/intro_hydra/Exon_50per_taxa.phy data/raw/
+$ cp /data/genomics/workshops/intro_hydra/exon_50per_taxa.phy data/raw/
 ```
 
-*Best practice: use tab completion to automatically extend a directory or file name without manually typing the whole name, this also avoids typos!*
+*Best practice: use tab completion to automatically extend a directory or file name without manually typing the whole name, this also avoids typos.*
 
 This [sequence alignment](https://doi.org/10.17632/ty5h3y9rwx.1) is from [Wood et al.’s 2018 spider UCE paper](https://doi.org/10.1016/j.ympev.2018.06.038).
 
-TODO: add `wget` option
-
 Now that the input file is in place, we'll need to generate a job submission file.
 
-We will be using the Hydra QSub Generation Utility to create this file. Go to [https://hydra-adm01.si.edu/tools/QSubGen/](https://hydra-adm01.si.edu/tools/QSubGen/) and fill in the following values:
+We will be using the Hydra QSub Generation Utility to create this file.
 
-TODO: edit link for telework folks
+There is a link to this page on the page that lists Hydra's web-based tools.
+- Telework: go to the Hydra option in "IT Tools" on the Telework site and choose "Password Self Help"
+- On-site/VPN: go to https://hydra-adm01.si.edu/
 
 * *CPU time*: short
-* *Memory*: 8 GB
+* *Memory*: 4 GB
 * *Type of PE*: multi-thread
 * *Number of CPUs*: 2
 * *Select the job's shell*: sh
@@ -234,35 +254,43 @@ TODO: edit link for telework folks
 * *Job specific commands*:
 
 ```
-iqtree -s ../data/raw/Exon_50per_taxa.phy \
+iqtree -s ../data/raw/exon_50per_taxa.phy \
        -m GTR+F+R4 \
        -nt $NSLOTS \
-       -pre ../data/results/Exon_50per_taxa.phy
+       -pre ../data/results/exon_50per_taxa
 ```
 
 * *Job Name*: iqtree
-* *Log File Name*: ../logs/iqtree.log
+* *Log File Name*: iqtree.log
 * *Err File Name*: [blank]
 * *Change to CWD*: Y
 * *Join output & error files*: Y
 * *Send email notifications*: Y
 * *Email*: [your email]
 
-This will generate the contents of your "job file" at the bottom, but now we need to get this into a file on Hydra. Change directories into the "/jobs" directory.
+This will generate the contents of your "job file" at the bottom. Click on the "Check if OK" button for any errors and then "Save it" to save to your computer.
+
+Now we need to get this into a file on Hydra. We'll use the utility ffsend hosted on the site https://send.vis.ee which uploads your files to a cloud service and returns a URL you can download the file from on Hydra.
+
+Open the https://send.vis.ee website and upload your file.
+Copy the link with the "Copy link" button.
+
+Change directories into the "jobs" directory.
+
+To download we need to first load the ffsend module and then download the file by pasting `ffdownload` and the copied url.
+
+Note for users of the telework interface on Windows: to paste the URL you have to right click on the Hydra web page to get a pop-up menu. Choose "Paste from browser" and the use control-v to paste the ffsend url into the pop-up window at the top of the page and then press OK.
 
 ```
-$ cd jobs
+$ module load tools/ffsend
+$ ffdownload https://send.vis.ee/download/id/#id
 ```
 
-And now we'll open up the `nano` text editor to edit text. You can use the nano command to create a new file by entering a filename as an argument.
+Confirm the file is as expected by showing its contents with the `cat` command
 
 ```
-$ nano iqtree.job
+$ cat iqtree.job
 ```
-
-This will put you into a text editor of a blank document. You can copy and paste the gray contents from the QSub generator webpage directly into here. Once you have pasted in the commands, press `Ctrl-X` to exit, enter `Y` to save changes, and then `↵` to save to "iqtree.job".
-
-TODO: add info about pasting via telework
 
 You're finally ready to submit your job to the compute nodes, using the `qsub` command. ("q", short for "queue" and "sub" for "submit")
 
@@ -282,31 +310,42 @@ $ qstat
 
 If nothing appears here, then your job is finished, but you can't tell yet if it was successful or failed.
 
-**Hint: if your job dissapears from the `qstat` list in a few seconds it likely means it failed.**
+**Hint: if your job disappears from the `qstat` list in a few seconds it likely means it failed.**
 
- When `qstat` no longer shows your job, you can now `cd` into your `data/results` directory to see if iqtree produced output files.
+ When `qstat` no longer shows your job, you can now `cd` into your `../data/results` directory to see if iqtree produced output files.
 
-**If your job finishes without producing output files (or anything else unexpected occurs), your first instinct should be to check the log file.**
+**If your job finishes without producing the expected output files, your first instinct should be to check the log file.**
 
-To check the log file, `cd` to the `log/` directory and read the entire contents with the `cat` command.
+TODO: I don't have the log file going into log
 
-```
-$ cat iqtree.log
-```
-
-TODO: include qacct? it's a bit of a mess now
-
-Note the job id that is listed in here, and you can now use it to look into the amount of resources used during your run. This is useful for troubleshooting when memory limits are hit.
+To check the log file, `cd` to the `log/` directory and read the entire contents with the `more` command.
 
 ```
-$ qacct -j {job ID}
+$ more iqtree.log
 ```
 
-*Pay specific attention to the maxvmem line of the qacct output. This shows the maximum amount of virtual memory that your job used. If this is significantly less than the amount you requested, make sure to adjust in future jobs.*
+*Use the space bar to page through the file.*
+
+Note the job id that is listed in here on one of the first lines
+
+```
++ Thu May 20 13:38:30 EDT 2021 job iqtree started in sThC.q with jobID=21884560
+```
+
+You can now use the jobID to look at resources used during your run. This is useful for troubleshooting when memory limits are hit. We'll use `qacct+` a Hydra specific wrapper to the standard `qacct` program.
+
+```
+$ module load tools/local
+$ qacct+ -j {job ID}
+```
+
+*Pay specific attention to the maxvmem line of the output. This shows the maximum amount of virtual memory that your job used. If this is significantly less than the amount you requested, make sure to adjust in future jobs.*
 
 ## Transferring files
 
-TODO: redo to include telework instructions
+The best way to transfer files depends on your connection to Hydra.
+
+TODO: work on this :)
 
 If you haven't already, go ahead and install a file transfer client. We recommend FileZilla, which you can download from [https://filezilla-project.org/download.php?show_all=1](https://filezilla-project.org/download.php?show_all=1). DO NOT USE THE SKETCHY INSTALLER AT [https://filezilla-project.org/download.php?type=client](https://filezilla-project.org/download.php?type=client), which comes with "bundled offers".
 
