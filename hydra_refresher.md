@@ -1,6 +1,7 @@
 # Running jobs on HPC scheduler
 
 Objectives:
+* Learn how to connect to Hydra remotely and from the Smithsonian network.
 * Learn some basic Unix commands for navigating the filesytem in Hydra.
 * Learn best practices for organizing your project directories.
 * Learn how to submit a job to the HPC scheduler.
@@ -8,23 +9,50 @@ Objectives:
 
 ## Logging In
 
-You will need a terminal program in order to connect to, and interact with Hydra. Also, ensure that you are connected to the "si-staff" WiFi network.
+The way that you connect to Hydra and issue commands is through a command line terminal program.
+
+### Usernames
+Your Hydra username is typically the same as your SI username (the portion of your email address before `@si.edu`).
+
+| When you see `{user}` in this document, replace that with your Hydra username!|
+|---|
+
+### Password
+Your Hydra password is independent of your Smithsonian network password.
+
+TODO: To reset it ...
+
+### telework.si.edu
+
+The [telework.si.edu](https://telework.si.edu) is available from inside the Smithsonian network as well as remotely, There is a web-based terminal program to access Hydra.
+
+After logging in, expand the "IT Tools" section choose "Hydra".
+
+![Hydra icon on telework site](images/telework-hydra-icon.png)
+
+Click on one of the "SSH terminal" links to start the web terminal connection to one of the login nodes.
+
+![web based terminal options for hydra](images/web-terminal.png)
+
+At the `login:` prompt, enter your Hydra username and at the `password:` prompt, enter your Hydra password.
 
 ### PC
 
-For PC users, we recommend installing PuTTY, which you can download from [https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html). Choose the 64-bit MSI installer.
+For PC users, we recommend using the ssh client that is built in to the Command prompt of recent Windows 10 versions. (The free program, [PuTTY](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html), is an alternative option).
 
-When you have PuTTY installed, open it up and enter `{user}@hydra-login01.si.edu` in "Host Name (or IP address)" and 22 for Port. Click the "Open" button to connect, and you will be prompted for your Hydra password on another window.
+Open the command prompt from the Start menu (type "command" or "cmd" in the search bar).
+
+In the command prompt window start the hydra connection with: `ssh {user}@hydra-login01.si.edu`. If you get an alert about the authenticity of the host, type `yes`. Enter your Hydra password at the `Password:` prompt.
 
 ### Mac
 
-If you are on a Mac, open a Terminal window.
+If you are on a Mac, open the Terminal program which can be found in the Utilities folder inside the Applications folder (or type "terminal" in the popup Spotlight search).
 
-Enter the following command.
+![Mac terminal.app icon](images/terminal.png)
 
+Login with your Hydra username and password:
 ```
 $ ssh {user}@hydra-login01.si.edu
-Password:
 ```
 
 ## Creating a project directory
@@ -37,11 +65,14 @@ You will also see a prompt that looks like this:
 [{user}@hydra-login01 ~]$ _
 ```
 
-By default, you are placed in your "home" directory when you first log in. You can see where you are at any point with the `pwd` command, which stands for "present working directory". Try entering it now.
+By default, you are placed in your "home" directory when you first log in. You can see where you are at any point with the `pwd` command, which stands for "print working directory". Try entering it now.
 
 ```
 $ pwd
+/home/{user}
 ```
+|Don't enter the `$` in these examples, that is showing the command prompt|
+|---|
 
 Another useful command for getting a feeling for the file system is `ls`, which is short for "list". It will list the files in your current working directory.
 
@@ -49,19 +80,21 @@ Another useful command for getting a feeling for the file system is `ls`, which 
 $ ls
 ```
 
-Most commands Unix commands let you add extra *parameters* that give you more control over what you want the command to do. Let's enter the same `ls` command again, and add the `-lh`, which stand for "long listing" and "human-readable".
+Most commands Unix commands let you add extra *parameters* that give you more control over what you want the command to do. Let's enter the same `ls` command again, and add the `-l`, which stands for "long listing" that shows more information about the files.
 
 ```
-$ ls -lh
+$ ls -l
 ```
 
-You can see a full listing of the options for `ls` in its help screen. All Linux command have a screen like this, which is slightly faster than Google-ing.
+You can see the surprisingly large list of `ls` options in its manual page in the built-in help system `man`. Man pages are extensive and for a beginner be less helpful than Google-ing for the options you want.
 
 ```
-$ ls --help
+$ man ls
 ```
 
-Your "/home" directory has a relatively small size limit, so you should only use it for basic configuration files, scripts and job files. Your "/scratch" directory is where you should run your jobs from.
+**Use the arrow keys or space bar to scroll through the man page and enter `q` when you're done**
+
+Your `/home` directory has a relatively small size limit, so you don't store data here. Your `/scratch` directory is where you should run your jobs from.
 
 Let's move to the "/scratch" directory with the `cd` command, which stands for "change directory". Feel free to use the `pwd` and `ls` commands again to see what has changed.
 
@@ -81,25 +114,18 @@ And now enter the new project directory by using the `cd` command again.
 $ cd hydra_workshop
 ```
 
-Now that we're in our project directory, it's also best practice to create an organizational structure so that we can come back in a few weeks and remember what we did. We recommend the following structure, but it will change based on your needs.
+Now that we're in our project directory, it's also best practice to create an organizational structure so that we can come back in a few weeks and remember what we did. This structure is a good start, but feel free change based on your needs as you gain experience.
+
+We're going to create multiple directories in one command by listing them all. The `-p` option for `mkdir` is really useful, it creates the parent directory if it doesn't already exist. This automnatically create the `data` directory when we say we want `data/raw` and `data/results` created.
 
 ```
-$ mkdir jobs
-```
-
-```
-$ mkdir logs
-```
-
-```
-$ mkdir -p data/raw
-$ mkdir -p data/results
+$ mkdir -p jobs logs data/raw data/results
 ```
 
 Now that our scaffold is built, you can visualize it with the `tree` command.
 
 ```
-$ tree .
+$ tree
 .
 ├── data
 │   ├── raw
@@ -110,13 +136,14 @@ $ tree .
 5 directories, 0 files
 ```
 
+
 ## Modules
 
 System-wide software installations on Hydra are packaged in the form of *modules*.
 
 Modules are a way to set your system paths and environmental variables for use of a particular program or pipeline.
 
-| If you would like to install your own software on Hydra, we recommend using Conda. Check out the [Conda tutorial](https://confluence.si.edu/display/HPC/Conda+tutorial) on the Hydra wiki. |
+| If you would like to install your own software on Hydra, you can compile code from source or use a system like Conda. Check out the [Conda tutorial](https://confluence.si.edu/display/HPC/Conda+tutorial) on the Hydra wiki for more info on Hydra. |
 | --- |
 
 You can view available modules with the command:
@@ -127,14 +154,7 @@ $ module avail
 
 This will output all modules installed on Hydra.
 
-There are additional module commands to find out more about a particular module. Let's use the bioinformatics program *IQ-TREE* to test these out.
-
-```
-$ module whatis bioinformatics/iqtree
-bioinformatics/iqtree: System paths to run IQTREE 1.6.12
-```
-
-You can also see module-specific help for any module with the `module help` command. These are written as part of the Hydra installation process, and should not be mistaken for the official documentation for the software.
+You can see module-specific help for any module with the `module help` command. These are written as part of the Hydra installation process, and should not be mistaken for the official documentation for the software.
 
 ```
 $ module help bioinformatics/iqtree
@@ -180,36 +200,48 @@ GENERAL OPTIONS:
 ...
 ```
 
+|*In this exercise we loaded a module on the login node, but to run an analysis, we need to submit a job to the cluster*|
+|---|
+
 ## Submitting a job
 
-We will now be creating and submitting an IQ-TREE job to the compute cluster.
+We're going to create an IQ-TREE job file to submit to be run on one of the compute nodes.
 
-First of all, let's copy a sample input .phy file into our `data/raw` directory. We will use the `cp` command, which takes in 2 *arguments*: the file you want to copy, and then the new location.
+First of all, let's copy a sample input file into our `data/raw` directory. We will use the `cp` command, which takes in 2 *arguments*: the file you want to copy, and then the new location.
 
 ```
-$ cp /data/genomics/data/primates.dna.phy data/raw
+$ cp /data/genomics/workshops/intro_hydra/Exon_50per_taxa.phy data/raw/
 ```
+
+*Best practice: use tab completion to automatically extend a directory or file name without manually typing the whole name, this also avoids typos!*
+
+This [sequence alignment](https://doi.org/10.17632/ty5h3y9rwx.1) is from [Wood et al.’s 2018 spider UCE paper](https://doi.org/10.1016/j.ympev.2018.06.038).
+
+TODO: add `wget` option
 
 Now that the input file is in place, we'll need to generate a job submission file.
 
 We will be using the Hydra QSub Generation Utility to create this file. Go to [https://hydra-adm01.si.edu/tools/QSubGen/](https://hydra-adm01.si.edu/tools/QSubGen/) and fill in the following values:
 
+TODO: edit link for telework folks
+
 * *CPU time*: short
-* *Memory*: 1 GB
+* *Memory*: 8 GB
 * *Type of PE*: multi-thread
-* *Number of CPUs*: 4
+* *Number of CPUs*: 2
 * *Select the job's shell*: sh
 * *Select which modules to add*: bioinformatics/iqtree
 * *Job specific commands*:
 
 ```
-iqtree -s ../data/raw/primates.dna.phy \
+iqtree -s ../data/raw/Exon_50per_taxa.phy \
+       -m GTR+F+R4 \
        -nt $NSLOTS \
-       -pre ../data/results/primates.dna
+       -pre ../data/results/Exon_50per_taxa.phy
 ```
 
-* *Job Name*: iqtree-{user}
-* *Log File Name*: ../logs/iqtree
+* *Job Name*: iqtree
+* *Log File Name*: ../logs/iqtree.log
 * *Err File Name*: [blank]
 * *Change to CWD*: Y
 * *Join output & error files*: Y
@@ -230,7 +262,9 @@ $ nano iqtree.job
 
 This will put you into a text editor of a blank document. You can copy and paste the gray contents from the QSub generator webpage directly into here. Once you have pasted in the commands, press `Ctrl-X` to exit, enter `Y` to save changes, and then `↵` to save to "iqtree.job".
 
-You're finally ready to submit your job to the compute nodes, using the `qsub` command.
+TODO: add info about pasting via telework
+
+You're finally ready to submit your job to the compute nodes, using the `qsub` command. ("q", short for "queue" and "sub" for "submit")
 
 ```
 $ qsub iqtree.job
@@ -238,21 +272,29 @@ $ qsub iqtree.job
 
 ## Monitoring your job
 
-If everything worked correctly, your job should now be running on the compute nodes. You can use `qstat` to check the status of your jobs. If nothing appears here, then your job is already finished.
+This IQ-TREE analysis will take a few minutes to complete.
+
+You can use `qstat` ("stat" for "status") to check on your cluster jobs.
 
 ```
 $ qstat
 ```
 
-When `qstat` shows that your job is finished running, you can now `cd` into your `data/results` directory to see if iqtree produced output files.
+If nothing appears here, then your job is finished, but you can't tell yet if it was successful or failed.
+
+**Hint: if your job dissapears from the `qstat` list in a few seconds it likely means it failed.**
+
+ When `qstat` no longer shows your job, you can now `cd` into your `data/results` directory to see if iqtree produced output files.
 
 **If your job finishes without producing output files (or anything else unexpected occurs), your first instinct should be to check the log file.**
 
-To check the log file, `cd` to the `/log` directory and read the entire contents with the `cat` command.
+To check the log file, `cd` to the `log/` directory and read the entire contents with the `cat` command.
 
 ```
 $ cat iqtree.log
 ```
+
+TODO: include qacct? it's a bit of a mess now
 
 Note the job id that is listed in here, and you can now use it to look into the amount of resources used during your run. This is useful for troubleshooting when memory limits are hit.
 
@@ -264,6 +306,8 @@ $ qacct -j {job ID}
 
 ## Transferring files
 
+TODO: redo to include telework instructions
+
 If you haven't already, go ahead and install a file transfer client. We recommend FileZilla, which you can download from [https://filezilla-project.org/download.php?show_all=1](https://filezilla-project.org/download.php?show_all=1). DO NOT USE THE SKETCHY INSTALLER AT [https://filezilla-project.org/download.php?type=client](https://filezilla-project.org/download.php?type=client), which comes with "bundled offers".
 
 In the Quickconnect toolbar at the top of the window enter:
@@ -271,7 +315,7 @@ In the Quickconnect toolbar at the top of the window enter:
 * Host: hydra-login01.si.edu or hydra-login02.si.edu
 * Username: your Hydra username
 * Password: your Hydra password
-* Port: 22 
+* Port: 22
 
 Press the "Quickconnect" button to start the connection.
 
