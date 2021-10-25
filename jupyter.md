@@ -25,7 +25,7 @@ module load ~/modulefiles/miniconda
 conda activate jupyter
 ```
 
-*If you have access to the GPU nodes, you will also need to run* `module load cuda10.0` *to load the CUDA libraries. You can test that it worked with the command* `nvidia-smi`.
+*If you have access to the GPU nodes, you will also need to run* `module load cuda10.2` *to load the CUDA libraries. You can test that it worked with the command* `nvidia-smi`.
 
 Now run the following command to launch a jupyter notebook. It will run it from the directory you are in, so make sure you are "above" the directory where you want your notebooks to live. The interactive queue puts you into your `/home` directory by default.
 
