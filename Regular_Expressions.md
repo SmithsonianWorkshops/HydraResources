@@ -32,8 +32,8 @@ https://xkcd.com/208/
 
 - Command line tools including `grep`, `sed`, `awk`
 - Databases, e.g. `REGEXP` in `sqlite3`
-- GUI applications: Geneious (batch rename)
-- Text editors: Notepad++, Atom, BBEdit, Sublime Text etc.
+- GUI applications: [Geneious](https://www.geneious.com/prime/) (batch rename), [NameChanger](https://mrrsoftware.com/namechanger/)
+- Text editors: [Notepad++](https://notepad-plus-plus.org/), [Atom](https://atom.io/), [BBEdit](https://www.barebones.com/products/bbedit/), Sublime Text etc.
 - Programming/scripting: e.g. [Python](https://docs.python.org/3/library/re.html), [R (in tidyverse)](https://stringr.tidyverse.org/articles/regular-expressions.html), [BASH](https://tldp.org/LDP/abs/html/x17129.html)
   - Important note about wildcards for file selection on the command line: If you're familiar with using wildcards on the command line to select files (e.g. `ls *.tar.gz`), the format and syntax of these wildcards are not regular expressions, rather it's [globbing](https://en.wikipedia.org/wiki/Glob_(programming)) which has a different format and metacharacter usage. BASH does have support for regex, see [here](https://tldp.org/LDP/abs/html/x17129.html).
 
@@ -64,6 +64,10 @@ This is a good time for a tour of https://regex101.com
   - Settings (wrench icon)
     - Max Execution Time: increase for very large strings
     - Editor: option for display of test string and entry of pattern
+
+
+|In the `FLAVOR` section of regex101.com, choose "PCRE (PHP<7.3)" <br/> ![choose PCRE (PHP <7.3)](images/PCRE.png)|
+|---|
 
 ### Character classes `[]`
 
@@ -136,7 +140,7 @@ Note that this finds the <code>-</code> as well as A and G.
 
 `[Gg][Aa][ACGTacgt]`
 
-Or, invoke case insensitive in the "RegEx options"
+Or, just invoke case insensitive in the "RegEx options"
 </details>
 
 ---
@@ -169,7 +173,7 @@ You can specify a range of times match characters.
 {x,y}: between x and y (inclusive) repeats
 ```
 
-#### Excercises: Quantification 
+#### Excercises: Quantification
 
 Test string *(copy into Regex101.com)*:
 ````
@@ -181,29 +185,11 @@ GAG---
 ````
 
 <details>
-  <summary>Find all lines with one or more nucleotides immediately following GAG</summary>
+  <summary>Find all lines with one or more nucleotides immediately following GAG (that is, not a gap `-`)</summary>
 
 `GAG[GACT]+`
 
 This matches lines 1-5, but not 6.
-</details>
-
----
-
-Test string *(copy into Regex101.com)*:
-````
-GAGGAAGAG
-GAGGACGAG
-GAGG-TGAG
-GAG-AGGAG
-GAG---GAG
-````
-
-<details>
-  <summary>Match <i>the portions</i> of each line starting with GAG, then zero more gaps (<code>-</code>) followed by any number nucleotides (that is, gaps can only be after GAG, not elsewhere. This matches all of lines 1, 2, 4 and 5, but only the first four characters of line 3)</summary>
-
-`GAG-*[AGCT]+`
-
 </details>
 
 ---
@@ -273,7 +259,7 @@ Some of the common metacharacters that should be escaped: `[](){}\-.*?+|^$`
 
 
 #### Exercises: Quantification with pre-defined character classes
-For these exercises we'll be using the last column of a [GFF annotation file](https://github.com/The-Sequence-Ontology/Specifications/blob/master/gff3.md). These files list features of the sequence. The files have nine columns, the ninth column has additional information from the annotation pipeline that does not fit in the columns in the GFF file. These are often contain structured text that we can pull information out of. The one below is from a [fungal genome](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/300/575/GCF_000300575.1_Agabi_varbisH97_2/GCF_000300575.1_Agabi_varbisH97_2_genomic) annotated by NCBI's pipeline. 
+For these exercises we'll be using the last column of a [GFF annotation file](https://github.com/The-Sequence-Ontology/Specifications/blob/master/gff3.md). These files list features of the sequence. The files have nine columns, the ninth column has additional information from the annotation pipeline that does not fit in the columns in the GFF file. These are often contain structured text that we can pull information out of. The one below is from a [fungal genome](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/300/575/GCF_000300575.1_Agabi_varbisH97_2/GCF_000300575.1_Agabi_varbisH97_2_genomic) annotated by NCBI's pipeline.
 
 Test string *(copy into Regex101.com)*:
 ```
@@ -301,10 +287,10 @@ Note: this would work too: `locus_tag=[\w]+`, but the `[]` isn't necessary becau
 ---
 
 <details>
-  <summary><code>product</code> is a text description of the gene product. Match <code>product=</code> and all alphanumeric characters, underscores and spaces that follow</summary>
+  <summary><code>product</code> is a text description of the gene product. Match <code>product=</code> and all alphanumeric characters, underscores and <b>spaces</b> that follow</summary>
 
 `product=[\w ]+`
-
+Note: you do need the brackets here to include `\w` and the space character, ` `.
 </details>
 
 ---
@@ -320,11 +306,11 @@ Note: this would work too: `locus_tag=[\w]+`, but the `[]` isn't necessary becau
 ---
 
 <details>
-  <summary>You might have noticed that each section of the line is separated by a <code>;</code>. You can use the <code>[^…]</code> to select all text before the next <code>;</code>. Use that method to select <code>Dbxref=</code> and all text up to the next <code>;</code></summary>
+  <summary>You might have noticed that each section of the line is separated by a <code>;</code>. You can use <code>[^;]+</code> to select all text before the next <code>;</code>. Use that method to select <code>Dbxref=</code> and all text up to the next <code>;</code></summary>
 
 `Dbxref=[^;]+`
 
-Using this method is a great way to select text!
+Using this method is a great way to select text in a delimited file!
 
 </details>
 
@@ -352,7 +338,7 @@ line 2: `CCACGGA`
 line 3: `CGA`
 line 5: `C-GA`
 
-Note in line 2, there are multiple ranges that match `C.*A`. Regex quantifiers by default will make the longest match, this can lead to unexpected results. See the [regex wiki page](https://en.wikipedia.org/wiki/Regular_expression#Lazy_matching) for a bit more info. 
+Note in line 2, there are multiple ranges that match `C.*A`. Regex quantifiers by default will make the longest match, this can lead to unexpected results. See the [regex wiki page](https://en.wikipedia.org/wiki/Regular_expression#Lazy_matching) for a bit more info.
 </details>
 
 ---
@@ -385,13 +371,13 @@ GAG---GAG
 
 Matches line 1 and 2.
 
-The following would work too, although it might find invalid characters in the sequence:
+The following would work too, although it might find invalid nucleotide characters in the sequence:
 
-`^[^-]$`
+`^[^-]+$`
 
 Note the two meanings of `^`. The first one is to anchor the beginning of the line and the second inside the brackets means not in a class.
 
-The following would work too, although it would also match invalid characters if they were in the sequence:
+The following would work too, although it would also match invalid nucleotide characters if they were in the sequence:
 
 `^\w+$`
 </details>
@@ -464,7 +450,7 @@ If we add parentheses around a portion of the pattern, say the Locus ID section:
 
 #### Using the captured text `\1`, `\2` etc.
 
-To reveal regex101.com's replacement features, choose "Substition" under the "Function" section in the left pane.
+To reveal regex101.com's replacement features, choose "Substitution" under the "Function" section in the left pane.
 
 In the replacement text box, we can enter plain text and a reference to the captured text.
 
@@ -482,7 +468,7 @@ Replace with: `>\2_\1`
 
 A [GFF file](https://github.com/The-Sequence-Ontology/Specifications/blob/master/gff3.md) is used to annotate sequences. It is a tab-delimited text files with defined columns to describe to feature being annotated. Each row of the file is a different annotation. The last column (the 9th) is the `attributes` column, it contains additional information about the annotation that comes from the annotation pipeline that procuded the gff file.
 
-In this portion of a [NCBI gff annotation file](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/300/575/GCF_000300575.1_Agabi_varbisH97_2/GCF_000300575.1_Agabi_varbisH97_2_genomic.gff.gz) for the [genome of the common mushroom *Agaricus bisporus*](https://www.ncbi.nlm.nih.gov/genome/?term=txid936046), listed are the a few of the 61309 CDS annotations for the genome. The `attributes` column includes the NCBI IDs of the Genes that are annotated. These IDs are given as `Name=[Gene ID];`, for example, `Name=XP_006454979.1;` 
+In this portion of a [NCBI gff annotation file](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/300/575/GCF_000300575.1_Agabi_varbisH97_2/GCF_000300575.1_Agabi_varbisH97_2_genomic.gff.gz) for the [genome of the common mushroom *Agaricus bisporus*](https://www.ncbi.nlm.nih.gov/genome/?term=txid936046), listed are the a few of the 61309 CDS annotations for the genome. The `attributes` column includes the NCBI IDs of the Genes that are annotated. These IDs are given as `Name=[Gene ID];`, for example, `Name=XP_006454979.1;`
 
 **How can we extract the IDs given after `Name=`?**
 
