@@ -1,4 +1,4 @@
-# Using regular experssions on the command line
+# Using regular expressions on the command line
 
 ## Outline of course:
 
@@ -47,7 +47,7 @@ As mentioned above, we'll be using sed's `s` command (short for substitute)
 Format of the `s` command:
 
 ```
-sed 's/<text to find>/<new text>/<options>' input.txt
+sed 's/<text to find>/<new text>/<options>' <inputfile>
 ```
 
 `<text to find>`: text (or regex) to find in the input file.
@@ -115,3 +115,23 @@ The post has the best crosswords at post.
 - Use a different special character instead of `/` in the `s` step: `sed 's|||'`
 
 ## `grep`
+
+`grep` is another commonly used program for working with text files. The most common use is to return every line of a text file that matches a certain string or regular expression. Other related uses can be to print every line that *doesn't* match a certain pattern and printing the file names which contain or are missing a match.
+
+### Using `grep` *without* regex
+
+Like we did with `sed`, it's useful to first learn how to use `grep` without regular expressions.
+
+The format of a `grep` command is:
+
+```
+grep <optional arguments> "<text to find>" <inputfile>
+```
+
+`<optional arguments>`: command line arguments including `-E` (use extended regular expressions, recommended), `-i` (case insensitive), `-c` (count of matches), `-v` (inverse search: lines *without* a match), `--files-with-matches`, `--files-without-match`
+`<text to find>`: string or regular expression to find
+`<inputfile>`: file to search, or grep can be used with `|` to pipe output from another command
+
+### `grep` on multiple files
+
+### Using regular expressions
