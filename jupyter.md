@@ -30,10 +30,10 @@ conda activate jupyter
 Now run the following command to launch a jupyter notebook. It will run it from the directory you are in, so make sure you are "above" the directory where you want your notebooks to live. The interactive queue puts you into your `/home` directory by default.
 
 ```console
- jupyter notebook --no-browser --ip=`hostname` --port=8888
+ jupyter lab --no-browser --ip=`hostname` --port=8888
 ```
 
-This will launch a notebook, and produce a bunch of output looking something like this:
+This will launch a Jupyter lab server, and produce a bunch of output looking something like this:
 
 ```
 [I 14:38:44.628 NotebookApp] Serving notebooks from local directory: /pool/genomics/triznam
@@ -61,4 +61,26 @@ If it worked, it will prompt you for your Hydra password. Enter it.
 
 Now open a browser and go to http://localhost:8888. It should be a Jupyter-looking window, but will ask for a token or password before you can continue. Copy and paste the long token from the end of the URL that was printed out when you launched Jupyter on Hydra above. In that case it would be: *e54bd4f1469387555c114697278fe2ff10089cbf723c595b*
 
+## Setting up a Jupyter Server password
+
+To avoid having to paste that long token every time, you can create a password for yourself.
+
+`jupyter server password`
+
+(and then enter a memorable password)
+
+Now next time you launch Jupyter, you will be prompted to enter a password instead of that unique token.
+
+## Creating conda environment specific kernels
+
+To create a Jupyter *kernel* that is pre-built with all of the conda packages from your conda environment, do the following.
+
+```console
+conda activate env_name
+python -m ipykernel install --user --name="env_name"
+```
+
+Then you should see that kernel as a dropdown in Jupyter notebook or as a notebook option in Jupyter Lab.
+
+Having kernels is also useful for running notebooks as a job using [PaperMill](https://papermill.readthedocs.io/en/latest/).
 
