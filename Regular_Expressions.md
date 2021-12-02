@@ -11,8 +11,9 @@
 
 ## What are Regular expressions?
 
-- Regular expressions (or **regex** or **regexp**) is a way to make powerful search patterns. Unlike a standard 'find and replace' that only finds exact matches, you can use regexes to find a range of matches that fit the pattern you create.
-- It's best to think of regular expressions like a programming language. We'll be learning the syntax and operations that to build your patterns.
+- Regular expressions (or **regex** or **regexp**) is a way to make powerful search patterns. Unlike a standard 'find and replace' that only finds exact matches, you can use regexes to find a range of matches that fit the *pattern* you create.
+- We'll be talking about creating search patterns, these are search strings (text) that use characters with special meanings (metacharacters) to do this special type of searching.
+- Is it a programming language? Not really, it doesn't have the full suite of operations a programming language has, but it does have strict formatting rules like you may find in a full language.
 
 With Regular Expressions, you can save the day!
 
@@ -56,12 +57,12 @@ This is a good time for a tour of https://regex101.com
   - Explanation: details on the meaning of your pattern
   - Match information: Each match (Note: you can export matches from this pane)
   - Quick reference: Regex reference guide
-- Left pane (click on three lines to reveal)
-  - Flavor: style of regex patterns, we're using PCRE
+- Left pane (click on three lines to reveal if it's hidden)
+  - Flavor: style of regex patterns, we're using `PCRE`, the default is `PCRE2`
   - Function
     - Match: Only match text, no replacement
-    - Substition: Match and replacement option
-  - Settings (wrench icon)
+    - Substitution: Match and replacement option
+  - Settings (gear icon)
     - Max Execution Time: increase for very large strings
     - Editor: option for display of test string and entry of pattern
 
@@ -69,9 +70,22 @@ This is a good time for a tour of https://regex101.com
 |In the `FLAVOR` section of regex101.com, choose "PCRE (PHP<7.3)" <br/> ![choose PCRE (PHP <7.3)](images/PCRE.png)|
 |---|
 
+### Search strings *without* regular expressions
+
+Searching for text strings is a common activity on computers. A typical `Find` command in a program is only going to find exact matches for the search string:
+
+TODO: example
+
+The power of regular expressions is creating patterns that will match a range of text.
+
+In the sections below we will be learning those patterns.
+
+
 ### Character classes `[]`
 
 The first part of regular expressions we'll look at are **character classes**. This will match one or more characters of a certain type.
+
+TODO: modify previous example with a character class
 
 We use square brackets `[]` to around a list of characters to define the class
 
@@ -100,7 +114,7 @@ You can also use the caret symbol (`^`) to find everything *not* in a range
 
 #### Exercises: character classes
 
-Test string *(copy into Regex101.com)*:
+Test string for this set of exercises *(copy into Regex101.com)*:
 ````
 GAA
 GAC
@@ -259,21 +273,21 @@ Some of the common metacharacters that should be escaped: `[](){}\-.*?+|^$`
 
 
 #### Exercises: Quantification with pre-defined character classes
-For these exercises we'll be using the last column of a [GFF annotation file](https://github.com/The-Sequence-Ontology/Specifications/blob/master/gff3.md). These files list features of the sequence. The files have nine columns, the ninth column has additional information from the annotation pipeline that does not fit in the columns in the GFF file. These are often contain structured text that we can pull information out of. The one below is from a [fungal genome](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/300/575/GCF_000300575.1_Agabi_varbisH97_2/GCF_000300575.1_Agabi_varbisH97_2_genomic) annotated by NCBI's pipeline.
+For these exercises we'll be using the last column of a [GFF annotation file](https://github.com/The-Sequence-Ontology/Specifications/blob/master/gff3.md). These files list features of the sequence. The files have nine columns, the ninth column has additional information from the annotation pipeline that does not fit in the columns in the GFF file. These are often contain structured text that we can pull information out of. The one below is this [gff file](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/300/575/GCF_000300575.1_Agabi_varbisH97_2/GCF_000300575.1_Agabi_varbisH97_2_genomic.gff.gz) from a [fungal genome](https://www.ncbi.nlm.nih.gov/genome/858?genome_assembly_id=31528) annotated by NCBI's pipeline.
 
 Test string *(copy into Regex101.com)*:
 ```
-ID=cds-XP_006453763.1;Parent=rna-XM_006453700.1;Dbxref=JGIDB:Agabi_varbisH97_2_189137,GeneID:18081018,Genbank:XP_006453763.1;Name=XP_006453763.1;gbkey=CDS;locus_tag=AGABI2DRAFT_189137;product=hypothetical protein;protein_id=XP_006453763.1
-ID=cds-XP_006454979.1;Parent=rna-XM_006454916.1;Dbxref=InterPro:IPR000330,InterPro:IPR001650,InterPro:IPR015194,InterPro:IPR015195,JGIDB:Agabi_varbisH97_2_175561,GeneID:18079446,Genbank:XP_006454979.1;Name=XP_006454979.1;gbkey=CDS;locus_tag=AGABI2DRAFT_175561;product=SNF2 family DNA-dependent ATPase;protein_id=XP_006454979.1
-ID=cds-XP_006453764.1;Parent=rna-XM_006453701.1;Dbxref=JGIDB:Agabi_varbisH97_2_113535,GeneID:18076336,Genbank:XP_006453764.1;Name=XP_006453764.1;gbkey=CDS;locus_tag=AGABI2DRAFT_113535;product=hypothetical protein;protein_id=XP_006453764.1
-ID=cds-XP_006453765.1;Parent=rna-XM_006453702.1;Dbxref=JGIDB:Agabi_varbisH97_2_62215,GeneID:18085933,Genbank:XP_006453765.1;Name=XP_006453765.1;Note=similar to hypothetical protein SNOG_03478;gbkey=CDS;locus_tag=AGABI2DRAFT_62215;product=hypothetical protein;protein_id=XP_006453765.1
-ID=cds-XP_006453766.1;Parent=rna-XM_006453703.1;Dbxref=InterPro:IPR006124,InterPro:IPR011258,JGIDB:Agabi_varbisH97_2_189140,GeneID:18081019,Genbank:XP_006453766.1;Name=XP_006453766.1;Note=similar to phosphoglycerate mutase;gbkey=CDS;locus_tag=AGABI2DRAFT_189140;product=hypothetical protein;protein_id=XP_006453766.1
-ID=cds-XP_006453767.1;Parent=rna-XM_006453704.1;Dbxref=JGIDB:Agabi_varbisH97_2_189141,GeneID:18081020,Genbank:XP_006453767.1;Name=XP_006453767.1;Note=similar to predicted protein;gbkey=CDS;locus_tag=AGABI2DRAFT_189141;product=hypothetical protein;protein_id=XP_006453767.1
-ID=cds-XP_006453768.1;Parent=rna-XM_006453705.1;Dbxref=JGIDB:Agabi_varbisH97_2_147179,GeneID:18079156,Genbank:XP_006453768.1;Name=XP_006453768.1;Note=similar to hypothetical protein CC1G_11406 [Coprinopsis cinerea okayama7#130];gbkey=CDS;locus_tag=AGABI2DRAFT_147179;product=hypothetical protein;protein_id=XP_006453768.1
-ID=cds-XP_006453769.1;Parent=rna-XM_006453706.1;Dbxref=InterPro:IPR006094,JGIDB:Agabi_varbisH97_2_181818,GeneID:18080205,Genbank:XP_006453769.1;Name=XP_006453769.1;Note=similar to predicted protein;gbkey=CDS;locus_tag=AGABI2DRAFT_181818;product=hypothetical protein;protein_id=XP_006453769.1
-ID=cds-XP_006453776.1;Parent=rna-XM_006453713.1;Dbxref=JGIDB:Agabi_varbisH97_2_189147,GeneID:18081023,Genbank:XP_006453776.1;Name=XP_006453776.1;gbkey=CDS;locus_tag=AGABI2DRAFT_189147;product=hypothetical protein;protein_id=XP_006453776.1
-ID=cds-XP_006453778.1;Parent=rna-XM_006453715.1;Dbxref=JGIDB:Agabi_varbisH97_2_113550,GeneID:18076339,Genbank:XP_006453778.1;Name=XP_006453778.1;Note=similar to hypothetical protein;gbkey=CDS;locus_tag=AGABI2DRAFT_113550;product=hypothetical protein;protein_id=XP_006453778.1
-ID=cds-XP_006453781.1;Parent=rna-XM_006453718.1;Dbxref=InterPro:IPR001365,JGIDB:Agabi_varbisH97_2_60662,GeneID:18085877,Genbank:XP_006453781.1;Name=XP_006453781.1;Note=similar to AMP deaminase%2C putative;gbkey=CDS;locus_tag=AGABI2DRAFT_60662;product=hypothetical protein;protein_id=XP_006453781.1
+ID=cds-XP_006461966.1;Parent=rna-XM_006461903.1;Dbxref=InterPro:IPR017442,JGIDB:Agabi_varbisH97_2_223047,GeneID:18085162,Genbank:XP_006461966.1;Name=XP_006461966.1;Note=similar to predicted protein;gbkey=CDS;locus_tag=AGABI2DRAFT_223047;product=hypothetical protein;protein_id=XP_006461966.1
+ID=cds-XP_006454432.1;Parent=rna-XM_006454369.1;Dbxref=InterPro:IPR000089,InterPro:IPR001078,InterPro:IPR004167,JGIDB:Agabi_varbisH97_2_214484,GeneID:18084814,Genbank:XP_006454432.1;Name=XP_006454432.1;gbkey=CDS;locus_tag=AGABI2DRAFT_214484;product=dihydrolipoamide acetyltransferase;protein_id=XP_006454432.1
+ID=cds-XP_006458959.1;Parent=rna-XM_006458896.1;Dbxref=InterPro:IPR001357,JGIDB:Agabi_varbisH97_2_183783,GeneID:18080416,Genbank:XP_006458959.1;Name=XP_006458959.1;Note=similar to predicted protein;gbkey=CDS;locus_tag=AGABI2DRAFT_183783;partial=true;product=hypothetical protein;protein_id=XP_006458959.1
+ID=cds-XP_006464037.1;Parent=rna-XM_006463974.1;Dbxref=InterPro:IPR002198,JGIDB:Agabi_varbisH97_2_194639,GeneID:18082933,Genbank:XP_006464037.1;Name=XP_006464037.1;Note=similar to hypothetical protein MPER_06455;gbkey=CDS;locus_tag=AGABI2DRAFT_194639;product=hypothetical protein;protein_id=XP_006464037.1
+ID=cds-XP_006453977.1;Parent=rna-XM_006453914.1;Dbxref=InterPro:IPR001025,InterPro:IPR001525,JGIDB:Agabi_varbisH97_2_113733,GeneID:18076367,Genbank:XP_006453977.1;Name=XP_006453977.1;Note=similar to hypothetical protein CC1G_00579 [Coprinopsis cinerea okayama7#130];gbkey=CDS;locus_tag=AGABI2DRAFT_113733;product=hypothetical protein;protein_id=XP_006453977.1
+ID=cds-XP_006461409.1;Parent=rna-XM_006461346.1;Dbxref=JGIDB:Agabi_varbisH97_2_70395,GeneID:18086316,Genbank:XP_006461409.1;Name=XP_006461409.1;Note=similar to predicted protein;gbkey=CDS;locus_tag=AGABI2DRAFT_70395;product=hypothetical protein;protein_id=XP_006461409.1
+ID=cds-XP_006462232.1;Parent=rna-XM_006462169.1;Dbxref=InterPro:IPR005198,JGIDB:Agabi_varbisH97_2_206494,GeneID:18084247,Genbank:XP_006462232.1;Name=XP_006462232.1;Note=similar to endo-1%2C6-alpha-mannosidase;gbkey=CDS;locus_tag=AGABI2DRAFT_206494;product=hypothetical protein;protein_id=XP_006462232.1
+ID=cds-XP_006455230.1;Parent=rna-XM_006455167.1;Dbxref=JGIDB:Agabi_varbisH97_2_194871,GeneID:18083023,Genbank:XP_006455230.1;Name=XP_006455230.1;Note=similar to predicted protein;gbkey=CDS;locus_tag=AGABI2DRAFT_194871;partial=true;product=hypothetical protein;protein_id=XP_006455230.1
+ID=cds-XP_006459239.1;Parent=rna-XM_006459176.1;Dbxref=InterPro:IPR010721,JGIDB:Agabi_varbisH97_2_201274,GeneID:18083864,Genbank:XP_006459239.1;Name=XP_006459239.1;Note=similar to predicted protein;gbkey=CDS;locus_tag=AGABI2DRAFT_201274;product=hypothetical protein;protein_id=XP_006459239.1
+ID=cds-XP_006458275.1;Parent=rna-XM_006458212.1;Dbxref=InterPro:IPR004136,JGIDB:Agabi_varbisH97_2_190616,GeneID:18081521,Genbank:XP_006458275.1;Name=XP_006458275.1;gbkey=CDS;locus_tag=AGABI2DRAFT_190616;product=hypothetical protein;protein_id=XP_006458275.1
+ID=cds-XP_006457726.1;Parent=rna-XM_006457663.1;Dbxref=InterPro:IPR011701,JGIDB:Agabi_varbisH97_2_182882,GeneID:18080310,Genbank:XP_006457726.1;Name=XP_006457726.1;Note=similar to MFS nicotinic acid transporter Tna1%2C putative;gbkey=CDS;locus_tag=AGABI2DRAFT_182882;product=hypothetical protein;protein_id=XP_006457726.1
 ```
 
 <details>
