@@ -329,6 +329,9 @@ There are handy pre-defined character classes that can be helpful in searches:
 \S        NOT whitespace
 ```
 
+|These shortcuts don't work in command line tools like `sed` and `grep`, instead use `[[:alnum:]]` (for alphanumeric `[A-Za-z0-9]`), `[^[:alnum:]]` (*not* alphanumeric `[^A-Za-z0-9]`), `[[:digit:]]` (for digits `[0-9]`), `[^[:digit:]]` (for *not* digits `[^0-9]`), see [gnu sed documentation](https://www.gnu.org/software/sed/manual/html_node/Character-Classes-and-Bracket-Expressions.html) for more classes.|
+|---|
+
 You can make character classes with pre-defined classes:
 
 ```
@@ -347,6 +350,7 @@ You use a backslash `\` in your pattern to identify a character as being a liter
 So, if you have the string `[See note below]` and you want to match the `[` you would use `\[` in your regular expression. regex101.com is very helpful in identifying where a character is being interpreted as a metacharacter.
 
 Some of the common metacharacters that should be escaped: `[](){}\-.*?+|^$`
+
 (so to match a `\` you use `\\` :smile: )
 
 
