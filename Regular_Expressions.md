@@ -24,7 +24,7 @@ https://xkcd.com/208/
 ## How can you use regular expressions in your work?
 
 - Extracting a certain type of annotation from a gff file
-- Editing fasta file sequence headers
+- Editing FASTA file sequence headers
 - Specifying sequence read names in a pipeline like Phyluce
 
 ## Applications that use regular expressions
@@ -58,7 +58,7 @@ This is a good time for a tour of https://regex101.com
   - Match information: Each match (Note: you can export matches from this pane)
   - Quick reference: Regex reference guide
 - Left pane (click on three lines to reveal if it's hidden)
-  - Flavor: style of regex patterns, we're using `PCRE`, the default is `PCRE2`
+  - Flavor: style of regex patterns, **we're using `PCRE`**, the default is `PCRE2`
   - Function
     - Match: Only match text, no replacement
     - Substitution: Match and replacement option
@@ -74,7 +74,26 @@ This is a good time for a tour of https://regex101.com
 
 Searching for text strings is a common activity on computers. A typical `Find` command in a program is only going to find exact matches for the search string:
 
-TODO: example
+
+Test string:
+
+```
+>seq_1
+ACCGTTATC
+>seq_2
+ACCGTTCTC
+>seq_3
+ACCGTTGTC
+>seq_4
+ACCGTTTTC
+>seq_5
+ACCGTT-TC
+```
+
+Regular expression (all literal characters):
+```
+ACCGTT
+```
 
 The power of regular expressions is creating patterns that will match a range of text.
 
@@ -85,11 +104,17 @@ In the sections below we will be learning those patterns.
 
 The first part of regular expressions we'll look at are **character classes**. This will match one or more characters of a certain type.
 
-TODO: modify previous example with a character class
+Taking the example FASTA file from above, we can match any base in the 7th position with:
+
+```
+ACCGTT[ACGT]TC
+```
 
 We use square brackets `[]` to around a list of characters to define the class
 
-The brackets are the first *metacharacters* we're seeing. Metacharacters have special meanings in regex as compared to literals which are the actual character that was entered.
+The brackets are the first *metacharacters* we're seeing. Metacharacters have special meanings in regex as compared to *literals* which are the actual character that was entered.
+
+In the example, the first six characters are literals: `ACCGTT` The pattern for seventh position is: `[ACGT]` (all those characters are the pattern for one position) and then the seventh and eighth positions are the literals: `TC`. So, with regular expressions, multiple characters are used to represent a pattern for one or more positions.
 
 Some examples:
 ```
@@ -102,7 +127,7 @@ Some examples:
               This also shows combining several ranges with a single character)
 ```
 
-You can also use the caret symbol (`^`) to find everything *not* in a range
+You can also use the caret symbol (`^`) to find everything *not* in a range. (Note: later in the lesson we'll see another use of `^` outside of a character class to denote the start of a line).
 
 `^` examples:
 
@@ -110,6 +135,12 @@ You can also use the caret symbol (`^`) to find everything *not* in a range
 [^acgt]     Any single character that is not an a, c, g or t character
               The ^ must be the first character inside the [
 [^A-Z]      Any single character that is not a capital letter
+```
+
+An example of the `^` metacharacter in a character class using our sample FASTA file:
+
+```
+ACCGTT[^ACGT]TC
 ```
 
 #### Exercises: character classes
@@ -187,6 +218,50 @@ You can specify a range of times match characters.
 {x,y}: between x and y (inclusive) repeats
 ```
 
+For some examples of this, let's look at another sample FASTA file:
+
+```
+>seq_6
+ACCGTTATC
+>seq_7
+ACCGTTCGC
+>seq_8
+ACCGTTGCC
+>seq_9
+ACCGTTTAC
+>seq_10
+ACCGTT-TC
+>seq_11
+ACCGTTT-C
+>seq_12
+ACCGTT--C
+```
+
+Match any bases after `ACCGTT`:
+
+```
+ACCGTT[ACGT]+
+```
+
+Match next *two* bases after `ACCGTT`:
+
+```
+ACCGTT[ACGT]{2}
+```
+
+Match all hyphens, if present, (0 or more) immediately after `ACCGTT` and then all bases:
+
+```
+ACCGTT-*[ACGT]+
+```
+
+Match 0 or 1 hyphen immediately after `ACCGTT` and then all bases:
+
+```
+ACCGTT-?[ACGT]+
+```
+
+
 #### Excercises: Quantification
 
 Test string *(copy into Regex101.com)*:
@@ -261,15 +336,18 @@ You can make character classes with pre-defined classes:
 [\d.-]  Digits, decimal points and hyphens
 ```
 
+TODO: example with character classes (using prose sentences?)
+
 #### Match a metacharacter as a literal (escaping) `\`
 
-We've started seeing characters that are treated as special chracters in the regular expression. How would you match one of these characters if they occur in the text your matching?
+We've started seeing characters that are treated as special characters in the regular expression. How would you match one of these characters if they occur in the text you're matching?
 
 You use a backslash `\` in your pattern to identify a character as being a literal match even if it's a metacharacter.
 
 So, if you have the string `[See note below]` and you want to match the `[` you would use `\[` in your regular expression. regex101.com is very helpful in identifying where a character is being interpreted as a metacharacter.
 
 Some of the common metacharacters that should be escaped: `[](){}\-.*?+|^$`
+(so to match a `\` you use `\\` :smile: )
 
 
 #### Exercises: Quantification with pre-defined character classes
@@ -277,17 +355,17 @@ For these exercises we'll be using the last column of a [GFF annotation file](ht
 
 Test string *(copy into Regex101.com)*:
 ```
-ID=cds-XP_006461966.1;Parent=rna-XM_006461903.1;Dbxref=InterPro:IPR017442,JGIDB:Agabi_varbisH97_2_223047,GeneID:18085162,Genbank:XP_006461966.1;Name=XP_006461966.1;Note=similar to predicted protein;gbkey=CDS;locus_tag=AGABI2DRAFT_223047;product=hypothetical protein;protein_id=XP_006461966.1
-ID=cds-XP_006454432.1;Parent=rna-XM_006454369.1;Dbxref=InterPro:IPR000089,InterPro:IPR001078,InterPro:IPR004167,JGIDB:Agabi_varbisH97_2_214484,GeneID:18084814,Genbank:XP_006454432.1;Name=XP_006454432.1;gbkey=CDS;locus_tag=AGABI2DRAFT_214484;product=dihydrolipoamide acetyltransferase;protein_id=XP_006454432.1
-ID=cds-XP_006458959.1;Parent=rna-XM_006458896.1;Dbxref=InterPro:IPR001357,JGIDB:Agabi_varbisH97_2_183783,GeneID:18080416,Genbank:XP_006458959.1;Name=XP_006458959.1;Note=similar to predicted protein;gbkey=CDS;locus_tag=AGABI2DRAFT_183783;partial=true;product=hypothetical protein;protein_id=XP_006458959.1
-ID=cds-XP_006464037.1;Parent=rna-XM_006463974.1;Dbxref=InterPro:IPR002198,JGIDB:Agabi_varbisH97_2_194639,GeneID:18082933,Genbank:XP_006464037.1;Name=XP_006464037.1;Note=similar to hypothetical protein MPER_06455;gbkey=CDS;locus_tag=AGABI2DRAFT_194639;product=hypothetical protein;protein_id=XP_006464037.1
-ID=cds-XP_006453977.1;Parent=rna-XM_006453914.1;Dbxref=InterPro:IPR001025,InterPro:IPR001525,JGIDB:Agabi_varbisH97_2_113733,GeneID:18076367,Genbank:XP_006453977.1;Name=XP_006453977.1;Note=similar to hypothetical protein CC1G_00579 [Coprinopsis cinerea okayama7#130];gbkey=CDS;locus_tag=AGABI2DRAFT_113733;product=hypothetical protein;protein_id=XP_006453977.1
-ID=cds-XP_006461409.1;Parent=rna-XM_006461346.1;Dbxref=JGIDB:Agabi_varbisH97_2_70395,GeneID:18086316,Genbank:XP_006461409.1;Name=XP_006461409.1;Note=similar to predicted protein;gbkey=CDS;locus_tag=AGABI2DRAFT_70395;product=hypothetical protein;protein_id=XP_006461409.1
-ID=cds-XP_006462232.1;Parent=rna-XM_006462169.1;Dbxref=InterPro:IPR005198,JGIDB:Agabi_varbisH97_2_206494,GeneID:18084247,Genbank:XP_006462232.1;Name=XP_006462232.1;Note=similar to endo-1%2C6-alpha-mannosidase;gbkey=CDS;locus_tag=AGABI2DRAFT_206494;product=hypothetical protein;protein_id=XP_006462232.1
-ID=cds-XP_006455230.1;Parent=rna-XM_006455167.1;Dbxref=JGIDB:Agabi_varbisH97_2_194871,GeneID:18083023,Genbank:XP_006455230.1;Name=XP_006455230.1;Note=similar to predicted protein;gbkey=CDS;locus_tag=AGABI2DRAFT_194871;partial=true;product=hypothetical protein;protein_id=XP_006455230.1
-ID=cds-XP_006459239.1;Parent=rna-XM_006459176.1;Dbxref=InterPro:IPR010721,JGIDB:Agabi_varbisH97_2_201274,GeneID:18083864,Genbank:XP_006459239.1;Name=XP_006459239.1;Note=similar to predicted protein;gbkey=CDS;locus_tag=AGABI2DRAFT_201274;product=hypothetical protein;protein_id=XP_006459239.1
-ID=cds-XP_006458275.1;Parent=rna-XM_006458212.1;Dbxref=InterPro:IPR004136,JGIDB:Agabi_varbisH97_2_190616,GeneID:18081521,Genbank:XP_006458275.1;Name=XP_006458275.1;gbkey=CDS;locus_tag=AGABI2DRAFT_190616;product=hypothetical protein;protein_id=XP_006458275.1
-ID=cds-XP_006457726.1;Parent=rna-XM_006457663.1;Dbxref=InterPro:IPR011701,JGIDB:Agabi_varbisH97_2_182882,GeneID:18080310,Genbank:XP_006457726.1;Name=XP_006457726.1;Note=similar to MFS nicotinic acid transporter Tna1%2C putative;gbkey=CDS;locus_tag=AGABI2DRAFT_182882;product=hypothetical protein;protein_id=XP_006457726.1
+ID=cds-XP_006453763.1;Parent=rna-XM_006453700.1;Dbxref=JGIDB:Agabi_varbisH97_2_189137,GeneID:18081018,Genbank:XP_006453763.1;Name=XP_006453763.1;gbkey=CDS;locus_tag=AGABI2DRAFT_189137;product=hypothetical protein;protein_id=XP_006453763.1
+ID=cds-XP_006454979.1;Parent=rna-XM_006454916.1;Dbxref=InterPro:IPR000330,InterPro:IPR001650,InterPro:IPR015194,InterPro:IPR015195,JGIDB:Agabi_varbisH97_2_175561,GeneID:18079446,Genbank:XP_006454979.1;Name=XP_006454979.1;gbkey=CDS;locus_tag=AGABI2DRAFT_175561;product=SNF2 family DNA-dependent ATPase;protein_id=XP_006454979.1
+ID=cds-XP_006453764.1;Parent=rna-XM_006453701.1;Dbxref=JGIDB:Agabi_varbisH97_2_113535,GeneID:18076336,Genbank:XP_006453764.1;Name=XP_006453764.1;gbkey=CDS;locus_tag=AGABI2DRAFT_113535;product=hypothetical protein;protein_id=XP_006453764.1
+ID=cds-XP_006453765.1;Parent=rna-XM_006453702.1;Dbxref=JGIDB:Agabi_varbisH97_2_62215,GeneID:18085933,Genbank:XP_006453765.1;Name=XP_006453765.1;Note=similar to hypothetical protein SNOG_03478;gbkey=CDS;locus_tag=AGABI2DRAFT_62215;product=hypothetical protein;protein_id=XP_006453765.1
+ID=cds-XP_006453766.1;Parent=rna-XM_006453703.1;Dbxref=InterPro:IPR006124,InterPro:IPR011258,JGIDB:Agabi_varbisH97_2_189140,GeneID:18081019,Genbank:XP_006453766.1;Name=XP_006453766.1;Note=similar to phosphoglycerate mutase;gbkey=CDS;locus_tag=AGABI2DRAFT_189140;product=hypothetical protein;protein_id=XP_006453766.1
+ID=cds-XP_006453767.1;Parent=rna-XM_006453704.1;Dbxref=JGIDB:Agabi_varbisH97_2_189141,GeneID:18081020,Genbank:XP_006453767.1;Name=XP_006453767.1;Note=similar to predicted protein;gbkey=CDS;locus_tag=AGABI2DRAFT_189141;product=hypothetical protein;protein_id=XP_006453767.1
+ID=cds-XP_006453768.1;Parent=rna-XM_006453705.1;Dbxref=JGIDB:Agabi_varbisH97_2_147179,GeneID:18079156,Genbank:XP_006453768.1;Name=XP_006453768.1;Note=similar to hypothetical protein CC1G_11406 [Coprinopsis cinerea okayama7#130];gbkey=CDS;locus_tag=AGABI2DRAFT_147179;product=hypothetical protein;protein_id=XP_006453768.1
+ID=cds-XP_006453769.1;Parent=rna-XM_006453706.1;Dbxref=InterPro:IPR006094,JGIDB:Agabi_varbisH97_2_181818,GeneID:18080205,Genbank:XP_006453769.1;Name=XP_006453769.1;Note=similar to predicted protein;gbkey=CDS;locus_tag=AGABI2DRAFT_181818;product=hypothetical protein;protein_id=XP_006453769.1
+ID=cds-XP_006453776.1;Parent=rna-XM_006453713.1;Dbxref=JGIDB:Agabi_varbisH97_2_189147,GeneID:18081023,Genbank:XP_006453776.1;Name=XP_006453776.1;gbkey=CDS;locus_tag=AGABI2DRAFT_189147;product=hypothetical protein;protein_id=XP_006453776.1
+ID=cds-XP_006453778.1;Parent=rna-XM_006453715.1;Dbxref=JGIDB:Agabi_varbisH97_2_113550,GeneID:18076339,Genbank:XP_006453778.1;Name=XP_006453778.1;Note=similar to hypothetical protein;gbkey=CDS;locus_tag=AGABI2DRAFT_113550;product=hypothetical protein;protein_id=XP_006453778.1
+ID=cds-XP_006453781.1;Parent=rna-XM_006453718.1;Dbxref=InterPro:IPR001365,JGIDB:Agabi_varbisH97_2_60662,GeneID:18085877,Genbank:XP_006453781.1;Name=XP_006453781.1;Note=similar to AMP deaminase%2C putative;gbkey=CDS;locus_tag=AGABI2DRAFT_60662;product=hypothetical protein;protein_id=XP_006453781.1
 ```
 
 <details>
@@ -400,7 +478,7 @@ The following would work too, although it would also match invalid nucleotide ch
 
 ## Working with sequence headers and replacing text
 
-A common change to make with biological data is altering the headers (sequence names) in a fasta file. The header lines start with a `>` and are followed by lines with the sequence.
+A common change to make with biological data is altering the headers (sequence names) in a FASTA file. The header lines start with a `>` and are followed by lines with the sequence.
 
 Test string *(copy into Regex101.com)*:
 ```
@@ -450,7 +528,7 @@ We've seen how regular expressions can match a variety of text rather than the f
 
 Regular expressions allow us to "capture" found text and use it in the replacment. We use parentheses `()` the text we want to save and reuse in the replacement.
 
-Let's try it with our fasta header line pattern: `^>locus-\d+_.+$`
+Let's try it with our FASTA header line pattern: `^>locus-\d+_.+$`
 
 If we add parentheses around a portion of the pattern, say the Locus ID section: `^>(locus-\d+)_.+$` we see in regex101.com that the locus portion is in a different color and labeled "Group 1".
 
