@@ -375,7 +375,6 @@ ID=cds-XP_006453781.1;Parent=rna-XM_006453718.1;Dbxref=InterPro:IPR001365,JGIDB:
 `locus_tag=\w+`
 <br><br>
 Note: this would work too: `locus_tag=[\w]+`, but the `[]` isn't necessary because \w is a predefined character class.
-
 </details>
 
 ---
@@ -428,7 +427,7 @@ GAG-C-GATG
 Matches:
 line 2: `CCACGGA`<br>
 line 3: `CGA`<br>
-line 5: `C-GA`<br>
+line 5: `C-GA`
 <br><br>
 Note in line 2, there are multiple ranges that match `C.*A`. Regex quantifiers by default will make the longest match (called "greedy matching"), this can lead to unexpected results. See the [regex wiki page](https://en.wikipedia.org/wiki/Regular_expression#Lazy_matching) for a bit more info. You can see the difference if you use the "lazy matching" equivalent quantifier: `C.*?A` The `*?` finds the shortest match that matches the string.
 </details>
@@ -460,17 +459,17 @@ GAG---GAG
   <summary>Find entire lines that contain only nucleotides, no gaps</summary>
 
 `^[ACGT]+$`
-<br><br>
+<br>
 Matches line 1 and 2.
 <br><br>
 The following would work too, although it might find invalid nucleotide characters in the sequence:
-<br><br>
+<br>
 `^[^-]+$`
 <br><br>
 Note the two meanings of `^`. The first one is to anchor the beginning of the line and the second inside the brackets means not in a class.
 <br><br>
 The following would work too, although it would also match invalid nucleotide characters if they were in the sequence:
-<br><br>
+<br>
 `^\w+$`
 </details>
 
