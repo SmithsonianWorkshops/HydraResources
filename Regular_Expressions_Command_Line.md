@@ -24,19 +24,32 @@
 
 ### Linux
   - If you're using a Linux system GNU versions will be available by default.
-  - If your workstation is not Linux based, you can log in to a remote Linux system such as the Hydra computing cluster or using a virtual machine like (mybinder) (TODO: add badge)
+  - If your workstation is not Linux based, you can log in to a remote Linux system such as the Hydra computing cluster or using a virtual machine like this mybinder.org VM that we've setup for other trainings and can be used here: [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/SmithsonianWorkshops/binders/intro-shell?urlpath=lab)
 
 ### Mac
-  - Conda or Homebrew
+  - Conda: If you have [conda installed](https://conda.io/projects/conda/en/latest/user-guide/install/index.html), you can use this command to install the gnu versions of `sed` and `grep`:
 
-### Windows
+  ```
+  conda install -c conda-forge -c bioconda sed grep
+  ```
+
+  - Homebrew: We prefer using Conda for managing packages on a Mac, but if you use [Homebrew](https://brew.sh/), use these commands:
+
+  ```
+  brew install gnu-sed
+  brew install grep
+  ```
+
+### TODO: Windows
   - WSL
   - cygwin
   - Git for Windows?
 
 ## `sed`
 
-`sed` (short for [Stream Editor](https://en.wikipedia.org/wiki/Sed)) is a program used for editing text files. It reaches back to the very early days of Unix systems. It excels at working with large text files and for re-running the same types of edits on many files. The "Stream" portion of its name is because it doesn't the entire file into memory, it reads from disk as the file is being processed. Because of this, it can work with very large text files (like we sometimes see in bioinformatcs). `sed` uses commands from its scripting language to edit the files. We'll only be using the `s` script step (short for substitute command to change text in a file), but there are other commands like `d` to delete specific lines or `p` to print certain lines.
+`sed` (short for [Stream Editor](https://en.wikipedia.org/wiki/Sed)) is a program used for editing text files. It reaches back to the very early days of Unix systems. It excels at working with large text files and for re-running the same types of edits on many files. The "Stream" portion of its name is because it doesn't the entire file into memory, it reads from disk as the file is being processed. Because of this, it can work with very large text files (like we sometimes see in bioinformatcs). It can also be used in conjuction with other commands via pipes where the output of one commands becomes the input of another.
+
+`sed` uses commands from its scripting language to edit the files. We'll only be using the `s` script step (short for substitute) to change text in a file which is the most common use of sed, but there are other commands like `d` to delete specific lines or `p` to print certain lines that are sometimes used.
 
 ### Using `sed` to replace text *without* regex
 
@@ -47,28 +60,84 @@ As mentioned above, we'll be using sed's `s` command (short for substitute)
 Format of the `s` command:
 
 ```
-sed 's/<text to find>/<new text>/<options>' <inputfile>
+sed 's/<find>/<replace>/<options>'
 ```
 
-`<text to find>`: text (or regex) to find in the input file.
-`<new text>`: text to replace the found text with.
+`<find>`: text (or regex) to find in the input file.
+`<replace>`: text to replace the found text with.
 `<options>`: options for the substitution (`g` for global, `i` for case insensitive). More about this below.
 
-
-TODO: example of using a file
-
-In the above example, the input text is from the file `input.txt`. You can also use `sed` with a pipe `|`  to take output from one command as input into sed:
+We our going to use a sample FASTA file, `locus1.fasta`, to try `sed`
 
 ```
-echo "What are you trying to find?" | sed 's/find/replace/'
+$ cat locus1.fasta
+>seq_1
+ACCGTTATC
+>seq_2
+ACCGTTCTC
+>seq_3
+ACCGTTGTC
+>seq_4
+ACCGTTTTC
+>seq_5
+ACCGTT-TC
+```
+
+We will change "seq" in the sequence name lines with "sample".
+
+Hint: a good way to get started with the sed line is by entering the outline of the `s` command for sed `'s///'` and then adding the specifics.
+
+```
+$ sed 's/seq/sample/' locus1.fasta
+>sample_1
+ACCGTTATC
+>sample_2
+ACCGTTCTC
+>sample_3
+ACCGTTGTC
+>sample_4
+ACCGTTTTC
+>sample_5
+ACCGTT-TC
+```
+
+The text of the file is displayed to the screen with the change made.
+
+What about the original file? Run the cat command on `locus1.fasta` to find out.
+
+It did not change the original file.
+
+### Redirecting output
+
+`sed 's/seq/sample/' locus1.fasta >locus1_mod.fasta`
+
+### Changing original file (with or without a back)
+
+Automatically create a backup:
+```
+sed -i.bak 's/seq/sample/' locus1.fasta
+```
+
+`locus1.fasta`: modified files
+`locus1.fasta.bak`: original file
+
+
+Change the original with no backup (not this format doesn't work on BSD sed on Macs):
+
+```
+sed -i 's/seq/sample/' locus1.fasta
+```
+
+In the above example, the input text is from the file `locus1.fasta`. You can also use `sed` with a pipe `|`  to take output from one command as input into sed. Here's a non-biolgical exmaple, but we'll see it again after we learn `grep`.
+
+```
+$ echo "What are you trying to find?" | sed 's/find/replace/'
 What are you trying to replace?
 ```
 
 ### Working with multiple files
 
-`sed -i ...`
-
-#### Global change in a line `/g`
+### Global change in a line `/g`
 The `s` command in this form will only find/replace the first occurrence of the search string in each line. You can have it replace every occurrence by adding `g` (for global) to the end of the command.
 
 ```
@@ -76,7 +145,7 @@ echo "I need to go to the library" | sed 's/to/2/g'
 I need 2 go 2 the library
 ```
 
-#### Case insensitive `/i`
+### Case insensitive `/i`
 You can make the find portion of the `s` command case insensitive by adding `i` to the end of the `s` command.
 
 ```
@@ -102,7 +171,7 @@ The post has the best crosswords at post.
 #### character classes
 
 `[[:digit:]]` instead of `\d`
-`[[:...:]]` instead of `\w`
+`[[:alnum:]]` instead of `\w` (except that `\w` includes `_`)
 ...
 
 ### back references
