@@ -373,7 +373,7 @@ ID=cds-XP_006453781.1;Parent=rna-XM_006453718.1;Dbxref=InterPro:IPR001365,JGIDB:
   <summary><code>locus_tag</code> is how NCBI identifies each gene in the genome. Match the text <code>locus_tag=</code> and all alphanumeric characters and underscores that follow.</summary>
 
 `locus_tag=\w+`
-<br\>
+<br>
 Note: this would work too: `locus_tag=[\w]+`, but the `[]` isn't necessary because \w is a predefined character class.
 
 </details>
