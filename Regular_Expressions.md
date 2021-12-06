@@ -166,7 +166,7 @@ GA-
   <summary>Find sequences that are NOT Glu</summary>
 
 `GA[^AG]`
-
+<br><br>
 Note that this finds the <code>-</code> as well as A and G.
 </details>
 
@@ -184,7 +184,7 @@ Note that this finds the <code>-</code> as well as A and G.
   <summary>How would you modify the pattern to find any base in the third position to match lowercase or uppercase bases?</summary>
 
 `[Gg][Aa][ACGTacgt]`
-
+<br><br>
 Or, just invoke case insensitive in the "RegEx options"
 </details>
 
@@ -277,7 +277,7 @@ GAG---
   <summary>Find all lines with one or more nucleotides immediately following GAG (that is, not a gap `-`)</summary>
 
 `GAG[GACT]+`
-
+<br><br>
 This matches lines 1-5, but not 6.
 </details>
 
@@ -296,9 +296,9 @@ GAGGAG
   <summary>Create patterns to match these criteria: exactly 10 nucleotides, 8 or more nucleotides, 9 or 10 nucleotides</summary>
 
 Exactly 10 (line 1): `[ACGT]{10}`
-
+<br><br>
 8 or more (lines 1-3): `[ACGT]{8,}`
-
+<br><br>
 9 or 10 (lines 1, 2): `[ACGT]{9,10}`
 </details>
 
@@ -308,9 +308,9 @@ Exactly 10 (line 1): `[ACGT]{10}`
   <summary>Match <i>the portions</i> of the lines where there are two or more G characters together</summary>
 
 `G{2,}`
-
+<br><br>
 or: `GG+`
-
+<br><br>
 Note: we've been using numerators around character classes, but they can also be used for single characters
 </details>
 
@@ -373,7 +373,7 @@ ID=cds-XP_006453781.1;Parent=rna-XM_006453718.1;Dbxref=InterPro:IPR001365,JGIDB:
   <summary><code>locus_tag</code> is how NCBI identifies each gene in the genome. Match the text <code>locus_tag=</code> and all alphanumeric characters and underscores that follow.</summary>
 
 `locus_tag=\w+`
-<br>
+<br><br>
 Note: this would work too: `locus_tag=[\w]+`, but the `[]` isn't necessary because \w is a predefined character class.
 
 </details>
@@ -384,7 +384,7 @@ Note: this would work too: `locus_tag=[\w]+`, but the `[]` isn't necessary becau
   <summary><code>product</code> is a text description of the gene product. Match <code>product=</code> and all alphanumeric characters, underscores and <b>spaces</b> that follow</summary>
 
 `product=[\w ]+`
-
+<br><br>
 Note: you do need the brackets here to include `\w` and the space character, ` `.
 </details>
 
@@ -394,7 +394,6 @@ Note: you do need the brackets here to include `\w` and the space character, ` `
   <summary><code>Parent</code> is an identifier for the an RNA sequence for this annotations. Match <code>Parent=</code> and all alphanumeric characters, underscores, hyphens and periods that follow</summary>
 
 `Parent=[\w.-]+`
-
 </details>
 
 ---
@@ -403,9 +402,8 @@ Note: you do need the brackets here to include `\w` and the space character, ` `
   <summary>You might have noticed that each section of the line is separated by a <code>;</code>. You can use <code>[^;]+</code> to select all text before the next <code>;</code>. Use that method to select <code>Dbxref=</code> and all text up to the next <code>;</code></summary>
 
 `Dbxref=[^;]+`
-
+<br><br>
 Using this method is a great way to select text in a delimited file!
-
 </details>
 
 
@@ -426,12 +424,12 @@ GAG-C-GATG
   <summary>Match <i>the portions</i> of the lines that start with C and end with A, regardless of what's between them.</summary>
 
 `C.*A`
-
+<br><br>
 Matches:
-line 2: `CCACGGA`
-line 3: `CGA`
-line 5: `C-GA`
-
+line 2: `CCACGGA`<br>
+line 3: `CGA`<br>
+line 5: `C-GA`<br>
+<br><br>
 Note in line 2, there are multiple ranges that match `C.*A`. Regex quantifiers by default will make the longest match (called "greedy matching"), this can lead to unexpected results. See the [regex wiki page](https://en.wikipedia.org/wiki/Regular_expression#Lazy_matching) for a bit more info. You can see the difference if you use the "lazy matching" equivalent quantifier: `C.*?A` The `*?` finds the shortest match that matches the string.
 </details>
 
@@ -462,17 +460,17 @@ GAG---GAG
   <summary>Find entire lines that contain only nucleotides, no gaps</summary>
 
 `^[ACGT]+$`
-
+<br><br>
 Matches line 1 and 2.
-
+<br><br>
 The following would work too, although it might find invalid nucleotide characters in the sequence:
-
+<br><br>
 `^[^-]+$`
-
+<br><br>
 Note the two meanings of `^`. The first one is to anchor the beginning of the line and the second inside the brackets means not in a class.
-
+<br><br>
 The following would work too, although it would also match invalid nucleotide characters if they were in the sequence:
-
+<br><br>
 `^\w+$`
 </details>
 
@@ -514,7 +512,6 @@ In these headers the Locus and Sample IDs are separated by an underscore `_`. Th
   <summary>Part 3: Combine the patterns in Parts 1 and 2 to match the two IDs, the underscore and the starting <code>></code></summary>
 
 `^>.+_.+$`
-
 </details>
 
 ---
@@ -551,7 +548,7 @@ The first captured text is referenced with `\1`, the second with `\2` etc. You c
   <summary>Part 5: Using the pattern from Part 4, write the replacement string to have the Sample ID precede the Locus ID with an underscore separating the two. Make sure to add the <code>></code> at the start of the header line</summary>
 
 Search for: `^>(.+)_(.+)$`
-
+<br><br>
 Replace with: `>\2_\1`
 </details>
 
@@ -585,11 +582,10 @@ NW_006267344.1	RefSeq	CDS	46894	47138	.	-	0	ID=cds-XP_006453781.1;Parent=rna-XM_
   <summary>Part 1. Write a pattern to match <code>Name=</code> and the identifier given (before the next <code>;</code>)</summary>
 
 `Name=[^;]+`
-
+<br><br>
 or
-
+<br><br>
 `Name=[\w.]+;`
-
 </details>
 
 ---
@@ -614,7 +610,7 @@ or
   <summary>Part 4. Using the pattern from Part 3, write the replacement string to replace the lines with the captured ID</summary>
 
 Search for: `^.*Name=([^;]+).*$`
-
+<br><br>
 Replace with: `\1`
 </details>
 
@@ -626,9 +622,9 @@ The ID we extracted can be incorporated into a URL that opens the NCBI gene data
   <summary>Part 5. Using the pattern from Part 4, re-write the replacement string so the Gene ID is used to create a NCBI gene database URL</summary>
 
 Search for: `^.*Name=([^;]+).*$`
-
+<br><br>
 Replace with: `https://www.ncbi.nlm.nih.gov/gene/?term=\1`
-
+<br><br>
 Try out the URLs that were created.
 </details>
 
