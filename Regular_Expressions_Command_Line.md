@@ -67,20 +67,22 @@ sed 's/<find>/<replace>/<options>'
 `<replace>`: text to replace the found text with.
 `<options>`: options for the substitution (`g` for global, `i` for case insensitive). More about this below.
 
-We our going to use a sample FASTA file, `locus1.fasta`, to try `sed`
+We our going to use a sample FASTA file, `locus_1.fasta`, to try `sed`
 
 ```
-$ cat locus1.fasta
->seq_1
+$ cat locus_1.fasta
+>locus_1-seq_1
 ACCGTTATC
->seq_2
+>locus_1-seq_2
 ACCGTTCTC
->seq_3
+>locus_1-seq_3
 ACCGTTGTC
->seq_4
+>locus_1-seq_4
 ACCGTTTTC
->seq_5
+>locus_1-seq_5
 ACCGTT-TC
+>locus_1-seq_6
+ACCGTTNNN
 ```
 
 We will change "seq" in the sequence name lines with "sample".
@@ -88,7 +90,90 @@ We will change "seq" in the sequence name lines with "sample".
 Hint: a good way to get started with the sed line is by entering the outline of the `s` command for sed `'s///'` and then adding the specifics.
 
 ```
-$ sed 's/seq/sample/' locus1.fasta
+$ sed 's/seq/sample/' locus_1.fasta
+>locus_1-sample_1
+ACCGTTATC
+>locus_1-sample_2
+ACCGTTCTC
+>locus_1-sample_3
+ACCGTTGTC
+>locus_1-sample_4
+ACCGTTTTC
+>locus_1-sample_5
+ACCGTT-TC
+>locus_1-sample_6
+ACCGTTNNN
+```
+
+The text of the file is displayed to the screen with the changes made.
+
+Another common way to use `sed` is to remove the found text. This can be done by leaving the replace section blank.
+For example, referring back to the original `locus_1.fasta`, if you want to remove `sample_1` from each header, you can use:
+
+```
+$ sed 's/locus_1-seq_//' locus_1.fasta
+>1
+ACCGTTATC
+>2
+ACCGTTCTC
+>3
+ACCGTTGTC
+>4
+ACCGTTTTC
+>5
+ACCGTT-TC
+>6
+ACCGTTNNN
+```
+
+You may be wonder about re-using our original file if we already changed `seq` to `sample`.
+Run the cat command on `locus_1.fasta` to find out.
+
+`sed` will not change the original file unless you tell it do.
+
+### Redirecting output
+
+In Unix systems you can redirect the output from the screen to a file using the `>` character.
+
+This command will create a new file, `locus1_mod.fasta`, that has the modified text.
+
+```
+sed 's/seq/sample/' locus_1.fasta >locus1_mod.fasta
+```
+
+### Changing original file (with or without a back)
+
+Automatically create a backup:
+```
+sed -i.bak 's/seq/sample/' locus_1.fasta
+```
+
+`locus_1.fasta`: modified files
+`locus_1.fasta.bak`: original file
+
+
+Change the original with no backup (not this format doesn't work on BSD sed on Macs):
+
+```
+sed -i 's/seq/sample/' locus_1.fasta
+```
+
+|Warning: this changes your original file without making a backup, be careful with this and have your own backup available |
+|---|
+
+In the above example, the input text is from the file `locus_1.fasta`. You can also use `sed` with a pipe `|`  to take output from one command as input into sed. Here's a non-biolgical exmaple, but we'll see it again after we learn `grep`.
+
+```
+$ echo "What are you trying to find?" | sed 's/find/replace/'
+What are you trying to replace?
+```
+
+### Global change in a line `/g`
+The `s` command in this form will only find/replace the first occurrence of the search string in each line. You can have it replace every occurrence by adding `g` (for global) to the end of the command.
+
+Compare the difference on `seq_6` with this command:
+```
+$ sed 's/N/-/' locus_1.fasta
 >sample_1
 ACCGTTATC
 >sample_2
@@ -99,57 +184,32 @@ ACCGTTGTC
 ACCGTTTTC
 >sample_5
 ACCGTT-TC
+>sample_6
+ACCGTT-NN
 ```
 
-The text of the file is displayed to the screen with the change made.
-
-What about the original file? Run the cat command on `locus1.fasta` to find out.
-
-It did not change the original file.
-
-### Redirecting output
-
-`sed 's/seq/sample/' locus1.fasta >locus1_mod.fasta`
-
-### Changing original file (with or without a back)
-
-Automatically create a backup:
+and this one that has the `g` global option:
 ```
-sed -i.bak 's/seq/sample/' locus1.fasta
-```
-
-`locus1.fasta`: modified files
-`locus1.fasta.bak`: original file
-
-
-Change the original with no backup (not this format doesn't work on BSD sed on Macs):
-
-```
-sed -i 's/seq/sample/' locus1.fasta
-```
-
-In the above example, the input text is from the file `locus1.fasta`. You can also use `sed` with a pipe `|`  to take output from one command as input into sed. Here's a non-biolgical exmaple, but we'll see it again after we learn `grep`.
-
-```
-$ echo "What are you trying to find?" | sed 's/find/replace/'
-What are you trying to replace?
-```
-
-### Working with multiple files
-
-### Global change in a line `/g`
-The `s` command in this form will only find/replace the first occurrence of the search string in each line. You can have it replace every occurrence by adding `g` (for global) to the end of the command.
-
-```
-echo "I need to go to the library" | sed 's/to/2/g'
-I need 2 go 2 the library
+sed 's/N/-/g' locus_1.fasta
+>sample_1
+ACCGTTATC
+>sample_2
+ACCGTTCTC
+>sample_3
+ACCGTTGTC
+>sample_4
+ACCGTTTTC
+>sample_5
+ACCGTT-TC
+>sample_6
+ACCGTT---
 ```
 
 ### Case insensitive `/i`
 You can make the find portion of the `s` command case insensitive by adding `i` to the end of the `s` command.
 
 ```
-echo "I need to go to the Smithsonian" | sed 's/smithsonian/museum/g'
+echo "I need to go to the Smithsonian" | sed 's/smithsonian/museum/i'
 I need to go to the museum
 ```
 
@@ -182,6 +242,8 @@ The post has the best crosswords at post.
 
 - escape it with `\`: `\/`
 - Use a different special character instead of `/` in the `s` step: `sed 's|||'`
+
+
 
 ## `grep`
 
