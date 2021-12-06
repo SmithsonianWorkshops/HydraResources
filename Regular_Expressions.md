@@ -323,25 +323,22 @@ There are handy pre-defined character classes that can be helpful in searches:
 ```
 \w        "word character": expands to [A-Za-z0-9_] (note: \w considers _ a word character here)
 \d        "digit": expands to [0-9]
-\W        NOT \w: [^A-Za-z0-9_]
-\D        NOT \d: [^0-9]
+\W        NOT \w same as [^A-Za-z0-9_]
+\D        NOT \d same as [^0-9]
 \s        "whitespace" characters: space, tab, newlines etc.
 \S        NOT whitespace
 ```
 
-|These shortcuts don't work in command line tools like `sed` and `grep`, instead use `[[:alnum:]]` (for alphanumeric `[A-Za-z0-9]`), `[^[:alnum:]]` (*not* alphanumeric `[^A-Za-z0-9]`), `[[:digit:]]` (for digits `[0-9]`), `[^[:digit:]]` (for *not* digits `[^0-9]`), see [gnu sed documentation](https://www.gnu.org/software/sed/manual/html_node/Character-Classes-and-Bracket-Expressions.html) for more classes.|
-|---|
+Note: these shortcuts don't work in command line tools like `sed` and `grep`, instead use `[[:alnum:]]` (for alphanumeric `[A-Za-z0-9]`), `[^[:alnum:]]` (*not* alphanumeric `[^A-Za-z0-9]`), `[[:digit:]]` (for digits `[0-9]`), `[^[:digit:]]` (for *not* digits `[^0-9]`), see [gnu sed documentation](https://www.gnu.org/software/sed/manual/html_node/Character-Classes-and-Bracket-Expressions.html) for more classes.
 
-You can make character classes with pre-defined classes:
+You can include pre-defined classes in other character classes:
 
 ```
 [\w$-]  Word characters (letters, numbers, underscores) with the addition of dollar signs and hyphens, note that because the hypen is at the end of the class, it's not considered a range.
 [\d.-]  Digits, decimal points and hyphens
 ```
 
-TODO: example with character classes (using prose sentences?)
-
-#### Match a metacharacter as a literal (escaping) `\`
+### Match a metacharacter as a literal (escaping) `\`
 
 We've started seeing characters that are treated as special characters in the regular expression. How would you match one of these characters if they occur in the text you're matching?
 
@@ -354,7 +351,7 @@ Some of the common metacharacters that should be escaped: `[](){}\-.*?+|^$`
 (so to match a `\` you use `\\` :smile: )
 
 
-#### Exercises: Quantification with pre-defined character classes
+### Exercises: Quantification with pre-defined character classes
 For these exercises we'll be using the last column of a [GFF annotation file](https://github.com/The-Sequence-Ontology/Specifications/blob/master/gff3.md). These files list features of the sequence. The files have nine columns, the ninth column has additional information from the annotation pipeline that does not fit in the columns in the GFF file. These are often contain structured text that we can pull information out of. The one below is this [gff file](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/300/575/GCF_000300575.1_Agabi_varbisH97_2/GCF_000300575.1_Agabi_varbisH97_2_genomic.gff.gz) from a [fungal genome](https://www.ncbi.nlm.nih.gov/genome/858?genome_assembly_id=31528) annotated by NCBI's pipeline.
 
 Test string *(copy into Regex101.com)*:
@@ -376,6 +373,7 @@ ID=cds-XP_006453781.1;Parent=rna-XM_006453718.1;Dbxref=InterPro:IPR001365,JGIDB:
   <summary><code>locus_tag</code> is how NCBI identifies each gene in the genome. Match the text <code>locus_tag=</code> and all alphanumeric characters and underscores that follow.</summary>
 
 `locus_tag=\w+`
+
 Note: this would work too: `locus_tag=[\w]+`, but the `[]` isn't necessary because \w is a predefined character class.
 
 </details>
@@ -386,6 +384,7 @@ Note: this would work too: `locus_tag=[\w]+`, but the `[]` isn't necessary becau
   <summary><code>product</code> is a text description of the gene product. Match <code>product=</code> and all alphanumeric characters, underscores and <b>spaces</b> that follow</summary>
 
 `product=[\w ]+`
+
 Note: you do need the brackets here to include `\w` and the space character, ` `.
 </details>
 
@@ -395,7 +394,6 @@ Note: you do need the brackets here to include `\w` and the space character, ` `
   <summary><code>Parent</code> is an identifier for the an RNA sequence for this annotations. Match <code>Parent=</code> and all alphanumeric characters, underscores, hyphens and periods that follow</summary>
 
 `Parent=[\w.-]+`
-(or `Parent=[\w\.\-]+` if you want to make sure `.` `-` are treated as literals rather than their meta-meaning is some portions of regex)
 
 </details>
 
@@ -411,7 +409,7 @@ Using this method is a great way to select text in a delimited file!
 </details>
 
 
-#### Wildcard: match any character `.`
+### Wildcard: match any character `.`
 
 A wildcard is like a character class that will match any *single* character. The wildcard character is `.` and it does not need to be in brackets. It can be used with quantifiers to select all characters, `.*`
 
@@ -434,7 +432,7 @@ line 2: `CCACGGA`
 line 3: `CGA`
 line 5: `C-GA`
 
-Note in line 2, there are multiple ranges that match `C.*A`. Regex quantifiers by default will make the longest match, this can lead to unexpected results. See the [regex wiki page](https://en.wikipedia.org/wiki/Regular_expression#Lazy_matching) for a bit more info.
+Note in line 2, there are multiple ranges that match `C.*A`. Regex quantifiers by default will make the longest match (called "greedy matching"), this can lead to unexpected results. See the [regex wiki page](https://en.wikipedia.org/wiki/Regular_expression#Lazy_matching) for a bit more info. You can see the difference if you use the "lazy matching" equivalent quantifier: `C.*?A` The `*?` finds the shortest match that matches the string.
 </details>
 
 ---
@@ -497,15 +495,15 @@ In this exercise we're going to take these headers and alter them so that the Sa
 In these headers the Locus and Sample IDs are separated by an underscore `_`. The locus ID always starts with `locus-`. The Sample ID follows the `_` (but does not contain underscores or spaces)
 
 <details>
-  <summary>Part 1: Write a pattern to match the Locus ID</summary>
+  <summary>Part 1: Write a pattern to match the <code>></code> then everything up to and including the underscore <code>_</code></summary>
 
-`locus-\d+`
+`^>.+_`
 </details>
 
 ---
 
 <details>
-  <summary>Part 2: Write a pattern to match the underscore and Sample ID</summary>
+  <summary>Part 2: Write a pattern to match the underscore and everything beyond it</summary>
 
 `_.+$`
 </details>
@@ -515,11 +513,8 @@ In these headers the Locus and Sample IDs are separated by an underscore `_`. Th
 <details>
   <summary>Part 3: Combine the patterns in Parts 1 and 2 to match the two IDs, the underscore and the starting <code>></code></summary>
 
-`^>locus-\d+_.+$`
-
-We can optionally simplify this because now we have anchors of the beginning of the line, the underscore and the end of the line:
-
 `^>.+_.+$`
+
 </details>
 
 ---
@@ -532,14 +527,14 @@ We've seen how regular expressions can match a variety of text rather than the f
 
 Regular expressions allow us to "capture" found text and use it in the replacment. We use parentheses `()` the text we want to save and reuse in the replacement.
 
-Let's try it with our FASTA header line pattern: `^>locus-\d+_.+$`
+Let's try it with our FASTA header line pattern: `^>.+_.+$`
 
-If we add parentheses around a portion of the pattern, say the Locus ID section: `^>(locus-\d+)_.+$` we see in regex101.com that the locus portion is in a different color and labeled "Group 1".
+If we add parentheses around a portion of the pattern, say the Locus ID section: `^>(.+)_.+$` we see in regex101.com that the locus portion is in a different color and labeled "Group 1".
 
 <details>
   <summary>Part 4: Write a pattern to match and separately capture using <code>()</code> the Locus ID and Sample ID</summary>
 
-`^>(locus-\d+)_(.+)$`
+`^>(.+)_(.+)$`
 </details>
 
 ---
@@ -555,7 +550,7 @@ The first captured text is referenced with `\1`, the second with `\2` etc. You c
 <details>
   <summary>Part 5: Using the pattern from Part 4, write the replacement string to have the Sample ID precede the Locus ID with an underscore separating the two. Make sure to add the <code>></code> at the start of the header line</summary>
 
-Search for: `^>(locus-\d+)_(.+)$`
+Search for: `^>(.+)_(.+)$`
 
 Replace with: `>\2_\1`
 </details>
