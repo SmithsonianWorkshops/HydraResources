@@ -11,8 +11,6 @@
 - What we're covering
   - **sed**: for automated editing of files
   - **grep**: for selecting lines from a file
-  - (we're not covering awk, mostly because I don't use it much with regex)
-
 
 ## GNU `sed` and `grep`
 
