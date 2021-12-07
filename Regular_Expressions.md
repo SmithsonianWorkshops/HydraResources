@@ -99,35 +99,62 @@ The power of regular expressions is creating patterns that will match a range of
 
 In the sections below we will be learning those patterns.
 
+### Wildcard: match any character `.`
+
+In our test FASTA file, the first six characters in each sequence are the same, but the seventh is different. How can you match that seventh character when you don't know what it is?
+
+The `.` character has special meaning in regular expressions, it will match *any character*.
+
+Regular expression:
+```
+ACCGTT.TC
+```
+
+It matches all five sequences of the FASTA.
+
+The `.` is the first *metacharacter* we're seeing, rather than meaning match a period character it's special meaning is match any character.
+
+### Match a metacharacter as a literal (escaping) `\`
+
+You might be wondering if `.` means any character, how do a match an actual period character?
+
+You use a backslash `\` in your pattern to identify a character as being a literal match even if it's a metacharacter.
+
+The need for a `\` can depend on the context, sometimes a `.` is just a `.` (for example in a character class that we'll see in a moment), but it's not a problem to escape the character even it's already being treated as a literal.
+
+some of the common metacharacters that should be escaped: `[](){}\-.*?+|^$`
+
+So, to match a `\` you use `\\` :smile:
+
 
 ### Character classes `[]`
 
-The first part of regular expressions we'll look at are **character classes**. This will match one or more characters of a certain type.
+Sometimes we don't want to match any character, but a set of characters. These sets are **character classes**.
 
-Taking the example FASTA file from above, we can match any base in the 7th position with:
+Character classes are defined in square brackets `[]` and list the possible matching characters.
+
+Taking the example FASTA file from above, if we only want to match valid bases, we could use this:
 
 ```
 ACCGTT[ACGT]TC
 ```
 
-We use square brackets `[]` to around a list of characters to define the class
+One thing different about this pattern and when we used the `.` character is the there are six characters `[ACGT]`, representing a pattern for one position.
 
-The brackets are the first *metacharacters* we're seeing. Metacharacters have special meanings in regex as compared to *literals* which are the actual character that was entered.
-
-In the example, the first six characters are literals: `ACCGTT` The pattern for seventh position is: `[ACGT]` (all those characters are the pattern for one position) and then the seventh and eighth positions are the literals: `TC`. So, with regular expressions, multiple characters are used to represent a pattern for one or more positions.
-
-Some examples:
+Some examples other ways to :
 ```
-[acgt]       Matches a single a, c, g or t character (note all possible characters are listed with no spaces, commas etc. between them)
-[A-Z]        Matches any single capital letter (the hyphen - has special meaning here)
+[ACGT]       Matches a single A, C, G or T character (note, don't put no spaces, commas etc. between character in the class)
+[A-Z]        Matches any single capital letter (the hyphen - means range of characters here)
 [A-Za-z]     Matches any single capital or lowercase letter (you can combine more than one range)
 [A-Za-z0-9]  Matches any single capital or lowercase letter or digit
 [A-Z-]       Matches any single capital letter or the hyphen character
-              (If the final character is a -, it won't be used as a range.
-              This also shows combining several ranges with a single character)
+              (If the final character is a -, it won't be used as a range, instead it's a literal.
+              You could also use \-, but it's not necessary.)
+
+Note: regular expressions are case sensitive unless you tell them not to be as we'll see below.
 ```
 
-You can also use the caret symbol (`^`) to find everything *not* in a range. (Note: later in the lesson we'll see another use of `^` outside of a character class to denote the start of a line).
+You can use the caret symbol (`^`) to find everything *not* in a range. (Note: later in the lesson we'll see another use of `^` outside of a character class to denote the start of a line).
 
 `^` examples:
 
@@ -163,7 +190,7 @@ GA-
 ---
 
 <details>
-  <summary>Find sequences that are NOT Glu</summary>
+  <summary>Find sequences with GA, but then have anything other than an A or G</summary>
 
 `GA[^AG]`
 <br><br>
@@ -262,7 +289,7 @@ ACCGTT-?[ACGT]+
 ```
 
 
-#### Excercises: Quantification
+#### Exercises: Quantification
 
 Test string *(copy into Regex101.com)*:
 ````
@@ -318,7 +345,9 @@ Note: we've been using numerators around character classes, but they can also be
 
 ### Pre-defined character classes `\w`, `\d`, `\s` etc.
 
-There are handy pre-defined character classes that can be helpful in searches:
+Many implementations of regular expressions have handy pre-defined character classes that can be helpful in searches:
+
+These are the one used in `PCRE` (Perl Compatible Regular Expressions):
 
 ```
 \w        "word character": expands to [A-Za-z0-9_] (note: \w considers _ a word character here)
@@ -329,8 +358,6 @@ There are handy pre-defined character classes that can be helpful in searches:
 \S        NOT whitespace
 ```
 
-Note: these shortcuts don't work in command line tools like `sed` and `grep`, instead use `[[:alnum:]]` (for alphanumeric `[A-Za-z0-9]`), `[^[:alnum:]]` (*not* alphanumeric `[^A-Za-z0-9]`), `[[:digit:]]` (for digits `[0-9]`), `[^[:digit:]]` (for *not* digits `[^0-9]`), see [gnu sed documentation](https://www.gnu.org/software/sed/manual/html_node/Character-Classes-and-Bracket-Expressions.html) for more classes.
-
 You can include pre-defined classes in other character classes:
 
 ```
@@ -338,35 +365,23 @@ You can include pre-defined classes in other character classes:
 [\d.-]  Digits, decimal points and hyphens
 ```
 
-### Match a metacharacter as a literal (escaping) `\`
-
-We've started seeing characters that are treated as special characters in the regular expression. How would you match one of these characters if they occur in the text you're matching?
-
-You use a backslash `\` in your pattern to identify a character as being a literal match even if it's a metacharacter.
-
-So, if you have the string `[See note below]` and you want to match the `[` you would use `\[` in your regular expression. regex101.com is very helpful in identifying where a character is being interpreted as a metacharacter.
-
-Some of the common metacharacters that should be escaped: `[](){}\-.*?+|^$`
-
-(so to match a `\` you use `\\` :smile: )
-
 
 ### Exercises: Quantification with pre-defined character classes
-For these exercises we'll be using the last column of a [GFF annotation file](https://github.com/The-Sequence-Ontology/Specifications/blob/master/gff3.md). These files list features of the sequence. The files have nine columns, the ninth column has additional information from the annotation pipeline that does not fit in the columns in the GFF file. These are often contain structured text that we can pull information out of. The one below is this [gff file](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/300/575/GCF_000300575.1_Agabi_varbisH97_2/GCF_000300575.1_Agabi_varbisH97_2_genomic.gff.gz) from a [fungal genome](https://www.ncbi.nlm.nih.gov/genome/858?genome_assembly_id=31528) annotated by NCBI's pipeline.
+For these exercises we'll be a [GFF annotation file](https://github.com/The-Sequence-Ontology/Specifications/blob/master/gff3.md). These files list features of the sequence. The files have nine columns, the ninth column has additional information from the annotation pipeline that does not fit in the columns in the GFF file. These are often contain structured text that we can pull information out of. The one below is an excerpt from this [gff file](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/300/575/GCF_000300575.1_Agabi_varbisH97_2/GCF_000300575.1_Agabi_varbisH97_2_genomic.gff.gz) from a [fungal genome](https://www.ncbi.nlm.nih.gov/genome/858?genome_assembly_id=31528) annotated by NCBI's pipeline.
 
 Test string *(copy into Regex101.com)*:
 ```
-ID=cds-XP_006453763.1;Parent=rna-XM_006453700.1;Dbxref=JGIDB:Agabi_varbisH97_2_189137,GeneID:18081018,Genbank:XP_006453763.1;Name=XP_006453763.1;gbkey=CDS;locus_tag=AGABI2DRAFT_189137;product=hypothetical protein;protein_id=XP_006453763.1
-ID=cds-XP_006454979.1;Parent=rna-XM_006454916.1;Dbxref=InterPro:IPR000330,InterPro:IPR001650,InterPro:IPR015194,InterPro:IPR015195,JGIDB:Agabi_varbisH97_2_175561,GeneID:18079446,Genbank:XP_006454979.1;Name=XP_006454979.1;gbkey=CDS;locus_tag=AGABI2DRAFT_175561;product=SNF2 family DNA-dependent ATPase;protein_id=XP_006454979.1
-ID=cds-XP_006453764.1;Parent=rna-XM_006453701.1;Dbxref=JGIDB:Agabi_varbisH97_2_113535,GeneID:18076336,Genbank:XP_006453764.1;Name=XP_006453764.1;gbkey=CDS;locus_tag=AGABI2DRAFT_113535;product=hypothetical protein;protein_id=XP_006453764.1
-ID=cds-XP_006453765.1;Parent=rna-XM_006453702.1;Dbxref=JGIDB:Agabi_varbisH97_2_62215,GeneID:18085933,Genbank:XP_006453765.1;Name=XP_006453765.1;Note=similar to hypothetical protein SNOG_03478;gbkey=CDS;locus_tag=AGABI2DRAFT_62215;product=hypothetical protein;protein_id=XP_006453765.1
-ID=cds-XP_006453766.1;Parent=rna-XM_006453703.1;Dbxref=InterPro:IPR006124,InterPro:IPR011258,JGIDB:Agabi_varbisH97_2_189140,GeneID:18081019,Genbank:XP_006453766.1;Name=XP_006453766.1;Note=similar to phosphoglycerate mutase;gbkey=CDS;locus_tag=AGABI2DRAFT_189140;product=hypothetical protein;protein_id=XP_006453766.1
-ID=cds-XP_006453767.1;Parent=rna-XM_006453704.1;Dbxref=JGIDB:Agabi_varbisH97_2_189141,GeneID:18081020,Genbank:XP_006453767.1;Name=XP_006453767.1;Note=similar to predicted protein;gbkey=CDS;locus_tag=AGABI2DRAFT_189141;product=hypothetical protein;protein_id=XP_006453767.1
-ID=cds-XP_006453768.1;Parent=rna-XM_006453705.1;Dbxref=JGIDB:Agabi_varbisH97_2_147179,GeneID:18079156,Genbank:XP_006453768.1;Name=XP_006453768.1;Note=similar to hypothetical protein CC1G_11406 [Coprinopsis cinerea okayama7#130];gbkey=CDS;locus_tag=AGABI2DRAFT_147179;product=hypothetical protein;protein_id=XP_006453768.1
-ID=cds-XP_006453769.1;Parent=rna-XM_006453706.1;Dbxref=InterPro:IPR006094,JGIDB:Agabi_varbisH97_2_181818,GeneID:18080205,Genbank:XP_006453769.1;Name=XP_006453769.1;Note=similar to predicted protein;gbkey=CDS;locus_tag=AGABI2DRAFT_181818;product=hypothetical protein;protein_id=XP_006453769.1
-ID=cds-XP_006453776.1;Parent=rna-XM_006453713.1;Dbxref=JGIDB:Agabi_varbisH97_2_189147,GeneID:18081023,Genbank:XP_006453776.1;Name=XP_006453776.1;gbkey=CDS;locus_tag=AGABI2DRAFT_189147;product=hypothetical protein;protein_id=XP_006453776.1
-ID=cds-XP_006453778.1;Parent=rna-XM_006453715.1;Dbxref=JGIDB:Agabi_varbisH97_2_113550,GeneID:18076339,Genbank:XP_006453778.1;Name=XP_006453778.1;Note=similar to hypothetical protein;gbkey=CDS;locus_tag=AGABI2DRAFT_113550;product=hypothetical protein;protein_id=XP_006453778.1
-ID=cds-XP_006453781.1;Parent=rna-XM_006453718.1;Dbxref=InterPro:IPR001365,JGIDB:Agabi_varbisH97_2_60662,GeneID:18085877,Genbank:XP_006453781.1;Name=XP_006453781.1;Note=similar to AMP deaminase%2C putative;gbkey=CDS;locus_tag=AGABI2DRAFT_60662;product=hypothetical protein;protein_id=XP_006453781.1
+NW_006267344.1	RefSeq	CDS	3326	3553	.	-	0	ID=cds-XP_006453763.1;Parent=rna-XM_006453700.1;Dbxref=JGIDB:Agabi_varbisH97_2_189137,GeneID:18081018,Genbank:XP_006453763.1;Name=XP_006453763.1;gbkey=CDS;locus_tag=AGABI2DRAFT_189137;product=hypothetical protein;protein_id=XP_006453763.1
+NW_006267344.1	RefSeq	CDS	8427	8432	.	-	0	ID=cds-XP_006454979.1;Parent=rna-XM_006454916.1;Dbxref=InterPro:IPR000330,InterPro:IPR001650,InterPro:IPR015194,InterPro:IPR015195,JGIDB:Agabi_varbisH97_2_175561,GeneID:18079446,Genbank:XP_006454979.1;Name=XP_006454979.1;gbkey=CDS;locus_tag=AGABI2DRAFT_175561;product=SNF2 family DNA-dependent ATPase;protein_id=XP_006454979.1
+NW_006267344.1	RefSeq	CDS	9630	11399	.	+	0	ID=cds-XP_006453764.1;Parent=rna-XM_006453701.1;Dbxref=JGIDB:Agabi_varbisH97_2_113535,GeneID:18076336,Genbank:XP_006453764.1;Name=XP_006453764.1;gbkey=CDS;locus_tag=AGABI2DRAFT_113535;product=hypothetical protein;protein_id=XP_006453764.1
+NW_006267344.1	RefSeq	CDS	11528	11651	.	+	0	ID=cds-XP_006453765.1;Parent=rna-XM_006453702.1;Dbxref=JGIDB:Agabi_varbisH97_2_62215,GeneID:18085933,Genbank:XP_006453765.1;Name=XP_006453765.1;Note=similar to hypothetical protein SNOG_03478;gbkey=CDS;locus_tag=AGABI2DRAFT_62215;product=hypothetical protein;protein_id=XP_006453765.1
+NW_006267344.1	RefSeq	CDS	13993	14057	.	+	2	ID=cds-XP_006453766.1;Parent=rna-XM_006453703.1;Dbxref=InterPro:IPR006124,InterPro:IPR011258,JGIDB:Agabi_varbisH97_2_189140,GeneID:18081019,Genbank:XP_006453766.1;Name=XP_006453766.1;Note=similar to phosphoglycerate mutase;gbkey=CDS;locus_tag=AGABI2DRAFT_189140;product=hypothetical protein;protein_id=XP_006453766.1
+NW_006267344.1	RefSeq	CDS	16712	16939	.	-	0	ID=cds-XP_006453767.1;Parent=rna-XM_006453704.1;Dbxref=JGIDB:Agabi_varbisH97_2_189141,GeneID:18081020,Genbank:XP_006453767.1;Name=XP_006453767.1;Note=similar to predicted protein;gbkey=CDS;locus_tag=AGABI2DRAFT_189141;product=hypothetical protein;protein_id=XP_006453767.1
+NW_006267344.1	RefSeq	CDS	17976	18025	.	+	2	ID=cds-XP_006453768.1;Parent=rna-XM_006453705.1;Dbxref=JGIDB:Agabi_varbisH97_2_147179,GeneID:18079156,Genbank:XP_006453768.1;Name=XP_006453768.1;Note=similar to hypothetical protein CC1G_11406 [Coprinopsis cinerea okayama7#130];gbkey=CDS;locus_tag=AGABI2DRAFT_147179;product=hypothetical protein;protein_id=XP_006453768.1
+NW_006267344.1	RefSeq	CDS	20031	20175	.	-	0	ID=cds-XP_006453769.1;Parent=rna-XM_006453706.1;Dbxref=InterPro:IPR006094,JGIDB:Agabi_varbisH97_2_181818,GeneID:18080205,Genbank:XP_006453769.1;Name=XP_006453769.1;Note=similar to predicted protein;gbkey=CDS;locus_tag=AGABI2DRAFT_181818;product=hypothetical protein;protein_id=XP_006453769.1
+NW_006267344.1	RefSeq	CDS	34799	35622	.	+	2	ID=cds-XP_006453776.1;Parent=rna-XM_006453713.1;Dbxref=JGIDB:Agabi_varbisH97_2_189147,GeneID:18081023,Genbank:XP_006453776.1;Name=XP_006453776.1;gbkey=CDS;locus_tag=AGABI2DRAFT_189147;product=hypothetical protein;protein_id=XP_006453776.1
+NW_006267344.1	RefSeq	CDS	40245	40511	.	+	2	ID=cds-XP_006453778.1;Parent=rna-XM_006453715.1;Dbxref=JGIDB:Agabi_varbisH97_2_113550,GeneID:18076339,Genbank:XP_006453778.1;Name=XP_006453778.1;Note=similar to hypothetical protein;gbkey=CDS;locus_tag=AGABI2DRAFT_113550;product=hypothetical protein;protein_id=XP_006453778.1
+NW_006267344.1	RefSeq	CDS	46894	47138	.	-	0	ID=cds-XP_006453781.1;Parent=rna-XM_006453718.1;Dbxref=InterPro:IPR001365,JGIDB:Agabi_varbisH97_2_60662,GeneID:18085877,Genbank:XP_006453781.1;Name=XP_006453781.1;Note=similar to AMP deaminase%2C putative;gbkey=CDS;locus_tag=AGABI2DRAFT_60662;product=hypothetical protein;protein_id=XP_006453781.1
 ```
 
 <details>
@@ -380,17 +395,7 @@ Note: this would work too: `locus_tag=[\w]+`, but the `[]` isn't necessary becau
 ---
 
 <details>
-  <summary><code>product</code> is a text description of the gene product. Match <code>product=</code> and all alphanumeric characters, underscores and <b>spaces</b> that follow</summary>
-
-`product=[\w ]+`
-<br><br>
-Note: you do need the brackets here to include `\w` and the space character, ` `.
-</details>
-
----
-
-<details>
-  <summary><code>Parent</code> is an identifier for the an RNA sequence for this annotations. Match <code>Parent=</code> and all alphanumeric characters, underscores, hyphens and periods that follow</summary>
+  <summary><code>Parent</code> is an identifier for the an RNA sequence for this annotations. Match <code>Parent=</code> and all alphanumeric characters, underscores <code>_</code>, hyphens <code>-</code>, and periods <code>.</code>that follow</summary>
 
 `Parent=[\w.-]+`
 </details>
@@ -398,41 +403,39 @@ Note: you do need the brackets here to include `\w` and the space character, ` `
 ---
 
 <details>
-  <summary>You might have noticed that each section of the line is separated by a <code>;</code>. You can use <code>[^;]+</code> to select all text before the next <code>;</code>. Use that method to select <code>Dbxref=</code> and all text up to the next <code>;</code></summary>
+  <summary>You might have noticed that each section of the line is separated by a <code>;</code>. One common method with text structured this way is to select all text that is not that known delimiter character. The advantage of this is that you don't need to know every type of character, just the ending character. Use this method to select <code>Dbxref=</code> and all text up to the next <code>;</code></summary>
 
 `Dbxref=[^;]+`
 <br><br>
-Using this method is a great way to select text in a delimited file!
-</details>
-
-
-### Wildcard: match any character `.`
-
-A wildcard is like a character class that will match any *single* character. The wildcard character is `.` and it does not need to be in brackets. It can be used with quantifiers to select all characters, `.*`
-
-Test string *(copy into Regex101.com)*:
-```
-GAGGAAGATG
-GACCACGGAG
-GAGGACGATG
-GAGG-TGATG
-GAG-C-GATG
-```
-
-<details>
-  <summary>Match <i>the portions</i> of the lines that start with C and end with A, regardless of what's between them.</summary>
-
-`C.*A`
-<br><br>
-Matches:
-line 2: `CCACGGA`<br>
-line 3: `CGA`<br>
-line 5: `C-GA`
-<br><br>
-Note in line 2, there are multiple ranges that match `C.*A`. Regex quantifiers by default will make the longest match (called "greedy matching"), this can lead to unexpected results. See the [regex wiki page](https://en.wikipedia.org/wiki/Regular_expression#Lazy_matching) for a bit more info. You can see the difference if you use the "lazy matching" equivalent quantifier: `C.*?A` The `*?` finds the shortest match that matches the string.
+If you tried this is may seem like it work, but it actually selects everything up to the <i>last</i> `;`:
+<br>
+`Dbxref=.+;`
+<br>
+This is a common pitfall in regular expressions and in a moment we'll look at why it does this (`+` is a greedy quantifier, which is what they're called, not a value judgement).
 </details>
 
 ---
+
+### Greedy quantifiers
+
+In the note about the final exercise, we noted that if you use `Dbxref=.+;` in the GFF example, you capture from `DBxref=` to the *last* semicolon in the line rather than the next semicolon. Regex quantifiers by default will make the longest match (called "greedy matching"), this can lead to unexpected results. In the pattern matching, when the `.+` is reached, the match extends to the end of the and then works **backwards** until a `;` is reached. This leads to the longest match being retuned.
+
+To avoid this, you can use a "lazy quantifier" with is `+?` or `*?`. Another approach that works well is to use `[^;]+` which also finds the shortest match. Try these quantifiers and see how the matched text changes.
+
+See the [regex wiki page](https://en.wikipedia.org/wiki/Regular_expression#Lazy_matching) for more info on this.
+
+## Using substitution to extract information from a text string
+
+So far in working with these test strings we have been matching portions of text. A common process for text files is to use a regular expression to leave a relevant portion of a line, and remove the surrounding text.
+
+In the last exercise working with the GFF file we matched the value of `Dbxref=` with `Dbxref=[^;]`. How can we take the test string and remove all the surrounding text?
+
+We'll be using the Substitution feature in regex101.com. This can be selected by choosing `Substitution` in the `FUNCTION` section on the left pane of the site.
+
+![Choose Substitution from Function](images/Substitution.png)
+
+TODO: Finish this example, then add fasta headers and then anchors/assertions
+
 
 ### Anchors/assertions `^`, `$`, `\b`
 
