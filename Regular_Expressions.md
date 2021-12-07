@@ -181,9 +181,9 @@ Note that this finds the <code>-</code> as well as A and G.
 ---
 
 <details>
-  <summary>How would you modify the pattern to find any base in the third position to match lowercase or uppercase bases?</summary>
+  <summary>How would you modify the pattern to find lowercase or uppercase bases in the third position?</summary>
 
-`[Gg][Aa][ACGTacgt]`
+`GA[ACGTacgt]`
 <br><br>
 Or, just invoke case insensitive in the "RegEx options"
 </details>
