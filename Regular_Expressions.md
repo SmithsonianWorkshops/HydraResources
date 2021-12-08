@@ -430,9 +430,18 @@ So far in working with these test strings we have been matching portions of text
 
 In the last exercise working with the GFF file we matched the value of `Dbxref=` with `Dbxref=[^;]`. How can we take the test string and remove all the surrounding text?
 
-We'll be using the Substitution feature in regex101.com. This can be selected by choosing `Substitution` in the `FUNCTION` section on the left pane of the site.
+We'll be using the "Substitution" feature in regex101.com. This can be selected by choosing `Substitution` in the `FUNCTION` section on the left pane of the site.
 
 ![Choose Substitution from Function](images/Substitution.png)
+
+This shows a new Substitution pane one the site. The text you enter will replace what was found by the Regular Expression.
+
+If you have the gff example in the "Test string" section and `Dbxref=` as the Regular Expression, you could replace that found text with something else, like `Database_cross_ref=`.
+
+If you leave the Substitution text box empty, the found text will be removed.
+
+
+
 
 TODO: Finish this example, then add fasta headers and then anchors/assertions
 
@@ -449,31 +458,18 @@ $     End of a line
 \b    Word boundary: a word character (\w) next to a word character \W
 ```
 
-Test string *(copy into Regex101.com)*:
-```
-GAGGAAGAG
-GAGGACGAG
-GAGG-TGAG
-GAG-AGGAG
-GAG---GAG
-```
+Test string:
+*Reuse the gff test string from above*
 
 <details>
-  <summary>Find entire lines that contain only nucleotides, no gaps</summary>
+  <summary>Match from the beginning of each line to the first tab character (Use <code>\t</code> for tab)</summary>
 
-`^[ACGT]+$`
-<br>
-Matches line 1 and 2.
-<br><br>
-The following would work too, although it might find invalid nucleotide characters in the sequence:
-<br>
-`^[^-]+$`
+`^[^\t]+`
 <br><br>
 Note the two meanings of `^`. The first one is to anchor the beginning of the line and the second inside the brackets means not in a class.
 <br><br>
-The following would work too, although it would also match invalid nucleotide characters if they were in the sequence:
-<br>
-`^\w+$`
+`^.+?\t`
+<br>gives almost the same results, it uses a lazy quantifier `+?`, which we talked about briefly above.
 </details>
 
 ---
