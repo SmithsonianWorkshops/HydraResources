@@ -104,6 +104,10 @@ Next, exit the editor by pressing the control key and x: `ctrl`+`x`
 
 For the analysis steps of ipyrad we will create job files and submit the jobs to the cluster.
 
+Job files are text file that give instructions to the cluster about your analysis.
+
+TODO: Add how to create this with the qsub generator?
+
 `ipyrad_step1.job`:
 
 ```
@@ -133,8 +137,14 @@ echo = `date` job $JOB_NAME done
 ```
 
 Then use the command `qsub ipyrad_step1.job` to run this job.
+
 It will run on 8 CPUs (defined by `-pe mthread 8`).
-We've added `-c $NSLOTS` to the `ipyrad` command. This is **essential** for running on Hydra, it limits ipyrad to only used the 4 CPUs we've requested. Without this, ipyrad will use all the CPUs on the compute node that the job runs on.
+
+We've added `-c $NSLOTS` to the `ipyrad` command. This is **essential** for running on Hydra because it limits ipyrad to only used the 8 CPUs we've requested. Without this, ipyrad will use all the CPUs on the compute node that the job runs on.
+
+You'll notice that the formatting of the job files are almost identical for all the steps. The main thing that changes is the Step specified in the `ipyrad` command. This is step 1, so we have `-s 1`.
+
+**Output**
 
 This command produces a directory `iptest_fastqs/` that has the de-multiplexed fastq files and `iptest.json` which is how ipyrad tracks the analyses done in your project.
 
@@ -184,6 +194,8 @@ Like the `ipyrad_step1.job` file, this runs on 8 CPUs (`-pe mthread 8`) and we s
 
 You submit this run with the command: `qsub ipyrad_step2.job`
 
+**Output**
+
 This command produces a directory `iptest_edits/` that has the filtered fastq files. This step also updates the exisitng `iptest.json` file with information about this step.
 
 Again, you can get a report of this step by running this command from the login node: `ipyrad -p params-iptest.txt -r`
@@ -223,6 +235,8 @@ echo = `date` job $JOB_NAME done
 
 Submit the jobs with: `qsub ipyrad_step3.job`
 
+**Output**
+
 Step 3 creates a directory `iptest_clust_0.85/` which contains each cluster for each fastq file.
 
 Again, we can get a summary of the step by running `ipyrad -p params-iptest.txt -r` from the login node.
@@ -260,6 +274,8 @@ echo = `date` job $JOB_NAME done
 ```
 
 Submit the job with: `qsub ipyrad_step4.job`
+
+**Output**
 
 Step 4 doesn't create a new output directory, but adds a statistics output file, `s4_joint_estimate.txt`, to the existing `iptest_clust_0.85/` directory.
 
@@ -300,6 +316,8 @@ echo = `date` job $JOB_NAME done
 
 Submit the job with: `qsub ipyrad_step5.job`.
 
+**Output**
+
 This step creates the directory `iptest_consens/` which has the consensus sequences.
 
 Like before, you can get a report of this step by running: `ipyrad -p params-iptest.txt -r`
@@ -337,6 +355,8 @@ echo = `date` job $JOB_NAME done
 ```
 
 Submit the job with `qsub ipyrad_step6.job`
+
+**Output**
 
 Output from this step is in the directory `iptest_across/`.
 
@@ -377,6 +397,8 @@ echo = `date` job $JOB_NAME done
 ```
 
 Start this step with `qsub ipyrad_step7.job`
+
+**Output**
 
 This creates the directory `iptest_outfiles` which has your output files in various formats.
 
