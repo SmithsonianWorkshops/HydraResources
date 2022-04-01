@@ -85,9 +85,9 @@ p, s, l                        ## [27] [output_formats]: Output formats (see do$
 ^X Exit      ^J Justify   ^W Where Is  ^V Next Page ^U UnCut Text^T To Spell
 ```
 
-When you're done with those edits save your changes press and hold the control key while you press `o`: `ctrl`+`o`
+When you're done with those edits save your changes press and hold the control key while you press o: `ctrl`+`o`
 Then press the `enter` key to save the file.
-Next, exit the editor by pressing the control key and `x`: `ctrl`+`x`
+Next, exit the editor by pressing the control key and x: `ctrl`+`x`
 
 ## [Step 1: Demultiplex the raw data files](https://ipyrad.readthedocs.io/en/latest/tutorial_intro_cli.html#step-1-demultiplex-the-raw-data-files)
 
@@ -99,9 +99,9 @@ For the analysis steps of ipyrad we will create job files and submit the jobs to
 # /bin/sh
 # ----------------Parameters---------------------- #
 #$ -S /bin/sh
-#$ -pe mthread 4
+#$ -pe mthread 8
 #$ -q sThC.q
-#$ -l mres=32G,h_data=8G,h_vmem=8G
+#$ -l mres=64G,h_data=8G,h_vmem=8G
 #$ -cwd
 #$ -j y
 #$ -N ipyrad_step1
@@ -122,7 +122,7 @@ echo = `date` job $JOB_NAME done
 ```
 
 Then use the command `qsub ipyrad_step1.job` to run this job.
-It will run on 4 CPUs (defined by `-pe mthread 4`).
+It will run on 8 CPUs (defined by `-pe mthread 8`).
 We've added `-c $NSLOTS` to the `ipyrad` command. This is **essential** for running on Hydra, it limits ipyrad to only used the 4 CPUs we've requested. Without this, ipyrad will use all the CPUs on the compute node that the job runs on.
 
 This command produces a directory `iptest_fastqs/` that has the de-multiplexed fastq files and `iptest.json` which is how ipyrad tracks the analyses done in your project.
@@ -147,9 +147,9 @@ The job file for step 2 is almost the same as step one, but we've changed the na
 # /bin/sh
 # ----------------Parameters---------------------- #
 #$ -S /bin/sh
-#$ -pe mthread 4
+#$ -pe mthread 8
 #$ -q sThC.q
-#$ -l mres=32G,h_data=8G,h_vmem=8G
+#$ -l mres=64G,h_data=8G,h_vmem=8G
 #$ -cwd
 #$ -j y
 #$ -N ipyrad_step2
@@ -169,7 +169,7 @@ ipyrad -p params-iptest.txt -s 2 -c $NSLOTS
 echo = `date` job $JOB_NAME done
 ```
 
-Like the `ipyrad_step1.job` file, this runs on 4 CPUs (`-pe mthread 4`) and we specify in the `ipyrad` command that it should only use 4 CPUs with `-c $NSLOTS`
+Like the `ipyrad_step1.job` file, this runs on 8 CPUs (`-pe mthread 8`) and we specify in the `ipyrad` command that it should only use 4 CPUs with `-c $NSLOTS`
 
 You submit this run with the command: `qsub ipyrad_step2.job`
 
@@ -211,8 +211,6 @@ echo = `date` job $JOB_NAME done
 ```
 
 Submit the jobs with: `qsub ipyrad_step3.job`
-
-As this can be a time consuming stage, we're going to increase the number of  CPUs to 8 (`-pe mthread 8`). Since we have wisely used `$NSLOTS` in the the `ipyrad` command, we don't need to manually change the number of CPUs specified in the `ipyrad` command, the value 8 will be substituted when we submit the job. Also note that we had to change the `-l` line because of the increased memory reserved for 8 CPUs (`-l mres=64G,h_data=8G,h_vmem=8G`).
 
 Step 3 creates a directory `iptest_clust_0.85/` which contains each cluster for each fastq file.
 
