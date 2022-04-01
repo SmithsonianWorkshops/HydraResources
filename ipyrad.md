@@ -2,7 +2,7 @@
 
 These are instructions for running the [ipyrad "Introductory tutorial"](https://ipyrad.readthedocs.io/en/latest/tutorial_intro_cli.html) on Hydra. The tutorial goes through the ipyrad workflow using a small simulated dataset.
 
-We recommend referring to the [ipyrad "Introductory tutorial"](https://ipyrad.readthedocs.io/en/latest/tutorial_intro_cli.html) for additional details on each step. The focus of this  material is to show examples of running the ipyrad steps on Hydra which can be used as a template for submitting job files to the cluster for your analyses.
+This tutorial is meant to work in conjunction with the [ipyrad "Introductory tutorial"](https://ipyrad.readthedocs.io/en/latest/tutorial_intro_cli.html) which provides additional details for each step. The focus of this  material is to show examples of running the steps on Hydra. What is shown here can be used as a template for submitting job files to the cluster for your analyses.
 
 ## [Getting the data](https://ipyrad.readthedocs.io/en/latest/tutorial_intro_cli.html#getting-the-data)
 
@@ -10,23 +10,25 @@ These steps should be run directly on the login node.
 
 Make a tutorial directory:
 
+*Replace `USER` with your Hydra username.*
+
 ```
 cd /scratch/genomics/USER
 mkdir ipyrad-tutorial
 cd ipyrad-tutorial
 ```
 
-Download and expand the sample files:
+Download (`curl`) and expand (`tar`) the sample files:
 
 ```
 curl -LkO https://eaton-lab.org/data/ipsimdata.tar.gz
 tar -xvzf ipsimdata.tar.gz
 ```
 
-The two files used from the sample data are: `./ipsimdata/rad_example_R1_.fastq.gz` and `./ipsimdata/rad_example_barcodes.txt`
+This creates a new `ipsimdata/` directory. It contains several files, the ones in this tutorial are: `./ipsimdata/rad_example_R1_.fastq.gz` and `./ipsimdata/rad_example_barcodes.txt`
 
-`rad_example_R1_.fastq.gz` is simulated un-paired 100bp illumina reads.
-`rad_example_barcodes.txt` lists each specimen and the barcode used.
+- `rad_example_R1_.fastq.gz` is simulated un-paired 100bp illumina reads.
+- `rad_example_barcodes.txt` lists each specimen and the barcode used.
 
 ## [Create an ipyrad params file](https://ipyrad.readthedocs.io/en/latest/tutorial_intro_cli.html#create-an-ipyrad-params-file)
 
@@ -39,13 +41,20 @@ ipyrad -n iptest
 
 This creates the file `params-iptest.txt` in your current directory:
 
-We'll edit this file to specify the reads file (`rad_example_R1_.fastq.gz`) and barcod file (`rad_example_barcodes.txt`)
+We'll edit this file to specify the reads file (`rad_example_R1_.fastq.gz`) and barcode file (`rad_example_barcodes.txt`)
+
+`nano` is a text editor you can run on Hydra
 
 ```
 nano params-iptest.txt
 ```
 
-With nano, edit the lines labelled `[2]` and `[3]` with the location of the read and barcode files.
+With nano, use the arrow keys on the keyboard to edit the lines labelled `[2]` and `[3]` with the location of the read and barcode files.
+
+- At the beginning of the line labelled `[2]` enter: `./ipsimdata/rad_example_R1_.fastq.gz`
+- At the beginning of the line labelled `[3]` enter: `./ipsimdata/rad_example_barcodes.txt`
+
+When you've made those changes, the nano screen will look something like this:
 
 ```
 GNU nano 2.3.1           File: params-iptest.txt                    Modified
@@ -85,8 +94,10 @@ p, s, l                        ## [27] [output_formats]: Output formats (see do$
 ^X Exit      ^J Justify   ^W Where Is  ^V Next Page ^U UnCut Text^T To Spell
 ```
 
-When you're done with those edits save your changes press and hold the control key while you press o: `ctrl`+`o`
-Then press the `enter` key to save the file.
+To save your changes, press and hold the control key while you press o: `ctrl`+`o`
+
+Then, press the `enter` key to save the file.
+
 Next, exit the editor by pressing the control key and x: `ctrl`+`x`
 
 ## [Step 1: Demultiplex the raw data files](https://ipyrad.readthedocs.io/en/latest/tutorial_intro_cli.html#step-1-demultiplex-the-raw-data-files)
