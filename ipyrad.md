@@ -190,7 +190,7 @@ ipyrad -p params-iptest.txt -s 2 -c $NSLOTS
 echo = `date` job $JOB_NAME done
 ```
 
-Like the `ipyrad_step1.job` file, this runs on 8 CPUs (`-pe mthread 8`) and we specify in the `ipyrad` command that it should only use 4 CPUs with `-c $NSLOTS`
+Like the `ipyrad_step1.job` file, this runs on 8 CPUs (`-pe mthread 8`) and we specify in the `ipyrad` command that it should only use 8 CPUs with `-c $NSLOTS`
 
 You submit this run with the command: `qsub ipyrad_step2.job`
 
@@ -199,11 +199,12 @@ You submit this run with the command: `qsub ipyrad_step2.job`
 This command produces a directory `iptest_edits/` that has the filtered fastq files. This step also updates the exisitng `iptest.json` file with information about this step.
 
 Again, you can get a report of this step by running this command from the login node: `ipyrad -p params-iptest.txt -r`
+
 ipyrad will use the `iptest.json` file to determine the steps you've run and same basic statistics.
 
 ## [Step 3: clustering within-samples](https://ipyrad.readthedocs.io/en/latest/tutorial_intro_cli.html#step-3-clustering-within-samples)
 
-ipyrad uses a clustering algorithm to take all of your reads and lumps them into putative loci based on sequence similarity. By default this clustering is done at the `0.85` level of similarity. This level can be adjusted in `params-iptest.txt` file.
+ipyrad uses a clustering algorithm to take all the reads for *each sample* and lumps them into putative loci based on sequence similarity. By default this clustering is done at the `0.85` level of similarity. This level can be adjusted in `params-iptest.txt` file.
 
 `ipyrad_step3.job`:
 
@@ -413,3 +414,9 @@ A final statistics file is viewable in the `iptest_outfiles` directory
 ```
 cat iptest_outfiles/iptest_stats.txt
 ```
+
+## Next steps
+
+From this we hope that you have an understanding to run ipyrad commands on Hydra.
+
+A good next-step is to go through the ipyrad (Advanced tutorial)[https://ipyrad.readthedocs.io/en/latest/tutorial_advanced_cli.html] which covers branching and analyses when there's a reference genome. Branching allows you to re-use existing steps when trying variations on analysis rather than returning to the first step every time.
