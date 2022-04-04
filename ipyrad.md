@@ -114,7 +114,7 @@ There are two ways to access the page depending on how you are connected to the 
 
 - If you are using a computer directly connected to the network or have VPN connection, go to: https://hydra-adm01.si.edu/tools/QSubGen/
 - If you are using the Smithsonian Telework website, go to the main telework page, https://telework.si.edu, and then enter https://hydra-adm01.si.edu/tools/QSubGen/ in the text box labeled "Enter an internal resource," then press the enter/return key on your keyboard.
-<img src="images/telework-int-resource.png" width="300" alt="internal page on telework site">
+<img src="images/telework-int-resource.png" width="350" alt="internal page on telework site">
 
 Next specify the following options:
 
@@ -134,10 +134,10 @@ Next specify the following options:
 - Email: Do not change
 
 You page should now look like this:
-<img src="images/qsub-generator.png" width="500" alt="QSub Generation utility for step1">
+<img src="images/qsub-generator.png" width="750" alt="QSub Generation utility for step1">
 
 When you have finished entering that information, click the "Check if OK" button at the bottom of the page. This will alert you if some common errors are present. If there are no errors, you'll see "Your job will request 8 CPUs, 6d of CPU time and a total of 64GB of memory."
-<img src="images/check-if-ok.png" width="300" alt="Button to check that script is ok">
+<img src="images/check-if-ok.png" width="500" alt="Button to check that script is ok">
 
 Then, save the file to your computer using the "Save it" file. The job file, ipyard_step1.job, will be saved to your computer, typically in the Downloads directory.
 
@@ -147,11 +147,11 @@ The way we'll show is using the free cloud transfer utility https://send.vis.ee/
 
 1. Open https://send.vis.ee/ in a browser
 1. Drag yourjob file to the area of the window that says "Drag and drop files"
-<img src="images/select-files.png" width="250" alt="Drag file">
+<img src="images/select-files.png" width="300" alt="Drag file">
 1. Then, click the "Upload" button
-<img src="images/upload.png" width="250" alt="Click to upload">
+<img src="images/upload.png" width="300" alt="Click to upload">
 1. Click the "Copy Link" button to copy the URL to your file into your computer's clipboard.
-<img src="images/copy.png" width="250" alt="Click to copy">
+<img src="images/copy.png" width="300" alt="Click to copy">
 
 The next steps are done on the login node of Hydra in your `ipyrad-tutorial` directory:
 
