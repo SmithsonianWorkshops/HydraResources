@@ -134,6 +134,7 @@ Next specify the following options:
 - Email: Do not change
 
 You page should now look like this:
+
 <img src="images/qsub-generator.png" width="750" alt="QSub Generation utility for step1">
 
 When you have finished entering that information, click the "Check if OK" button at the bottom of the page. This will alert you if some common errors are present. If there are no errors, you'll see "Your job will request 8 CPUs, 6d of CPU time and a total of 64GB of memory."
