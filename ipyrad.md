@@ -49,10 +49,10 @@ We'll edit this file to specify the reads file (`rad_example_R1_.fastq.gz`) and 
 nano params-iptest.txt
 ```
 
-With nano, use the arrow keys on the keyboard to edit the lines labelled `[2]` and `[3]` with the location of the read and barcode files.
+With nano, use the arrow keys on the keyboard to edit the lines labeled `[2]` and `[3]` with the location of the read and barcode files.
 
-- At the beginning of the line labelled `[2]` enter: `./ipsimdata/rad_example_R1_.fastq.gz`
-- At the beginning of the line labelled `[3]` enter: `./ipsimdata/rad_example_barcodes.txt`
+- At the beginning of the line labeled `[2]` enter: `./ipsimdata/rad_example_R1_.fastq.gz`
+- At the beginning of the line labeled `[3]` enter: `./ipsimdata/rad_example_barcodes.txt`
 
 When you've made those changes, the nano screen will look something like this:
 
@@ -106,11 +106,97 @@ For the analysis steps of ipyrad we will create job files and submit the jobs to
 
 Job files are text file that give instructions to the cluster about your analysis.
 
-TODO: Add how to create this with the qsub generator?
+### Creating the job file
 
-`ipyrad_step1.job`:
+The "QSub Generation Utility" is a webpage hosted on Hydra for creating job files.
+
+There are two ways to access the page depending on how you are connected to the Smithsonian network.
+
+- If you are using a computer directly connected to the network or have VPN connection, go to: https://hydra-adm01.si.edu/tools/QSubGen/
+- If you are using the Smithsonian Telework website, go to the main telework page, https://telework.si.edu, and then enter https://hydra-adm01.si.edu/tools/QSubGen/ in the text box labeled "Enter an internal resource," then press the enter/return key on your keyboard.
+![internal page on telework site](images/telework-int-resource.png)
+
+Next specify the following options:
+
+- CPU time: Choose "medium" from the dropdown.
+- Memory: Change to 8
+- "Select the type of PE:" Choose "multi-thread"
+- Number of CPUs: Enter 8
+- "Select the job's shell": Leave as "sh"
+- "Select which modules to add": enter "bioinformatics/ipyrad"
+- "Job specific commands": enter "ipyrad -p params-iptest.txt -s 1 -c $NSLOTS"
+- "Job Name": Enter ipyrad_step1
+- "Log File Name": Confirm that this is set to "ipyrad_step1.log"
+- "Err File Name": Do not change
+- "Change to CWD": Leave checked
+- "Join output & error files": Leave checked
+- "Send email notifications": Leave unchecked
+- Email: Do not change
+
+Your page should look like this:
+![QSub Generation utility for step1](images/qsub-generator.png)
+
+When you have finished entering that information, click the "Check if OK" button at the bottom of the page. This will alert you if some common errors are present. If there are no errors, you'll see "Your job will request 8 CPUs, 6d of CPU time and a total of 64GB of memory."
+![Button to check that script is ok](images/check-if-ok.png)
+
+Then, save the file to your computer using the "Save it" file. The job file, ipyard_step1.job, will be saved to your computer, typically in the Downloads directory.
+
+The final step in the process is transferring the file to Hydra.
+
+The way we'll show is using the free cloud transfer utility https://send.vis.ee/
+
+1. Open https://send.vis.ee/ in a browser
+1. Drag yourjob file to the area of the window that says "Drag and drop files"
+![Drag file](images/select-files.png)
+1. Then, click the "Upload" button
+![Click to upload](images/upload.png)
+1. Click the "Copy Link" button to copy the URL to your file into your computer's clipboard.
+![Click to copy](images/copy.png)
+
+The next steps are done on the login node of Hydra in your `ipyrad-tutorial` directory:
 
 ```
+module load tools/ffsend
+ffdownload <PASTE YOUR send.vis.ee URL>
+```
+
+**Make sure to replace `<PASTE YOUR send.vis.ee URL>` with the url that you copied from the website**
+
+You'll get the message `Download complete` if it worked and something like `error: failed to follow share URL, ignoring` if it failed. If the download failed, try re-uploading the file to https://send.vis.ee and try again.
+
+Confirm the file is downloaded by viewing it with:
+
+```
+cat ipyrad_step1.job
+```
+
+Before you use the job file there's one change to make to it.
+
+Edit it with nano:
+
+```
+nano ipyrad_step1.job
+```
+
+The change this line to specify which version of ipyrad to use:
+
+```
+module load bioinformatics/ipyrad
+```
+
+To:
+
+```
+module load bioinformatics/ipyrad/0.9.74
+```
+
+Save and exit nano with `ctrl`+`o`, then the `enter` key, then `ctrl`+`x`
+
+Finally, confirm that your job file matches this one using the cat command:
+
+```
+cat ipyrad_step1.job
+
 # /bin/sh
 # ----------------Parameters---------------------- #
 #$ -S /bin/sh
@@ -161,6 +247,15 @@ If you get an error like `-bash: ipyrad: command not found`, you need to load th
 This step trims Illumina adapters and does other quality trimming. Unlike some programs, you are not required to do any trimming of your fastq files before you start ipyrad.
 
 The job file for step 2 is almost the same as step one, but we've changed the name (`-N`) and log file (`-o`) as well as the ipyrad command to run step 2 (`-s 2`):
+
+You can make a copy of the Step 1 file and make these edit using `nano` or you can make the change on the QSub Generation Utility and upload the new file.
+
+To copy and edit the file already on Hydra follow these steps:
+
+1. Copy the file: `cp ipyrad_step1.job ipyrad_step2.job`
+1. Edit the new file: `nano ipyrad_step2.job`
+1. Refer to the contents of ipyrad_step2.job below to changes to the `-N`, `-o` and `ipyrad` lines
+1. Save and exit nano with `ctrl`+`o`, then the `enter` key, then `ctrl`+`x`
 
 `ipyrad_step2.job`:
 
