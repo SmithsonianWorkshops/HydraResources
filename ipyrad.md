@@ -114,7 +114,7 @@ There are two ways to access the page depending on how you are connected to the 
 
 - If you are using a computer directly connected to the network or have VPN connection, go to: https://hydra-adm01.si.edu/tools/QSubGen/
 - If you are using the Smithsonian Telework website, go to the main telework page, https://telework.si.edu, and then enter https://hydra-adm01.si.edu/tools/QSubGen/ in the text box labeled "Enter an internal resource," then press the enter/return key on your keyboard.
-![internal page on telework site](images/telework-int-resource.png)
+<img src="images/telework-int-resource.png" width="250" alt="internal page on telework site">
 
 Next specify the following options:
 
