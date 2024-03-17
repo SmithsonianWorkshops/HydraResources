@@ -9,30 +9,26 @@
 
     You will be prompted to enter your password. 
 
-    | Very important: never login to the head node (hydra-4) to submit jobs. |
-    | --- |
-
 2. **If I forgot my password or locked my account?**  
-    Use the password reset webpage: https://hydra-adm01.si.edu/ssp/?action=sendtoken
+    Use the password reset webpage: https://galaxy.si.edu/ssp/?action=sendtoken
 
 3. **How do I change my password?**  
-You need to change your password every 90 days.  
+
+You need to change your password every 180 days.  
+    You can also use the password change website: https://galaxy.si.edu/ssp/index.php
 
     a. Login to hydra-login01.si.edu: `ssh myusername@hydra-login01.si.edu`  
     b. Type in the password command: `passwd`  
     c. You'll be prompted to enter your **current** password (once)  
     d. Then  you enter your **new** password (twice)
-    
-    You can also use the password change website: https://hydra-adm01.si.edu/ssp/index.php
-
 
 1. **Where am I when I log in?**  
     In your home directory: `/home/myusername`  
     (you can always type `pwd` to find where you are)
 
-1. **Where are my files?**  
-    Your files should be in the directory: `/pool/genomics/myusername`  
-    You might also have files in `/scratch/genomics/myusername` or `/data/genomics/myusername`
+1. **Where are my analysis files?**  
+    Your files should be in the directory: `/scratch/genomics/myusername`  
+    You might also have files in `/pools/genomics/myusername`, `/data/genomics/myusername`
 
 1. **Which programs are available on hydra?**  
     `module avail`  
@@ -52,7 +48,7 @@ You need to change your password every 90 days.
 
 1. **How do I start an analysis?**  
 
-    You can create a job file either using `nano` or the [Qsub Generator](https://hydra-adm01.si.edu/tools/QSubGen/), which is a web tool to create job files.
+    You can create a job file either using `nano` or the [Qsub Generator](https://galaxy.si.edu/tools/QSubGen/), which is a web tool to create job files.
     
     You can submit a job using the command  
     `qsub jobfile.job`   
@@ -65,7 +61,7 @@ You need to change your password every 90 days.
 
     The memory available without any additional parameters is 8GB. To increase this values use:  
     `qrsh -pe mthread N`  
-    where N is between 2 and 32, to use 2 to 32 slots or 16 to 256 GB of memory.
+    where N is between 2 and 10, to use 2 to 10 slots or 16 to 80GB of memory.
 
     In both cases, you need to load the necessary modules, either in the job file, or by typing `module load [...]` in the interactive node.
 
@@ -92,7 +88,7 @@ You need to change your password every 90 days.
 1. **How do I check my job status?**  
 
     To check the status of all of your jobs:  
-    `qstat -u myusername`
+    `qstat`
 
     To check the status of an specific job:  
     `qstat -j job_id_number`
@@ -103,7 +99,7 @@ You need to change your password every 90 days.
     `qdel job_id_number`
 
 1. **After my job is done, how to check its parameters, memory used, etc?**  
-    `qacct -j job_id_number`
+    `qacct+ -j job_id_number`
 
 1. **My job failed… Why?**  
     a. Check the log file. Many programs will output the errors, which help understand the issue. Common issues are: misspelled filenames, wrong paths, etc.  
@@ -112,21 +108,22 @@ You need to change your password every 90 days.
     d. If none of those help answer your question, ask for help :) 
 
 1. **How do I check my disk quota on Hydra?**  
-    You need to load the module tools/local  
-    `module load tools/local`
+    `quota+`
 
-    To check your quotas with current usage:  
-    `parse-quota-report.pl -u myusername`
-
-    | Important: Files older than  180 (pool) or 90 (scratch) days are scrubbed. Files in your home directory and `/data/genomics` are never scrubbed but disk quotas are smaller. |
+    | Important: Files older than  180 days on `/scratch/genomics` and `/pool/genomics` are scrubbed. Files in your home directory and `/data/genomics` are never scrubbed but disk quotas are smaller. |
     | --- |
     
 1. **How do I copy my files from Hydra to a local computer?**  
     Run this command from a local (aka not connected to Hydra) terminal window:  
     
+    Copying FROM hydra TO your computer
     `scp myusername@hydra-login01.si.edu:/hydra-path/file destination-on-my-computer`  
     
+    Copying TO hydra FROM your computer 
+    `scp /path-on-my-computer/file myusername@hydra-login01.si.edu:/hydra-path`
+
     (for directories, use the flag `-r` after `scp`)
+
 
 1. **My files were scrubbed. What do I do?**  
     Please refer to [this page](https://confluence.si.edu/display/HPC/Disk+Space+and+Disk+Usage) for more information on how to request files to be restored (requests must be received by the Friday following scrubbing).
@@ -138,4 +135,4 @@ You need to change your password every 90 days.
     * **Wiki**: [https://confluence.si.edu/display/HPC](https://confluence.si.edu/display/HPC)
     * **Email**: SI-HPC@si.edu 
     * **GitHub**: previous workshops tutorials [https://github.com/SmithsonianWorkshops](https://github.com/SmithsonianWorkshops)
-    * **In person**: bioinformatics brown-bag (every Thursday at 12 pm, NMNH W107)
+    
