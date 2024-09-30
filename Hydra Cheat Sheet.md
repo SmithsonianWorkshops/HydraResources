@@ -10,12 +10,12 @@
     You will be prompted to enter your password. 
 
 2. **If I forgot my password or locked my account?**  
-    Use the password reset webpage: https://galaxy.si.edu/ssp/?action=sendtoken
+    Use the password reset webpage: https://hydra-7.si.edu/ssp/?action=sendtoken
 
 3. **How do I change my password?**  
 
 You need to change your password every 180 days.  
-    You can also use the password change website: https://galaxy.si.edu/ssp/index.php
+    You can also use the password change website: https://hydra-7.si.edu/ssp/index.php
 
     a. Login to hydra-login01.si.edu: `ssh myusername@hydra-login01.si.edu`  
     b. Type in the password command: `passwd`  
@@ -48,7 +48,7 @@ You need to change your password every 180 days.
 
 1. **How do I start an analysis?**  
 
-    You can create a job file either using `nano` or the [Qsub Generator](https://galaxy.si.edu/tools/QSubGen/), which is a web tool to create job files.
+    You can create a job file either using `nano` or the [Qsub Generator](https://hydra-7.si.edu/tools/QSubGen/), which is a web tool to create job files.
     
     You can submit a job using the command  
     `qsub jobfile.job`   
@@ -73,14 +73,14 @@ You need to change your password every 180 days.
     * Long (l): up to 30 days
     * Unlimited (u): well... unlimited
     
-    The queues are also divided into high CPU (up to 6GB per CPU) or high memory (above 6 GB). Here's an example:  
+    The queues are also divided into high CPU (up to 8GB per CPU) or high memory (above 8 GB). Here's an example:  
    
     ```
     # ------------Parameters------------------ #
     #$ -S /bin/sh
     #$ -pe mthread 4 #(multithread w/ 4 CPUs)
     #$ -q mThC.q #(medium Time, high CPU)
-    #$ -l mres=24G,h_data=6G,h_vmem=6G
+    #$ -l mres=32G,h_data=8G,h_vmem=8G
     ```
     | Important: more memory is not necessarily better if the software can't use it efficiently. Jobs are prioritized based on queue, so low-RAM jobs will move through the queue faster. Inefficient jobs are flagged by the Hydra admin. |
     | --- |
@@ -126,10 +126,10 @@ You need to change your password every 180 days.
 
 
 1. **My files were scrubbed. What do I do?**  
-    Please refer to [this page](https://confluence.si.edu/display/HPC/Disk+Space+and+Disk+Usage) for more information on how to request files to be restored (requests must be received by the Friday following scrubbing).
+    Please refer to [this page]([https://confluence.si.edu/display/HPC/Disk+Space+and+Disk+Usage](https://confluence.si.edu/display/HPC/Scrubber+and+How+to+Request+Scrubbed+Files+to+be+Restored) for more information on how to request files to be restored (requests must be received by the Friday following scrubbing).
 
 1. **How do I use Dropbox to backup my files?**  
-    Please refer to [this page](https://confluence.si.edu/pages/viewpage.action?pageId=40140823#DiskSpaceandDiskUsage-HowToCopy) for more information.  
+    Please refer to [this page]([https://confluence.si.edu/pages/viewpage.action?pageId=40140823#DiskSpaceandDiskUsage-HowToCopy](https://confluence.si.edu/display/HPC/Using+Dropbox) for more information.  
 
 1. **How do I find help?**
     * **Wiki**: [https://confluence.si.edu/display/HPC](https://confluence.si.edu/display/HPC)
