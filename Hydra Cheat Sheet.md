@@ -126,10 +126,10 @@ You need to change your password every 180 days.
 
 
 1. **My files were scrubbed. What do I do?**  
-    Please refer to [this page]([https://confluence.si.edu/display/HPC/Disk+Space+and+Disk+Usage](https://confluence.si.edu/display/HPC/Scrubber+and+How+to+Request+Scrubbed+Files+to+be+Restored) for more information on how to request files to be restored (requests must be received by the Friday following scrubbing).
+    Please refer to [this page](https://confluence.si.edu/display/HPC/Scrubber+and+How+to+Request+Scrubbed+Files+to+be+Restored) for more information on how to request files to be restored (requests must be received by the Friday following scrubbing).
 
 1. **How do I use Dropbox to backup my files?**  
-    Please refer to [this page]([https://confluence.si.edu/pages/viewpage.action?pageId=40140823#DiskSpaceandDiskUsage-HowToCopy](https://confluence.si.edu/display/HPC/Using+Dropbox) for more information.  
+    Please refer to [this page](https://confluence.si.edu/display/HPC/Using+Dropbox) for more information.  
 
 1. **How do I find help?**
     * **Wiki**: [https://confluence.si.edu/display/HPC](https://confluence.si.edu/display/HPC)
