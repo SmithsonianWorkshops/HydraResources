@@ -26,9 +26,7 @@ A little panel will show up in the top middle of VS Code with an example SSH con
 
 You will then get a follow-up prompt that asks where to store this config. Choose the first option. Windows: `C:\Users\USER\.ssh\config`, Mac: `/Users/USER/.ssh/config`
 
-*Windows*
 ![VS Code Add SSH Config (Windows)](images/add_ssh_config_win.png)
-*Mac*
 ![VS Code Add SSH Config (Mac)](images/add_ssh_config_mac.png)
 
 It will do a little bit of thinking, but then you should see the Hydra SSH connection added to your Remote Explorer tab.
